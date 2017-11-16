@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   ft_lstprint_base.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 18:10:35 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/15 18:12:21 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/09/21 16:17:41 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/10/03 21:45:13 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isascii(int c)
+#include "libft.h"
+
+void	ft_lstprint_base(t_list *list, unsigned char size_of_content,
+		unsigned char radix)
 {
-	return (0 <= c && c <= 127 ? 1 : 0);
+	if (!list)
+		return ;
+	else
+		while (list)
+		{
+			if (size_of_content == 1)
+				ft_putstr((char *)list->content);
+			else
+				ft_print_int_tab_base(list->content, size_of_content,
+						list->content_size, radix);
+			ft_putchar('\n');
+			list = list->next;
+		}
 }

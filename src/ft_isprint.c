@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 18:26:19 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/10 19:24:38 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/15 18:12:25 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/05/29 17:30:16 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-t_list		*ft_lstmap(t_list *list, t_list *(*f)(t_list *elem))
+int		ft_isprint(int c)
 {
-	t_list	*lstmap;
-
-	if (!list || !f)
-		return (NULL);
-	lstmap = NULL;
-	while (list)
-	{
-		ft_lstpush(&lstmap, f(ft_lstnew(list->content, list->content_size,
-						FT_LSTNEW_CPY)));
-		list = list->next;
-	}
-	return (lstmap);
+	return (32 <= c && c <= 126);
 }

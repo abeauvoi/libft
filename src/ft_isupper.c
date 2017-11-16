@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_isupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 18:03:29 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/15 18:06:13 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/15 18:07:43 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/11/14 13:23:16 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-int		ft_isalpha(int c)
+int		ft_isupper(int c)
 {
-	return (ft_islower(c) || ft_isupper(c) ? 1 : 0);
+	return (65 <= (unsigned char)c && (unsigned char)c <= 90);
 }

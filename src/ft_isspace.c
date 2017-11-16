@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 18:09:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/15 18:10:04 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/15 17:44:30 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/11/14 13:25:39 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-int		ft_isalnum(int c)
+int					ft_isspace(int c)
 {
-	return (ft_isdigit(c) || ft_isalpha(c) ? 1 : 0);
+	unsigned char	ch;
+
+	ch = (unsigned char)c;
+	return (ch == 32 || ch == 12 || ch == 10 || ch == 13 || ch == 9
+			|| ch == 11);
 }

@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lststrsplit.c                                   :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 18:45:08 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/10 19:24:02 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/17 17:23:49 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/06/26 18:24:18 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static size_t	ft_word_len(const char *s, char c)
+t_list		*ft_lstnew(void *content, size_t content_size)
 {
-	return (*s && *s != c ? ft_word_len(++s, c) + 1 : 0);
-}
+	t_list	*new;
 
-t_list			*ft_lststrsplit(const char *s, char c)
-{
-	t_list		*lst;
-	size_t		i;
-
-	if (!s)
+	if (!(new = (t_list *)malloc(sizeof(*new))))
 		return (NULL);
-	i = 0;
-	while (s[i])
+	if (!content)
 	{
-		while (s[i] && s[i] == c)
-			++i;
-		ft_lstpush(&lst,
-				ft_lstnew((void *)ft_strsub(s, i, ft_word_len(s + i, c)),
-					ft_word_len(s + i, c), FT_LSTNEW_CPY));
-		while (s[i] && s[i] != c)
-			++i;
+		new->content = NULL;
+		new->content_size = 0;
 	}
-	return (lst);
+	else
+	{
+		new->content = content;
+		new->content_size = content_size;
+	}
+	new->next = NULL;
+	return (new);
 }

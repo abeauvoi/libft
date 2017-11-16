@@ -1,38 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lststrsplit.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 17:23:49 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/10 19:26:51 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/17 18:45:08 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/07/05 16:58:32 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-t_list		*ft_lstnew(void *content, size_t content_size, t_bool mode)
+static size_t	ft_word_len(const char *s, char c)
 {
-	t_list	*new;
+	return (*s && *s != c ? ft_word_len(++s, c) + 1 : 0);
+}
 
-	if (!(new = (t_list *)malloc(sizeof(*new))))
+t_list			*ft_lststrsplit(const char *s, char c)
+{
+	t_list		*lst;
+	size_t		i;
+	size_t		word_len;
+
+	if (!s)
 		return (NULL);
-	if (!content)
+	i = 0;
+	while (s[i])
 	{
-		new->content = NULL;
-		new->content_size = 0;
+		while (s[i] && s[i] == c)
+			++i;
+		word_len = ft_word_len(s + i, c);
+		ft_lstpush(&lst, ft_lstnew(ft_strsub(s, i, word_len), word_len));
+		while (s[i] && s[i] != c)
+			++i;
 	}
-	else
-	{
-		if (mode == FT_LSTNEW_CPY)
-			new->content = ft_memcpy(ft_memalloc(content_size),
-					content, content_size);
-		else
-			new->content = content;
-		new->content_size = content_size;
-	}
-	new->next = NULL;
-	return (new);
+	return (lst);
 }

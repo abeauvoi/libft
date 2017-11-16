@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 16:20:43 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/20 19:48:36 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2017/05/29 17:36:46 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 static unsigned int	ft_nbrlen(unsigned int n)
 {
-	return (n > 0 ? ft_nbrlen(n / 10) + 1 : 0);
+	unsigned int	i;
+
+	i = 1;
+	if (n == 0)
+		return (i);
+	while ((n /= 10))
+		++i;
+	return (i);
 }
 
 static void			ft_itostr(char *s, unsigned int i)
@@ -33,7 +40,7 @@ char				*ft_itoa(int n)
 
 	neg = (n < 0 ? TRUE : FALSE);
 	tmp = (n < 0 ? -n : n);
-	len = (n == 0 ? 1 : ft_nbrlen(tmp) + neg);
+	len = ft_nbrlen(tmp) + neg;
 	if (!(nbr = ft_strnew(len)))
 		return (NULL);
 	if (neg)

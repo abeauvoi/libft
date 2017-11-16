@@ -1,20 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_strchrset.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 21:30:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/17 17:19:46 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/10/23 19:29:22 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/10/23 19:37:59 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr(char const *str)
+char			*ft_strchrset(const char *s, const char *charset)
 {
-	if (str)
-		while (*str)
-			ft_putchar(*str++);
+	const char	*temp;
+
+	while (*charset)
+	{
+		temp = s;
+		while (*temp)
+		{
+			if (*temp == *charset)
+				return ((char *)temp);
+			++temp;
+		}
+		++charset;
+	}
+	return (NULL);
 }

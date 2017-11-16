@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_noccur.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/26 16:23:38 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/26 16:25:16 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/11/01 20:11:28 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/11/01 20:14:32 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-size_t		ft_lstsize(t_list *list)
+unsigned int		ft_noccur(const char *s, const char c)
 {
-	size_t	i;
+	unsigned int	i;
 
 	i = 0;
-	while (list)
+	while (*s)
 	{
-		++i;
-		list = list->next;
+		if (*s == c)
+			++i;
+		++s;
 	}
 	return (i);
 }

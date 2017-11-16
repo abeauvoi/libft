@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_strncmp_no_case.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/14 19:10:08 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/19 18:26:31 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/06/03 17:45:41 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/06/03 17:54:12 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char					*ft_strrchr(const char *s, int c)
+int			ft_strncmp_no_case(const char *s1, const char *s2, size_t n)
 {
-	const unsigned char	*end;
-
-	end = (const unsigned char *)s;
-	end += ft_strlen(s);
-	while (end != (const unsigned char *)s)
+	if (!n)
+		return (0);
+	while (*s1 && ft_tolower(*s1) == ft_tolower(*s2) && n-- > 1)
 	{
-		if (*end == (unsigned char)c)
-			return ((char *)end);
-		--end;
+		++s1;
+		++s2;
 	}
-	return (*end == (unsigned char)c ? (char *)end : NULL);
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

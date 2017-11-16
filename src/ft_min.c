@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcat.c                                        :+:      :+:    :+:   */
+/*   ft_min.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/14 18:13:49 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/19 16:23:18 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/11/01 14:51:52 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/11/01 14:52:34 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_types.h"
 
-char	*ft_strcat(char *dst, const char *src)
+intmax_t		ft_min(intmax_t a, intmax_t b)
 {
-	ft_strcpy(&dst[ft_strlen(dst)], src);
-	return (dst);
+	return (a < b) ? a : b;
 }

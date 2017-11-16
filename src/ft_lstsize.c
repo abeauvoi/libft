@@ -1,16 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isupper.c                                       :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 18:07:43 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/15 18:08:07 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/26 16:23:38 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/05/29 17:37:37 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isupper(int c)
+#include "libft.h"
+
+size_t		ft_lstsize(t_list *list)
 {
-	return (65 <= c && c <= 90 ? 1 : 0);
+	size_t	i;
+
+	i = 0;
+	while ((list = list->next))
+		++i;
+	return (i);
 }

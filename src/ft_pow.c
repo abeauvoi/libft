@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_pow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 16:43:42 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/24 17:00:21 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/05/04 17:31:02 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/09/07 16:41:06 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft.h"
 
-int		ft_strncmp(const char *s1, const char *s2, size_t n)
+long		ft_pow(int nb, unsigned int pow)
 {
-	if (!n)
-		return (0);
-	while (*s1 && *s1 == *s2 && n-- > 1)
-	{
-		++s1;
-		++s2;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
+	long	res;
+
+	if (pow == 0)
+		return (1);
+	res = 1;
+	while (pow-- > 0)
+		res *= nb;
+	return (res);
 }

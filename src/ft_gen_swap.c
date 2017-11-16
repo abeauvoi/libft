@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl.c                                       :+:      :+:    :+:   */
+/*   ft_gen_swap.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 17:01:30 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/17 17:27:59 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/11/16 14:41:09 by abeauvoi          #+#    #+#             */
+/*   Updated: 2017/11/16 14:41:30 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_types.h"
 
-void		ft_putendl(char const *s)
+void		ft_gen_swap(void *a, void *b, size_t size)
 {
-	if (s)
+	unsigned char	c;
+	unsigned char	*ca;
+	unsigned char	*cb;
+
+	ca = (unsigned char *)a;
+	cb = (unsigned char *)b;
+	while (size--)
 	{
-		ft_putstr(s);
-		ft_putchar('\n');
+		c = *ca;
+		*ca = *cb;
+		*cb = c;
+		++ca;
+		++cb;
 	}
 }
