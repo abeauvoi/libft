@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 21:10:20 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/01 15:55:47 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2017/11/18 17:31:16 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 # include <limits.h>
 # include <stdint.h>
 # include <string.h>
+
+# define MASK01 0x0101010101010101UL
+# define MASK80 0x8080808080808080UL
+
+# define LONGPTR_MASK (sizeof(long) - 1)
 
 typedef enum		e_bool
 {
