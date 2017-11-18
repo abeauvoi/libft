@@ -6,11 +6,10 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:57:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/18 17:44:45 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2017/11/18 18:19:06 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "libft_types.h"
 
 static size_t	find_null(const char *s, const char *str)
