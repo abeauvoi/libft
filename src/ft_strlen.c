@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:57:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/18 18:19:06 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2017/11/19 19:55:28 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ size_t			ft_strlen(const char *str)
 {
 	const char			*s;
 	const unsigned long	*ls;
-	long 				va;
+	long				va;
 	long				vb;
 
 	init((uintptr_t)str, &va, &vb, &ls);
