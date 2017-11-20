@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2017/11/20 01:48:26 by abeauvoi         ###   ########.fr        #
+#    Updated: 2017/11/20 02:07:12 by abeauvoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ obj_dir:
 clean:
 	@echo "$(NAME)\n └── \c"
 	@$(RM) $(OBJS)
-	@echo "$(RED)rm ./objs $(NC)[$(GREEN)OK$(NC)]"
+	@echo "$(RED)rm ./obj $(NC)[$(GREEN)OK$(NC)]"
 	@rmdir $(OBJ_DIR) 2> /dev/null || true
 
 fclean: clean
