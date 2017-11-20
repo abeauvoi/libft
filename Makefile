@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2017/11/20 01:35:37 by abeauvoi         ###   ########.fr        #
+#    Updated: 2017/11/20 01:48:26 by abeauvoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,4 +103,4 @@ nr:
 		&& echo "  │└── end file\n  └── end NORME"; fi;
 	@$ rm -f n.log enorm.errors enorm.log
 
-.PHONY: all clean fclean re msg show
+.PHONY: all clean fclean re msg show obj_dir
