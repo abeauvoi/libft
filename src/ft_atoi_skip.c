@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/21 16:43:55 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/08 12:34:13 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2017/11/21 19:19:33 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int					ft_atoi_skip(const char **s)
 	char			sign;
 	unsigned int	digit;
 
-	if (*s == NULL || **s == 0)
-		return (0);
 	sign = 1;
 	skip_spaces_and_sign(s, &sign);
 	acc = ft_digittoint(**s);
