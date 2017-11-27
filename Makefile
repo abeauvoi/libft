@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2017/11/20 02:07:12 by abeauvoi         ###   ########.fr        #
+#    Updated: 2017/11/27 04:36:08 by abeauvoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ VPATH = $(SRC_DIR)
 SRCS = $(addprefix $(SRC_DIR),ft_abs.c ft_atoi.c ft_atoi_skip.c \
 			  ft_bzero.c ft_digittoint.c ft_delcontent.c ft_error.c \
 			  ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_islower.c \
-			  ft_isprint.c ft_isspace.c ft_isupper.c ft_itoa.c ft_isxdigit.c \
+			  ft_isprint.c ft_isspace.c ft_isupper.c ft_itoa_base.c \
+			  ft_isxdigit.c \
 			  ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstnew.c ft_lstiter.c \
 			  ft_lstmap.c ft_lstsize.c ft_lststrsplit.c ft_lstpush.c \
 			  ft_memalloc.c ft_memccpy.c ft_memchr.c ft_memcmp.c ft_memcpy.c \
@@ -35,7 +36,7 @@ SRCS = $(addprefix $(SRC_DIR),ft_abs.c ft_atoi.c ft_atoi_skip.c \
 			  ft_strtrim.c ft_tolower.c ft_toupper.c get_next_line.c \
 			  ft_print_int_tab_base.c ft_lstprint_base.c ft_strchrset.c \
 			  ft_round.c ft_min.c ft_max.c ft_strrchr2.c ft_noccur.c \
-			  ft_gen_swap.c ft_strchr2.c)
+			  ft_gen_swap.c ft_strchr2.c ft_isblank.c)
 INC_DIR	= includes
 INC = $(addprefix -I, $(INC_DIR))
 OBJS = $(addprefix $(OBJ_DIR), $(notdir $(SRCS:.c=.o)))

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/22 17:58:30 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2017/11/27 04:35:09 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int					ft_isupper(int c);
 char				*ft_itoa_base(int64_t, unsigned int base);
 int					ft_isxdigit(int c);
 void				ft_swap_int(int *a, int *b);
+t_bool				ft_isblank(char c);
 
 /*
 ** Linked lists
