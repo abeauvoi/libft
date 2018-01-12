@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:57:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/12 00:53:06 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/12 06:45:16 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ static inline size_t	find_null(const char *cp, const char *str)
 
 size_t					ft_strlen(const char *str)
 {
-	const char	*char_ptr;
+	const char				*char_ptr;
 	const unsigned long int	*longword_ptr;
-	unsigned long int	longword;
-	unsigned long int	himagic;
-	unsigned long int	lomagic;
+	unsigned long int		longword;
+	unsigned long int		himagic;
+	unsigned long int		lomagic;
 
 	char_ptr = str;
 	while (((unsigned long int)char_ptr & (sizeof(longword) - 1)) != 0)

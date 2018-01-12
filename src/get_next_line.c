@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 17:39:12 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/12 06:26:10 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/12 06:44:59 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int			get_one_line(t_hist *hist, t_file *file, char **line,
 {
 	if (len_line > 0)
 		if (!(*line = ft_memcpy(ft_strnew(len_line), file->saved, len_line)))
-		return (-1);
+			return (-1);
 	return (clear_history(hist, file, len_line,
 				(len_line > 0 ? 0 : 1)));
 }

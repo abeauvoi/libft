@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 17:57:31 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/22 18:19:14 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/12 06:45:31 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static void	ft_u64toa_base(uint64_t value, unsigned int base, char *buffer)
 		*buffer++ = *--p;
 	*buffer = '\0';
 }
-
 
 char		*ft_itoa_base(int64_t n, unsigned int base)
 {
