@@ -6,19 +6,20 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 17:39:12 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/12 06:44:59 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/12 12:46:47 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#include "get_next_line.h"
+#include "libft.h"
 
 static int			build_one_line(int fd, char *buf, t_file *file)
 {
 	int		n;
 	char	*tmp;
 
+	tmp = NULL;
 	while ((n = read(fd, buf, BUFF_SIZE)))
 	{
 		if (!(tmp = ft_strnew(file->saved_len + n)))
@@ -28,7 +29,7 @@ static int			build_one_line(int fd, char *buf, t_file *file)
 		free(file->saved);
 		file->saved = tmp;
 		file->saved_len += n;
-		if ((tmp = ft_memchr(buf, '\n', n)) != NULL)
+		if ((tmp = ft_memchr(buf, DELIM, n)) != NULL)
 			break ;
 	}
 	return (tmp != NULL ? file->saved_len - n + (tmp - buf) : file->saved_len);
@@ -40,24 +41,22 @@ static t_file		*get_current_file(t_hist *hist, const int fd)
 
 	if (!hist->files)
 	{
-		hist->files = (t_file *)malloc(sizeof(*(hist->files)));
-		ft_bzero(hist->files, sizeof(*(hist->files)));
+		if (!(hist->files = (t_file *)malloc(sizeof(t_file))))
+			return (NULL);
+		ft_bzero(hist->files, sizeof(t_file));
 		hist->files->fd = fd;
-		return (hist->last_access = hist->files);
+		return (hist->files);
 	}
-	if (hist->last_access->fd == fd)
-		return (hist->last_access);
 	file = hist->files;
-	while (file->next != NULL)
-	{
-		if (file->fd == fd)
-			return (file);
+	while (file->fd != fd && file->next != NULL)
 		file = file->next;
-	}
-	file->next = (t_file *)malloc(sizeof(*file));
-	ft_bzero(file->next, sizeof(*(file->next)));
+	if (file->fd == fd)
+		return (file);
+	if (!(file->next = (t_file *)malloc(sizeof(*file))))
+		return (NULL);
+	ft_bzero(file->next, sizeof(t_file));
 	file->next->fd = fd;
-	return (hist->last_access = file->next);
+	return (file->next);
 }
 
 static size_t		clear_history(t_hist *hist, t_file *file, size_t len_line,
@@ -66,18 +65,16 @@ static size_t		clear_history(t_hist *hist, t_file *file, size_t len_line,
 	char			*tmp;
 	t_file			*prev;
 
-	file->saved_len -= len_line;
-	tmp = file->saved + len_line;
-	while (*(tmp++) == '\n')
+	if ((file->saved_len -= len_line) > 0)
 		--file->saved_len;
 	tmp = (!file->saved_len ? NULL : ft_memcpy(ft_strnew(file->saved_len),
-				tmp, file->saved_len));
+				file->saved + len_line + 1, file->saved_len));
 	free(file->saved);
 	file->saved = tmp;
 	if (reached_eof)
 	{
 		if ((prev = hist->files) == file)
-			hist->files = (prev->next ? prev->next : NULL);
+			hist->files = hist->files->next;
 		else
 			while (prev->next != file)
 				prev = prev->next;
@@ -91,17 +88,19 @@ static size_t		clear_history(t_hist *hist, t_file *file, size_t len_line,
 static int			get_one_line(t_hist *hist, t_file *file, char **line,
 		size_t len_line)
 {
-	if (len_line > 0)
+	if (file->saved != NULL)
+	{
 		if (!(*line = ft_memcpy(ft_strnew(len_line), file->saved, len_line)))
 			return (-1);
+	}
 	return (clear_history(hist, file, len_line,
-				(len_line > 0 ? 0 : 1)));
+				(file->saved == NULL && len_line == 0 ? 1 : 0)));
 }
 
 int					get_next_line(const int fd, char **line)
 {
 	char			buf[BUFF_SIZE + 1];
-	static t_hist	hist = {NULL, NULL};
+	static t_hist	hist = {NULL};
 	t_file			*file;
 	int				n;
 	char			*add_nl;
@@ -109,8 +108,10 @@ int					get_next_line(const int fd, char **line)
 	if (fd == -1 || !line || read(fd, buf, 0) == -1)
 		return (-1);
 	buf[BUFF_SIZE] = 0;
-	if ((file = get_current_file(&hist, fd))->saved != NULL
-			&& (add_nl = ft_memchr(file->saved, '\n', file->saved_len)) != NULL)
+	if (!(file = get_current_file(&hist, fd)))
+		return (-1);
+	if (file->saved != NULL
+			&& (add_nl = ft_memchr(file->saved, DELIM, file->saved_len)))
 		return (get_one_line(&hist, file, line, add_nl - file->saved));
 	n = build_one_line(fd, buf, file);
 	if (n < 0)

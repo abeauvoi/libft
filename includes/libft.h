@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/27 04:35:09 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/12 12:46:01 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int					ft_islower(int c);
 int					ft_isprint(int c);
 int					ft_isspace(int c);
 int					ft_isupper(int c);
-char				*ft_itoa_base(int64_t, unsigned int base);
+char				*ft_itoa_base(int64_t n, unsigned int base);
 int					ft_isxdigit(int c);
 void				ft_swap_int(int *a, int *b);
 t_bool				ft_isblank(char c);
