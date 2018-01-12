@@ -6,63 +6,58 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:57:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/19 19:55:28 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/12 00:53:06 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_types.h"
+#include <stdlib.h>
 
-static size_t	find_null(const char *s, const char *str)
+static inline size_t	find_null(const char *cp, const char *str)
 {
-	if (!s[0])
-		return (s - str);
-	if (!s[1])
-		return (s - str + 1);
-	if (!s[2])
-		return (s - str + 2);
-	if (!s[3])
-		return (s - str + 3);
-	if (!s[4])
-		return (s - str + 4);
-	if (!s[5])
-		return (s - str + 5);
-	if (!s[6])
-		return (s - str + 6);
-	return (s - str + 7);
+	if (cp[0] == 0)
+		return (cp - str);
+	if (cp[1] == 0)
+		return (cp - str + 1);
+	if (cp[2] == 0)
+		return (cp - str + 2);
+	if (cp[3] == 0)
+		return (cp - str + 3);
+	if (cp[4] == 0)
+		return (cp - str + 4);
+	if (cp[5] == 0)
+		return (cp - str + 5);
+	if (cp[6] == 0)
+		return (cp - str + 6);
+	if (cp[7] == 0)
+		return (cp - str + 7);
+	__builtin_unreachable();
 }
 
-static void		init(uintptr_t str, long *va, long *vb,
-		const unsigned long **ls)
+size_t					ft_strlen(const char *str)
 {
-	*ls = (const unsigned long *)(str & ~LONGPTR_MASK);
-	*va = (**ls - MASK01);
-	*vb = ((~**ls) & MASK80);
-	++*ls;
-}
+	const char	*char_ptr;
+	const unsigned long int	*longword_ptr;
+	unsigned long int	longword;
+	unsigned long int	himagic;
+	unsigned long int	lomagic;
 
-size_t			ft_strlen(const char *str)
-{
-	const char			*s;
-	const unsigned long	*ls;
-	long				va;
-	long				vb;
-
-	init((uintptr_t)str, &va, &vb, &ls);
-	s = str;
-	if (va & vb)
-		while (s < (const char *)ls)
-		{
-			if (*s == 0)
-				return (s - str);
-			++s;
-		}
+	char_ptr = str;
+	while (((unsigned long int)char_ptr & (sizeof(longword) - 1)) != 0)
+		++char_ptr;
+	if (*char_ptr == '\0')
+		return (char_ptr - str);
+	longword_ptr = (unsigned long int *)char_ptr;
+	himagic = 0x80808080L;
+	lomagic = 0x01010101L;
+	himagic = (himagic << 32) | himagic;
+	lomagic = (lomagic << 32) | lomagic;
 	while (1)
 	{
-		va = (*ls - MASK01);
-		vb = ((~*ls) & MASK80);
-		if (va & vb)
-			return (find_null(s = (const char *)ls, str));
-		++ls;
+		longword = *longword_ptr++;
+		if (((longword - lomagic) & himagic) != 0)
+		{
+			char_ptr = (const char *)(longword_ptr - 1);
+			return (find_null(char_ptr, str));
+		}
 	}
-	return (0);
 }

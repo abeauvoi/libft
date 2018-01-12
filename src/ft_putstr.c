@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 21:30:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/29 17:43:54 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/10 23:52:37 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 
 void	ft_putstr(char const *str)
 {
-	if (str)
-		write(1, str, ft_strlen(str));
+	write(1, str, ft_strlen(str));
 }

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 17:39:12 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/10/25 19:41:50 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/12 06:26:10 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 static int			build_one_line(int fd, char *buf, t_file *file)
 {
-	int				n;
-	char			*tmp;
+	int		n;
+	char	*tmp;
 
 	while ((n = read(fd, buf, BUFF_SIZE)))
 	{
@@ -28,48 +28,52 @@ static int			build_one_line(int fd, char *buf, t_file *file)
 		free(file->saved);
 		file->saved = tmp;
 		file->saved_len += n;
-		if (ft_memchr(buf, '\n', n))
+		if ((tmp = ft_memchr(buf, '\n', n)) != NULL)
 			break ;
 	}
-	return (n);
+	return (tmp != NULL ? file->saved_len - n + (tmp - buf) : file->saved_len);
 }
 
 static t_file		*get_current_file(t_hist *hist, const int fd)
 {
-	t_file			*p;
+	t_file			*file;
 
 	if (!hist->files)
 	{
-		hist->files = (t_file *)malloc(sizeof(*p));
+		hist->files = (t_file *)malloc(sizeof(*(hist->files)));
 		ft_bzero(hist->files, sizeof(*(hist->files)));
 		hist->files->fd = fd;
 		return (hist->last_access = hist->files);
 	}
 	if (hist->last_access->fd == fd)
 		return (hist->last_access);
-	p = hist->files;
-	while (p->fd != fd && p->next)
-		p = p->next;
-	if (p->fd == fd)
-		return (p);
-	p->next = (t_file *)malloc(sizeof(*p));
-	ft_bzero(p->next, sizeof(*(p->next)));
-	p->next->fd = fd;
-	return (hist->last_access = p->next);
+	file = hist->files;
+	while (file->next != NULL)
+	{
+		if (file->fd == fd)
+			return (file);
+		file = file->next;
+	}
+	file->next = (t_file *)malloc(sizeof(*file));
+	ft_bzero(file->next, sizeof(*(file->next)));
+	file->next->fd = fd;
+	return (hist->last_access = file->next);
 }
 
-static size_t		clear_history(t_hist *hist, t_file *file, size_t index_nl,
+static size_t		clear_history(t_hist *hist, t_file *file, size_t len_line,
 		t_bool reached_eof)
 {
-	char			*p;
+	char			*tmp;
 	t_file			*prev;
 
-	if ((file->saved_len -= index_nl))
+	file->saved_len -= len_line;
+	tmp = file->saved + len_line;
+	while (*(tmp++) == '\n')
 		--file->saved_len;
-	p = (!file->saved_len ? NULL : ft_memcpy(ft_strnew(file->saved_len),
-				file->saved + index_nl + 1, file->saved_len));
+	tmp = (!file->saved_len ? NULL : ft_memcpy(ft_strnew(file->saved_len),
+				tmp, file->saved_len));
 	free(file->saved);
-	file->saved = p;
+	file->saved = tmp;
 	if (reached_eof)
 	{
 		if ((prev = hist->files) == file)
@@ -79,28 +83,19 @@ static size_t		clear_history(t_hist *hist, t_file *file, size_t index_nl,
 				prev = prev->next;
 		prev->next = file->next;
 		free(file);
-		file = NULL;
 		return (0);
 	}
-	return (index_nl);
+	return (1);
 }
 
 static int			get_one_line(t_hist *hist, t_file *file, char **line,
-		char *add_nl)
+		size_t len_line)
 {
-	size_t			index_nl;
-
-	if (add_nl)
-	{
-		index_nl = add_nl - file->saved;
-		if (!(*line = ft_memcpy(ft_strnew(index_nl), file->saved, index_nl)))
-			return (-1);
-		return (clear_history(hist, file, index_nl, 0));
-	}
-	if (!(*line = ft_memcpy(ft_strnew(file->saved_len), file->saved,
-					file->saved_len)))
+	if (len_line > 0)
+		if (!(*line = ft_memcpy(ft_strnew(len_line), file->saved, len_line)))
 		return (-1);
-	return (clear_history(hist, file, file->saved_len, 1));
+	return (clear_history(hist, file, len_line,
+				(len_line > 0 ? 0 : 1)));
 }
 
 int					get_next_line(const int fd, char **line)
@@ -114,11 +109,11 @@ int					get_next_line(const int fd, char **line)
 	if (fd == -1 || !line || read(fd, buf, 0) == -1)
 		return (-1);
 	buf[BUFF_SIZE] = 0;
-	if ((file = get_current_file(&hist, fd))->saved
-			&& (add_nl = ft_memchr(file->saved, '\n', file->saved_len)))
-		return (get_one_line(&hist, file, line, add_nl));
-	if (!(n = build_one_line(fd, buf, file)) && !file->saved)
-		return (clear_history(&hist, file, file->saved_len, 1));
-	add_nl = ft_memchr(file->saved, '\n', file->saved_len);
-	return (get_one_line(&hist, file, line, add_nl));
+	if ((file = get_current_file(&hist, fd))->saved != NULL
+			&& (add_nl = ft_memchr(file->saved, '\n', file->saved_len)) != NULL)
+		return (get_one_line(&hist, file, line, add_nl - file->saved));
+	n = build_one_line(fd, buf, file);
+	if (n < 0)
+		return (-1);
+	return (get_one_line(&hist, file, line, n));
 }
