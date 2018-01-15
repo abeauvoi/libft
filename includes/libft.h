@@ -6,12 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/15 06:03:36 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/15 08:25:19 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # include <libft_types.h>
 # include <libft_macros.h>
 # include <get_next_line.h>

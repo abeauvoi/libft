@@ -6,15 +6,16 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 21:10:20 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/11 00:20:39 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/15 08:25:42 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_TYPES_H
 # define LIBFT_TYPES_H
-# include <limits.h>
-# include <stdint.h>
+
 # include <string.h>
+# include <stdint.h>
+# include <limits.h>
 
 typedef enum		e_bool
 {
