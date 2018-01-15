@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 17:39:12 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/15 05:18:40 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/15 06:25:57 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static size_t		clear_history(t_hist *hist, t_file *file, size_t len_line,
 		free(file);
 		return (0);
 	}
-	return (1);
+	return (len_line);
 }
 
 static int			get_one_line(t_hist *hist, t_file *file, char **line,
