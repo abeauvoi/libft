@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2018/01/15 05:54:14 by abeauvoi         ###   ########.fr        #
+#    Updated: 2018/01/15 06:05:14 by abeauvoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,9 @@ SRCS = $(addprefix $(SRC_DIR),ft_abs.c ft_atoi.c ft_atoi_skip.c \
 			  ft_strncmp_no_case.c ft_strncpy.c ft_strnequ.c ft_strnew.c \
 			  ft_strnstr.c ft_strrchr.c ft_strsplit.c ft_strstr.c ft_strsub.c \
 			  ft_strtrim.c ft_tolower.c ft_toupper.c get_next_line.c \
-			  ft_lstprint_base.c ft_strchrset.c \
-			  ft_round.c ft_min.c ft_max.c ft_strrchr2.c ft_strnoccur.c \
-			  ft_swap_any.c ft_strchr2.c ft_isblank.c)
+			  ft_strchrset.c ft_round.c ft_min.c ft_max.c ft_strrchr2.c ft_strnoccur.c \
+			  ft_swap_any.c ft_strchr2.c ft_isblank.c ft_ispow2.c \
+			  ft_isdigit_str.c ft_isalnum_str.c)
 INC_DIR	= includes
 INC = $(addprefix -I, $(INC_DIR))
 OBJS = $(addprefix $(OBJ_DIR), $(notdir $(SRCS:.c=.o)))
