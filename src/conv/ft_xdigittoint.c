@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_noccur.c                                        :+:      :+:    :+:   */
+/*   ft_xdigittoint.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/01 20:11:28 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/01 20:14:32 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/24 16:20:27 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/01/15 05:18:04 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int		ft_noccur(const char *s, const char c)
+int		ft_xdigittoint(char c)
 {
-	unsigned int	i;
+	int	d;
 
-	i = 0;
-	while (*s)
-	{
-		if (*s == c)
-			++i;
-		++s;
-	}
-	return (i);
+	d = c - '0';
+	if ((unsigned)d < 10)
+		return (d);
+	d = c - 'a';
+	if ((unsigned)d < 6)
+		return (d + 10);
+	d = c - 'A';
+	if ((unsigned)d < 6)
+		return (d + 10);
+	return (-1);
 }

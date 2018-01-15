@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_gen_swap.c                                      :+:      :+:    :+:   */
+/*   ft_strnoccur.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/16 14:41:09 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/16 14:41:30 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/11/01 20:11:28 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/01/15 05:16:57 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_types.h"
-
-void		ft_gen_swap(void *a, void *b, size_t size)
+unsigned int		ft_strnoccur(const char *s, const char c)
 {
-	unsigned char	c;
-	unsigned char	*ca;
-	unsigned char	*cb;
+	unsigned int	i;
 
-	ca = (unsigned char *)a;
-	cb = (unsigned char *)b;
-	while (size--)
+	i = 0;
+	while (*s)
 	{
-		c = *ca;
-		*ca = *cb;
-		*cb = c;
-		++ca;
-		++cb;
+		if (*s == c)
+			++i;
+		++s;
 	}
+	return (i);
 }

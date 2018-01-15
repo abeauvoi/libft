@@ -6,22 +6,15 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/12 12:46:01 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/01/15 05:15:11 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
-# define MY_LONG_MAX 9223372036854775807UL
-# define MY_OVERFLOW -1
-# define MY_UNDERFLOW 0
-# define TEST_SUCCESS 2
-# define FT_ATOI_MAX_STRLEN 20
-# include "libft_types.h"
-# include "get_next_line.h"
-# define NO_INPUT -1
-
-# define DIGITS "0123456789abcdefghijklmnopqrstuvwxyz"
+# include <libft_types.h>
+# include <libft_macros.h>
+# include <get_next_line.h>
 
 /*
 ** Math related
