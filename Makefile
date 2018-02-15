@@ -6,40 +6,40 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2018/01/15 06:05:14 by abeauvoi         ###   ########.fr        #
+#    Updated: 2018/02/15 22:25:13 by abeauvoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
 CFLAGS = -Wall -Werror -Wextra
-SRC_DIR	= src/
-OBJ_DIR	= obj/
-VPATH = $(SRC_DIR):$(addprefix $(SRC_DIR),conv is_fts lst math mem misc put str)
-SRCS = $(addprefix $(SRC_DIR),ft_abs.c ft_atoi.c ft_atoi_skip.c \
-			  ft_bzero.c ft_xdigittoint.c ft_delcontent.c ft_error.c \
-			  ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_islower.c \
-			  ft_isprint.c ft_isspace.c ft_isupper.c ft_itoa_base.c \
-			  ft_isxdigit.c \
-			  ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstnew.c ft_lstiter.c \
-			  ft_lstmap.c ft_lstsize.c ft_lststrsplit.c ft_lstpush.c \
-			  ft_memalloc.c ft_memccpy.c ft_memchr.c ft_memcmp.c ft_memcpy.c \
-			  ft_memdel.c ft_memmove.c ft_memset.c ft_pow.c ft_putchar.c \
-			  ft_putchar_fd.c ft_putendl.c ft_putendl_fd.c ft_putnbr.c \
-			  ft_putnbr_base.c ft_putnbr_fd.c ft_putstr.c ft_putstr_fd.c \
-			  ft_revstr.c ft_strcat.c ft_strchr.c ft_strchrnul.c ft_strclr.c \
-			  ft_strcpy.c ft_strcmp.c ft_strdel.c ft_strdup.c ft_strequ.c \
-			  ft_striter.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlen.c \
-			  ft_strmap.c ft_strmapi.c ft_strncat.c ft_strncmp.c \
-			  ft_strncmp_no_case.c ft_strncpy.c ft_strnequ.c ft_strnew.c \
-			  ft_strnstr.c ft_strrchr.c ft_strsplit.c ft_strstr.c ft_strsub.c \
-			  ft_strtrim.c ft_tolower.c ft_toupper.c get_next_line.c \
-			  ft_strchrset.c ft_round.c ft_min.c ft_max.c ft_strrchr2.c ft_strnoccur.c \
-			  ft_swap_any.c ft_strchr2.c ft_isblank.c ft_ispow2.c \
-			  ft_isdigit_str.c ft_isalnum_str.c)
+SRC_DIR	= src
+OBJ_DIR	= obj
+VPATH = $(SRC_DIR):$(addprefix $(SRC_DIR)/,conv is_fts lst math mem misc put str)
+SRCS = ft_abs.c ft_atoi.c ft_atoi_skip.c \
+       ft_bzero.c ft_xdigittoint.c ft_delcontent.c ft_error.c \
+       ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_islower.c \
+       ft_isprint.c ft_isspace.c ft_isupper.c ft_itoa_base.c \
+       ft_isxdigit.c \
+       ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstnew.c ft_lstiter.c \
+       ft_lstmap.c ft_lstsize.c ft_lststrsplit.c ft_lstpush.c \
+       ft_memalloc.c ft_memccpy.c ft_memchr.c ft_memcmp.c ft_memcpy.c \
+       ft_memdel.c ft_memmove.c ft_memset.c ft_pow.c ft_putchar.c\
+       ft_putchar_fd.c ft_putendl.c ft_putendl_fd.c ft_putnbr.c \
+       ft_putnbr_base.c ft_putnbr_fd.c ft_putstr.c ft_putstr_fd.c \
+       ft_revstr.c ft_strcat.c ft_strchr.c ft_strchrnul.c ft_strclr.c \
+       ft_strcpy.c ft_strcmp.c ft_strdel.c ft_strdup.c ft_strequ.c \
+       ft_striter.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlen.c \
+       ft_strmap.c ft_strmapi.c ft_strncat.c ft_strncmp.c \
+       ft_strncmp_no_case.c ft_strncpy.c ft_strnequ.c ft_strnew.c \
+       ft_strnstr.c ft_strrchr.c ft_strsplit.c ft_strstr.c ft_strsub.c \
+       ft_strtrim.c ft_tolower.c ft_toupper.c get_next_line.c \
+       ft_strchrset.c ft_round.c ft_min.c ft_max.c ft_strrchr2.c ft_strnoccur.c \
+       ft_swap_any.c ft_strchr2.c ft_isblank.c ft_ispow2.c ft_isdigit_str.c ft_isalnum_str.c
+
 INC_DIR	= includes
-INC = $(addprefix -I, $(INC_DIR))
-OBJS = $(addprefix $(OBJ_DIR), $(notdir $(SRCS:.c=.o)))
+INC = $(addprefix -I,$(INC_DIR))
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
 ## OUTPUT ####################################################################
 
@@ -57,29 +57,24 @@ WARN_STRING=$(WARN_COLOR)[WARNINGS]$(NC)
 
 ## RULES #######################################################################
 
-all: mkdir_obj $(NAME)
-	@true
+all: $(OBJ_DIR) $(NAME)
 
 debug: CFLAGS += -fsanitize=address -g3
-debug: mkdir_obj $(NAME)
-	@true
+debug: $(OBJ_DIR) $(NAME)
 
-$(NAME): msg $(OBJS)
+$(NAME): $(OBJS)
 	@echo "\r\033[J └── $(NAME) [$(GREEN)OK$(NC)]"
-	@ar rc $@ $(filter-out $<,$^)
+	@ar rc $@ $^
 	@ranlib $@
 
-$(OBJ_DIR)%.o: %.c
+$(OBJ_DIR):
+	@mkdir $@
+
+$(OBJ_DIR)/%.o: %.c
 	@echo "\r\033[J └── $(NAME)[\\] > $<\c"
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	@echo "\r\033[J └── $(NAME)[/] > $@\c"
 
-msg:
-	@echo "Creating:"
-
-mkdir_obj:
-	@mkdir $(OBJ_DIR) 2> /dev/null || true
-	
 clean:
 	@echo "$(NAME)\n └── \c"
 	@$(RM) $(OBJS)
@@ -95,7 +90,8 @@ re: fclean all
 
 show:
 	@ar -t $(NAME)
-nr:
+
+norminette:
 	@echo "$(LBLUE)==== norminette ====$(NC)"
 	@echo "norme for $(NAME)"
 	@$	norminette $(SRC) > n.log
@@ -108,4 +104,4 @@ nr:
 		&& echo "  │└── end file\n  └── end NORME"; fi;
 	@$ rm -f n.log enorm.errors enorm.log
 
-.PHONY: all clean fclean re msg show mkdir_obj
+.PHONY: all clean fclean re msg show
