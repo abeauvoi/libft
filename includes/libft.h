@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/15 08:25:19 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/02/21 04:17:20 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_bool				ft_ispow2(unsigned long x);
 int					ft_atoi(const char *s);
 int					ft_atoi_skip(const char **s);
 void				ft_bzero(void *str, size_t count);
+int					ft_xdigittoint(char c);
 int					ft_digittoint(char c);
 void				ft_delcontent(void *content, size_t content_size);
 void				ft_error(char *error_msg);

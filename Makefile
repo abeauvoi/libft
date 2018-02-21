@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2018/02/20 19:22:46 by abeauvoi         ###   ########.fr        #
+#    Updated: 2018/02/21 04:17:51 by abeauvoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC_DIR	= src
 OBJ_DIR	= obj
 VPATH = $(addprefix $(SRC_DIR)/,conv is_fts lst math mem misc put str ft_printf)
 SRCS = ft_abs.c ft_atoi.c ft_atoi_skip.c \
-       ft_bzero.c ft_xdigittoint.c ft_delcontent.c ft_error.c \
+       ft_bzero.c ft_xdigittoint.c ft_digittoint.c ft_delcontent.c ft_error.c \
        ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_islower.c \
        ft_isprint.c ft_isspace.c ft_isupper.c ft_itoa_base.c ft_isxdigit.c \
        ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstnew.c ft_lstiter.c \
@@ -67,7 +67,7 @@ WARN_STRING=$(WARN_COLOR)[WARNINGS]$(NC)
 all: $(OBJ_DIR) $(NAME)
 
 debug: CFLAGS += -fsanitize=address -g3
-debug: $(OBJ_DIR) $(NAME)
+debug: all
 
 $(NAME): $(OBJS)
 	@echo "\r\033[J └── $(NAME) [$(GREEN)OK$(NC)]"
