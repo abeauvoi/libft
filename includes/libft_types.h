@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 21:10:20 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/15 08:25:42 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/04/08 20:48:22 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,34 @@ typedef struct		s_str
 	char	*s;
 	size_t	l;
 }					t_str;
+
+/*
+** ft_getopt
+*/
+
+typedef struct		s_ft_getopt
+{
+	char	**argv;
+	int		permute;
+	int		optind;
+	int		optopt;
+	char	*optarg;
+	char	errbuf[64];
+	int		subopt;
+}					t_getopt;
+
+typedef enum		e_ft_getopt_argtype
+{
+	FT_GETOPT_NONE,
+	FT_GETOPT_REQUIRED,
+	FT_GETOPT_OPTIONAL
+}					t_getopt_argtype;
+
+struct				s_ft_getopt_long
+{
+	const char			*longname;
+	int					shortname;
+	t_getopt_argtype	argtype;
+};
 
 #endif

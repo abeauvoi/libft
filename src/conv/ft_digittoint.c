@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 04:16:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/02/21 04:17:03 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/04/08 21:07:58 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	ft_digittoint(char c)
+unsigned char	ft_digittoint(char c)
 {
-	return ((unsigned int)c - '0');
+	return ((unsigned char)c - '0');
 }

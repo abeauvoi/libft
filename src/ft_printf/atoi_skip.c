@@ -6,11 +6,12 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/04 17:26:00 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/02/21 04:17:32 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/04/08 21:08:34 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "libft.h"
 
 /*
 ** Description: This function retrieves an int within the format string and

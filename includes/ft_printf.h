@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/02/06 04:29:21 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/04/08 21:10:31 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,9 @@
 # define SIZE spec->size
 
 /*
-** Digits & Padding
+** Digits
 */
 
-# ifndef DIGITS
-#  define DIGITS			"0123456789abcdefghijklmnopqrstuvwxyz"
-# endif
 # define UPPER_DIGITS	"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 /*
@@ -116,19 +113,19 @@ typedef	unsigned char		t_uc;
 
 typedef struct				s_ftpf_info
 {
-	t_ftpf_size				size;
-	t_ftpf_flag				flags;
-	int						prec;
-	int						width;
+	t_ftpf_size		size;
+	t_ftpf_flag		flags;
+	int				prec;
+	int				width;
 }							t_ftpf_info;
 
 typedef struct				s_ftpf_buf
 {
-	char					start[BUF_SIZE + 1];
-	char					*current;
-	char					*end;
-	int						fd;
-	int						done;
+	char	start[BUF_SIZE + 1];
+	char	*current;
+	char	*end;
+	int		fd;
+	int		done;
 }							t_ftpf_buf;
 
 typedef t_step				(*t_ftpf_parser)(const char **format, va_list *ap,
