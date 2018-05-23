@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 16:57:22 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/17 16:59:02 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 06:02:56 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 void		ft_revstr(char *s)
 {
-	size_t	i;
-	size_t	j;
+	char	*t;
+	char	swap;
 
-	i = 0;
-	j = ft_strlen(s) - 1;
-	while (i < j)
+	t = s + ft_strlen(s) - 1;
+	while (t > s)
 	{
-		s[i] ^= s[j];
-		s[j] ^= s[i];
-		s[i++] ^= s[j--];
+		swap = *t;
+		*t = *s;
+		*s = swap;
+		++s;
+		--t;
 	}
 }

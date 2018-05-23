@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/04/08 21:10:31 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 07:36:20 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,6 @@ char						*ft_strstrn(const char *big, const char *little,
 char						get_sign(intmax_t nb, t_ftpf_flag flags);
 void						print_null(t_ftpf_info *spec, t_ftpf_buf *buffer);
 void						flush_buffer(t_ftpf_buf *buffer, size_t len);
-t_bool						ft_iswprint(t_wchar wc);
+bool						ft_iswprint(t_wchar wc);
 
 #endif

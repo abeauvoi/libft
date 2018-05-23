@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 17:12:47 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/19 23:50:51 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 07:22:36 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft_types.h"
 
 char			*ft_strnstr(const char *haystack, const char *ndl, size_t len)
 {

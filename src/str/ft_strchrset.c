@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/23 19:29:22 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/10/23 19:37:59 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 07:35:38 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,12 @@
 
 char			*ft_strchrset(const char *s, const char *charset)
 {
-	const char	*temp;
+	const char	*p;
 
 	while (*charset)
 	{
-		temp = s;
-		while (*temp)
-		{
-			if (*temp == *charset)
-				return ((char *)temp);
-			++temp;
-		}
+		if ((p = ft_strchr(s, *charset)) != NULL)
+			return ((char *)p);
 		++charset;
 	}
 	return (NULL);

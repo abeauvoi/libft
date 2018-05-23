@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:47:57 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/24 16:57:14 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 02:33:24 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,5 @@
 
 int		ft_strnequ(char const *s1, char const *s2, size_t n)
 {
-	if (!n || !s1 || !s2)
-		return (!n ? 1 : NO_INPUT);
-	while (*s1 && *s1 == *s2 && n-- > 1)
-	{
-		++s1;
-		++s2;
-	}
-	return (*s1 == *s2 ? 1 : 0);
+	return (ft_strncmp(s1, s2, n) == 0);
 }

@@ -6,19 +6,19 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 17:31:53 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/15 08:42:17 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 07:29:27 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "libft.h"
 
-static const char	*prelim_check(const char *s, t_bool *neg)
+static const char	*prelim_check(const char *s, bool *neg)
 {
 	while (ft_isspace(*s))
 		++s;
 	if (*s == '-')
 	{
-		*neg = TRUE;
+		*neg = true;
 		++s;
 	}
 	else if (*s == '+')
@@ -28,11 +28,11 @@ static const char	*prelim_check(const char *s, t_bool *neg)
 
 int					ft_atoi(const char *s)
 {
-	t_bool			neg;
+	bool			neg;
 	unsigned int	acc;
 	unsigned int	digit;
 
-	neg = FALSE;
+	neg = false;
 	s = prelim_check(s, &neg);
 	if (!((acc = TO_DIGIT(*s)) <= 9))
 		return (0);
@@ -49,7 +49,5 @@ int					ft_atoi(const char *s)
 				acc += digit;
 		}
 	}
-	if (neg)
-		acc = ~acc + 1;
-	return ((int)acc);
+	return (neg ? -acc : acc);
 }

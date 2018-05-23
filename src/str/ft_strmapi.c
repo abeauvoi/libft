@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmap.c                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:35:35 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/27 04:18:50 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 06:58:39 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ char		*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	char	*new;
 	size_t	i;
 
-	new = ft_strnew(ft_strlen(s));
+	if (!(new = ft_strnew(ft_strlen(s))))
+		return (NULL);
 	i = 0;
 	while (s[i])
 	{

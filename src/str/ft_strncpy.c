@@ -6,20 +6,37 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 17:52:48 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/19 23:12:00 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 07:19:54 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft_macros.h"
+#include "libft_types.h"
 
-char		*ft_strncpy(char *dst, const char *src, size_t len)
+char		*ft_strncpy(char *dst0, const char *src0, size_t len)
 {
-	size_t	i;
+	char		*dst;
+	const long	*asrc;
+	long		*adst;
 
-	i = 0;
-	while (i < len && *src)
-		dst[i++] = *src++;
-	while (i < len)
-		dst[i++] = 0;
-	return (dst);
+	dst = dst0;
+	if (!TOO_SMALL(len) && !UNALIGNED(src0, dst))
+	{
+		asrc = (const long *)src0;
+		adst = (long *)dst0;
+		while (len >= LITTLE_BLOCK_SIZE && !DETECT_NULL(*asrc))
+		{
+			len -= LITTLE_BLOCK_SIZE;
+			*adst++ = *asrc++;
+		}
+		src0 = (const char *)asrc;
+		dst = (char *)adst;
+	}
+	while (len-- > 0)
+	{
+		*dst++ = *src0;
+		if (*src0)
+			++src0;
+	}
+	return (dst0);
 }

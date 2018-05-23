@@ -6,16 +6,16 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/02/21 04:17:20 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 06:57:08 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <libft_types.h>
-# include <libft_macros.h>
-# include <get_next_line.h>
+# include "libft_types.h"
+# include "libft_macros.h"
+# include "get_next_line.h"
 
 /*
 ** Math related
@@ -26,7 +26,7 @@ uintmax_t			ft_abs(intmax_t i);
 long				ft_round(double db);
 intmax_t			ft_min(intmax_t a, intmax_t b);
 intmax_t			ft_max(intmax_t a, intmax_t b);
-t_bool				ft_ispow2(unsigned long x);
+bool				ft_ispow2(unsigned long x);
 
 /*
 ** Misc.
@@ -38,7 +38,6 @@ void				ft_bzero(void *str, size_t count);
 int					ft_xdigittoint(char c);
 int					ft_digittoint(char c);
 void				ft_delcontent(void *content, size_t content_size);
-void				ft_error(char *error_msg);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
@@ -50,11 +49,12 @@ int					ft_isupper(int c);
 char				*ft_itoa_base(int64_t n, unsigned int base);
 int					ft_isxdigit(int c);
 void				ft_swap_int(int *a, int *b);
-t_bool				ft_isblank(char c);
-t_bool				ft_isalnum_str(const char *s);
-t_bool				ft_isalnum_nstr(const char *s, size_t n);
-t_bool				ft_isdigit_str(const char *s);
-t_bool				ft_isdigit_nstr(const char *s, size_t n);
+bool				ft_isblank(char c);
+bool				ft_isalnum_str(const char *s);
+bool				ft_isalnum_nstr(const char *s, size_t n);
+bool				ft_isdigit_str(const char *s);
+bool				ft_isdigit_nstr(const char *s, size_t n);
+size_t				ft_numstrlen(intmax_t n);
 
 /*
 ** Linked lists
@@ -118,9 +118,12 @@ int					ft_strequ(char const *s1, char const *s2);
 void				ft_striter(char *s, void (*f)(char *));
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strjoin2(char const *s1, char const *s2, size_t len_s1,
+		size_t len_s2);
 size_t				ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t				ft_strlen(const char *str);
 char				*ft_strmap(char const *s, char (*f)(char));
+char				*ft_strmap2(char const *s, char (*f)(char), size_t n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_strncat(char *dst, const char *src, size_t n);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);

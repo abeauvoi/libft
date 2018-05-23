@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 18:13:49 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/29 17:47:19 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/05/23 06:03:23 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 char	*ft_strcat(char *dst, const char *src)
 {
-	return (ft_strcpy(&dst[ft_strlen(dst)], src));
+	return (ft_strcpy(dst + ft_strlen(dst), src));
 }

@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2018/04/08 21:11:17 by abeauvoi         ###   ########.fr        #
+#    Updated: 2018/05/23 07:36:59 by abeauvoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ VPATH = $(addprefix $(SRC_DIR)/,conv is_fts lst math mem misc put str ft_printf)
 #
 
 SRCS 		= ft_abs.c ft_atoi.c ft_atoi_skip.c \
-		  ft_bzero.c ft_xdigittoint.c ft_digittoint.c ft_delcontent.c \
+		  ft_bzero.c ft_xdigittoint.c ft_delcontent.c \
 		  ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_islower.c \
 		  ft_isprint.c ft_isspace.c ft_isupper.c ft_itoa_base.c ft_isxdigit.c \
 		  ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstnew.c ft_lstiter.c \
@@ -50,7 +50,8 @@ SRCS 		= ft_abs.c ft_atoi.c ft_atoi_skip.c \
 		  hex_spec.c integer_spec.c non_printable_spec.c octal_spec.c \
 		  parse_one_spec.c percent_spec.c pointer_spec.c print_null.c \
 		  safe_ft_strncpy.c size_mod.c string_spec.c unknown_form.c \
-		  unsigned_spec.c utils.c
+		  unsigned_spec.c utils.c ft_numstrlen.c
+
 #
 # Build
 #
