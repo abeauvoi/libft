@@ -40,7 +40,7 @@ static int			build_one_line(int fd, char *buf, t_file *file)
 	return (tmp != NULL ? file->saved_len - n + (tmp - buf) : file->saved_len);
 }
 
-static t_file		*get_current_file(t_hist *hist, const int fd)
+static t_file		*get_current_file(t_hist *hist, int fd)
 {
 	t_file			*file;
 
@@ -104,7 +104,7 @@ static int			get_one_line(t_hist *hist, t_file *file, char **line,
 	return (clear_history(hist, file, len_line, !file->saved && !len_line));
 }
 
-int					get_next_line(const int fd, char **line)
+int					get_next_line(int fd, char **line)
 {
 	char			buf[BUFF_SIZE + 1];
 	static t_hist	hist = {NULL};
