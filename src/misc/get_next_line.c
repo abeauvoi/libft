@@ -27,8 +27,9 @@ static int			build_one_line(int fd, char *buf, t_file *file)
 	tmp = NULL;
 	while ((n = read(fd, buf, BUFF_SIZE)))
 	{
-		if (!(tmp = (char *)malloc(file->saved_len + n)))
+		if (!(tmp = (char *)malloc(file->saved_len + n + 1)))
 			return (-1);
+		tmp[file->saved_len + n] = 0;
 		ft_memcpy(tmp, file->saved, file->saved_len);
 		ft_memcpy(tmp + file->saved_len, buf, n);
 		free(file->saved);
@@ -99,6 +100,7 @@ static int			get_one_line(t_hist *hist, t_file *file, char **line,
 	{
 		if (!(*line = (char *)malloc(len_line + 1)))
 			return (-1);
+		(*line)[len_line] = 0;
 		ft_memcpy(*line, file->saved, len_line)));
 	}
 	return (clear_history(hist, file, len_line, !file->saved && !len_line));
