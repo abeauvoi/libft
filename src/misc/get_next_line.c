@@ -27,8 +27,9 @@ static int			build_one_line(int fd, char *buf, t_file *file)
 	tmp = NULL;
 	while ((n = read(fd, buf, BUFF_SIZE)))
 	{
-		if (!(tmp = ft_strnew(file->saved_len + n)))
+		if (!(tmp = (char *)malloc(file->saved_len + n + 1)))
 			return (-1);
+		tmp[file->saved_len + n] = 0;
 		ft_memcpy(tmp, file->saved, file->saved_len);
 		ft_memcpy(tmp + file->saved_len, buf, n);
 		free(file->saved);
@@ -40,40 +41,42 @@ static int			build_one_line(int fd, char *buf, t_file *file)
 	return (tmp != NULL ? file->saved_len - n + (tmp - buf) : file->saved_len);
 }
 
-static t_file		*get_current_file(t_hist *hist, const int fd)
+static t_file		*get_current_file(t_hist *hist, int fd)
 {
 	t_file			*file;
 
 	if (!hist->files)
 	{
-		if (!(hist->files = (t_file *)malloc(sizeof(t_file))))
+		if (!(hist->files = (t_file *)ft_memalloc(sizeof(t_file))))
 			return (NULL);
-		ft_bzero(hist->files, sizeof(t_file));
 		hist->files->fd = fd;
 		return (hist->files);
 	}
 	file = hist->files;
-	while (file->fd != fd && file->next != NULL)
+	while (file->next != NULL)
+	{
+		if (file->fd == fd)
+			return (file);
 		file = file->next;
-	if (file->fd == fd)
-		return (file);
-	if (!(file->next = (t_file *)malloc(sizeof(*file))))
+	}
+	if (!(file->next = (t_file *)ft_memalloc(sizeof(t_file))))
 		return (NULL);
-	ft_bzero(file->next, sizeof(t_file));
 	file->next->fd = fd;
 	return (file->next);
 }
 
-static size_t		clear_history(t_hist *hist, t_file *file, size_t len_line,
+static ssize_t		clear_history(t_hist *hist, t_file *file, size_t len_line,
 		bool reached_eof)
 {
 	char			*tmp;
 	t_file			*prev;
 
+	tmp = NULL;
 	if ((file->saved_len -= len_line) > 0)
 		--file->saved_len;
-	tmp = (!file->saved_len ? NULL : ft_memcpy(ft_strnew(file->saved_len),
-				file->saved + len_line + 1, file->saved_len));
+	if (file->saved_len && !(tmp = (char *)malloc(file->saved_len + 1)))
+		return (-1);
+	ft_memcpy(tmp, file->saved + len_line + 1, file->saved_len));
 	free(file->saved);
 	file->saved = tmp;
 	if (reached_eof)
@@ -95,14 +98,15 @@ static int			get_one_line(t_hist *hist, t_file *file, char **line,
 {
 	if (file->saved != NULL)
 	{
-		if (!(*line = ft_memcpy(ft_strnew(len_line), file->saved, len_line)))
+		if (!(*line = (char *)malloc(len_line + 1)))
 			return (-1);
+		(*line)[len_line] = 0;
+		ft_memcpy(*line, file->saved, len_line)));
 	}
-	return (clear_history(hist, file, len_line,
-				(file->saved == NULL && len_line == 0 ? 1 : 0)));
+	return (clear_history(hist, file, len_line, !file->saved && !len_line));
 }
 
-int					get_next_line(const int fd, char **line)
+int					get_next_line(int fd, char **line)
 {
 	char			buf[BUFF_SIZE + 1];
 	static t_hist	hist = {NULL};
