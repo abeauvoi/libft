@@ -6,18 +6,223 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 07:36:20 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/08/20 10:23:19 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+/*
+** Includes {{{
+*/
+
 # include <stdarg.h>
 # include <stdint.h>
 # include <limits.h>
+# include <wchar.h>
 # include "libft.h"
 
+/*
+** }}}
+*/
+
+/*
+** Defines {{{1
+*/
+# define	PREFIXES "-+   0X0x0b"
+# define	CONVERSION_SPECIFIERS "bcCdDioprsSuUxX"
+# define	FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | MARK_POS | THOUSEP)
+# define	FT_PRINTF_BUFSZ 8192
+# define	NEED_PADDING 2
+# define	DA "0001020304050607080910111213141516171819"
+# define	DB "2021222324252627282930313233343536373839"
+# define	DC "4041424344454647484950515253545556575859"
+# define	DD "6061626364656667686970717273747576777879"
+# define	DE "8081828384858687888990919293949596979899"
+# define	INIT_LU_TABLE_ITOA_B10 DA DB DC DD DE
+# define XA "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F"
+# define XB "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F"
+# define XC "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F"
+# define XD "606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E7F"
+# define XE "808182838485868788898A8B8C8D8E8F909192939495969798999A9B9C9D9E9F"
+# define XF "A0A1A2A3A4A5A6A7A8A9AAABACADAEAFB0B1B2B3B4B5B6B7B8B9BABBBCBDBEBF"
+# define XG "C0C1C2C3C4C5C6C7C8C9CACBCCCDCECFD0D1D2D3D4D5D6D7D8D9DADBDCDDDEDF"
+# define XH "E0E1E2E3E4E5E6E7E8E9EAEBECEDEEEFF0F1F2F3F4F5F6F7F8F9FAFBFCFDFEFF"
+# define	INIT_LU_TABLE_ITOA_B16 XA XB XC XD XE XF XG XH
+# define OA "0001020304050607101112131415161720212223242526273031323334353637"
+# define OB "4041424344454647505152535455565760616263646566677071727374757677"
+# define	INIT_LU_TABLE_ITOA_B8 OA OB
+
+
+/*
+** Powers of 10 {{{2
+*/
+# define	P01 10ull
+# define	P02 100ull
+# define	P03 1000ull
+# define	P04 10000ull
+# define	P05 100000ull
+# define	P06 1000000ull
+# define	P07 10000000ull
+# define	P08 100000000ull
+# define	P09 1000000000ull
+# define	P10 10000000000ull
+# define	P11 100000000000ull
+# define	P12 1000000000000ull
+/*
+** 2}}}
+*/
+
+/*
+** Powers of 16 {{{2
+*/
+# define	POW_16_X(pow10)	0x ## pow10
+# define	POW_16(pow10)	POW_16_X(pow10)
+/*
+** 2}}}
+*/
+
+/*
+** Powers of 8 {{{2
+*/
+# define	POW_8_X(pow10)	0 ## pow10
+# define	POW_8(pow10)	POW_8_X(pow10)
+/*
+** 2}}}
+*/
+/*
+** 1}}}
+*/
+
+/*
+** Type definitions {{{
+*/
+
+enum 			e_flags
+{
+	ALT			= (1U << ('#' - ' ')),
+	ZERO_PAD 	= (1U << ('0' - ' ')),
+	LEFT_ADJ 	= (1U << ('-' - ' ')),
+	SPACE		= (1U << (' ' - ' ')),
+	PLUS_SIGN	= (1U << ('+' - ' ')),
+	THOUSEP 	= (1U << ('\'' - ' '))
+};
+
+enum			e_base
+{
+	BINARY = 2,
+	OCTAL = 8,
+	DECIMAL = 10,
+	HEXADECIMAL = 16
+		/*
+		** Maybe add BASE_64 later
+		*/
+};
+
+union 			u_arg
+{
+	uintmax_t i;
+	long double f;
+	void *p;
+};
+
+union 			u_outf
+{
+	int 	fd;
+	char 	*outbuf;
+};
+
+typedef struct 	s_ftpf_info
+{
+	char 			*a;
+	char 			*z;
+	char 			*dup_fmt;
+	t_u32 			flags;
+	int 			width;
+	int 			prec;
+	int				len;
+	union u_arg 	arg;
+	t_u32 			state;
+	t_u32 			prev_state;
+	int 			done;
+	char 			buf[FT_PRINTF_BUFSZ + 1];
+	char			num_buf[INT_BUFSIZE_BOUND(uintmax_t)];
+	const char 		*prefix;
+	int 			prefix_len;
+	wchar_t 		wchar[2];
+	union u_outf 	redir;
+	bool 			silent;
+	char			spec;
+	va_list			ap;
+	size_t			max_len;
+} 				t_ftpf_info;
+
+enum			e_ftpf_states
+{
+	BARE, LPRE, LLPRE, HPRE, HHPRE, BIGLPRE, ZTPRE, JPRE, STOP, PTR, INT, UINT,
+	ULLONG, LONG, ULONG, SHORT, USHORT, CHAR, UCHAR, LLONG, SIZET, IMAX, UMAX,
+	PDIFF, UIPTR, DBL, LDBL, NOARG, MAXSTATE
+};
+
+/*
+**}}}
+*/
+
+/*
+** Function declarations {{{1
+*/
+
+/*
+** Tells gcc to check if an argument type match the format specification
+*/
+# define _FUNC_TYPE(x, y) int __attribute__ ((format (printf, x, y)))
+
+_FUNC_TYPE(1, 2)	ft_printf(const char *format, ...);
+_FUNC_TYPE(2, 3)	ft_sprintf(char *str, const char *format, ...);
+_FUNC_TYPE(3, 4)	ft_snprintf(char *str, size_t size, const char *fmt, ...);
+_FUNC_TYPE(2, 3)	ft_asprintf(char **ret, const char *fmt, ...);
+_FUNC_TYPE(2, 3)	ft_dprintf(int fd, const char *fmt, ...);
+
+_FUNC_TYPE(1, 0)	ft_vprintf(const char *format, va_list ap);
+_FUNC_TYPE(2, 0)	ft_vsprintf(char *str, const char *format, va_list ap);
+_FUNC_TYPE(3, 0)	ft_vsnprintf(char *str, size_t size, const char *fmt,
+		va_list ap);
+_FUNC_TYPE(2, 0)	ft_vasprintf(char **ret, const char *fmt, va_list ap);
+_FUNC_TYPE(2, 0)	ft_vdprintf(int fd, const char *fmt, va_list ap);
+/*
+** Internal functions {{{2
+*/
+int				ft_printf_core(t_ftpf_info *info);
+
+void			parse_flags(t_ftpf_info *info);
+int				parse_field_width(t_ftpf_info *info, va_list *ap);
+int				parse_precision(t_ftpf_info *info);
+int				parse_size_modifiers(t_ftpf_info *info);
+
+void			access_branch_table(t_ftpf_info *info);
+
+int				ft_atoi_skip(const char **str);
+void			pad_buffer(t_ftpf_info *info);
+int				is_unicode(unsigned int wc);
+int				ft_wchar_to_utf8(char *s, wchar_t wchar);
+
+char			*num_to_hex(uintmax_t num, char *buf, int to_lowercase);
+char			*num_to_oct(uintmax_t num, char *buf);
+char			*num_to_uint(uintmax_t num, char *buf);
+char			*num_to_bin(uintmax_t num, char *buf);
+/*
+** 2}}}
+*/
+/*
+** 1}}}
+*/
+
+/*
+** Old ft_printf header {{{
+*/
+
+# if 0
 /*
 ** Reduced pointer names
 */
@@ -31,7 +236,7 @@
 ** Digits
 */
 
-# define UPPER_DIGITS	"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+# define UPPER_DIGITS	"0123456789ABCDEF"
 
 /*
 ** Get_value modes
@@ -243,5 +448,10 @@ char						get_sign(intmax_t nb, t_ftpf_flag flags);
 void						print_null(t_ftpf_info *spec, t_ftpf_buf *buffer);
 void						flush_buffer(t_ftpf_buf *buffer, size_t len);
 bool						ft_iswprint(t_wchar wc);
+# endif
+
+/*
+**}}}
+*/
 
 #endif

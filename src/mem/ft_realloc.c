@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 15:06:00 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/07/25 05:06:38 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/08/01 13:41:28 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/08/01 14:08:36 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-char		*ft_strsub(const char *s, unsigned int start, size_t len)
+void 		*ft_realloc(void *ptr, size_t size)
 {
-	char	*sub;
+	void 	*realloc;
 
-	if (!(sub = (char *)malloc(len + 1)))
+	if (!size && ptr)
+	{
+		if (!(realloc = malloc(1)))
+			return (NULL);
+		free(ptr);
+		return (realloc);
+	}
+	if (!(realloc = malloc(size)))
 		return (NULL);
-	ft_strncpy(sub, s + start, len);
-	sub[len] = 0;
-	return (sub);
+	ft_memcpy(realloc, ptr, size);
+	free(ptr);
+	return (realloc);
 }

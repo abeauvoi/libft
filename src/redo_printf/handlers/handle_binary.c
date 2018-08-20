@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   handle_binary.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 15:06:00 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/07/25 05:06:38 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/08/19 04:53:24 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/08/19 08:15:15 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
+#include "ft_printf.h"
 
-char		*ft_strsub(const char *s, unsigned int start, size_t len)
+void	handle_bin_int(t_ftpf_info *info)
 {
-	char	*sub;
-
-	if (!(sub = (char *)malloc(len + 1)))
-		return (NULL);
-	ft_strncpy(sub, s + start, len);
-	sub[len] = 0;
-	return (sub);
+	if (info->arg.i)
+	{
+		info->prefix += 9;
+		info->prefix_len = 2;
+	}
+	info->a = num_to_bin(info->arg.i, info->z);
+	if (info->prec >= 0)
+		info->flags &= ~ZERO_PAD;
+	if (!info->arg.i && !info->prec)
+		info->a = info->z;
+	else
+		info->prec = MAX(info->prec, info->z - info->a + !info->arg.i);
 }

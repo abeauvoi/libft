@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2018/05/23 07:36:59 by abeauvoi         ###   ########.fr        #
+#    Updated: 2018/08/20 03:27:11 by abeauvoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME		= libft.a
 INC_DIR		= includes
 SRC_DIR		= src
 OBJ_DIR		= obj
-VPATH = $(addprefix $(SRC_DIR)/,conv is_fts lst math mem misc put str ft_printf)
+VPATH 		= $(addprefix $(SRC_DIR)/,conv is_fts lst math mem misc put str ft_printf)
 
 #
 # Sources
@@ -50,7 +50,7 @@ SRCS 		= ft_abs.c ft_atoi.c ft_atoi_skip.c \
 		  hex_spec.c integer_spec.c non_printable_spec.c octal_spec.c \
 		  parse_one_spec.c percent_spec.c pointer_spec.c print_null.c \
 		  safe_ft_strncpy.c size_mod.c string_spec.c unknown_form.c \
-		  unsigned_spec.c utils.c ft_numstrlen.c
+		  unsigned_spec.c utils.c ft_numstrlen.c ft_strsplitset.c
 
 #
 # Build
@@ -58,7 +58,7 @@ SRCS 		= ft_abs.c ft_atoi.c ft_atoi_skip.c \
 
 OBJS 		= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 COMP		= $(CC) $(CFLAGS) -o $@ -c $<
-CFLAGS		= -Wall -Werror -Wextra -I$(INC_DIR)
+CFLAGS		= -Wall -Werror -Wextra -I$(INC_DIR) -march=
 BUILD_LIB	= $(AR) rc $@ $^
 
 #
@@ -68,8 +68,7 @@ BUILD_LIB	= $(AR) rc $@ $^
 all: $(NAME)
 
 debug: CFLAGS += -fsanitize=address -g3
-debug: fclean
-debug: all
+debug: re
 
 $(NAME): $(OBJS)
 	@$(AR) rc $@ $^
@@ -86,7 +85,8 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 
-re: fclean all
+re: fclean
+re: all
 
 show:
 	@ar -t $(NAME)

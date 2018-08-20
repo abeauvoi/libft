@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   handle_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 15:06:00 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/07/25 05:06:38 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/08/19 05:28:53 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/08/19 08:48:07 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
+#include "ft_printf.h"
 
-char		*ft_strsub(const char *s, unsigned int start, size_t len)
+inline void		handle_char(t_ftpf_info *info)
 {
-	char	*sub;
+	info->prec = 1;
+	info->a = info->z - 1;
+	*(info->a) = (char)info->arg.i;
+	info->flags &= ~ZERO_PAD;
+	return (1);
+}
 
-	if (!(sub = (char *)malloc(len + 1)))
-		return (NULL);
-	ft_strncpy(sub, s + start, len);
-	sub[len] = 0;
-	return (sub);
+inline int		handle_wchar(t_ftpf_info *info)
+{
+	info->wchar[0] = info->arg.i;
+	info->wchar[1] = 0;
+	info->arg.p = info->wchar;
+	info->prec = -1;
+	handle_wstr(info);
+	return (1);
 }

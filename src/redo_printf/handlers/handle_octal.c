@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   handle_octal.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 15:06:00 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/07/25 05:06:38 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/08/19 05:03:07 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/08/19 05:08:38 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
+#include "ft_printf.h"
 
-char		*ft_strsub(const char *s, unsigned int start, size_t len)
+void	handle_oct_int(t_ftpf_info *info)
 {
-	char	*sub;
-
-	if (!(sub = (char *)malloc(len + 1)))
-		return (NULL);
-	ft_strncpy(sub, s + start, len);
-	sub[len] = 0;
-	return (sub);
+	info->a = num_to_oct(info->arg.i, info->z);
+	if (info->arg.i && (info->flags & ALT_FORM))
+	{
+		info->prefix_len = 1;
+		info->prefix += 5;
+	}
 }
