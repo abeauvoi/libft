@@ -60,7 +60,7 @@
 */
 
 /*
-** Clang-related {{{
+** Gcc function attributes {{{
 */
 # ifdef TEST_INLINE
 #  define FORCE_INLINE inline __attribute__((always_inline))

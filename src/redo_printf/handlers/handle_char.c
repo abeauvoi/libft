@@ -15,18 +15,16 @@
 inline void		handle_char(t_ftpf_info *info)
 {
 	info->prec = 1;
-	info->a = info->z - 1;
-	*(info->a) = (char)info->arg.i;
+	info->workptr = info->endptr - 1;
+	*(info->workptr) = (char)info->arg.i;
 	info->flags &= ~ZERO_PAD;
-	return (1);
 }
 
-inline int		handle_wchar(t_ftpf_info *info)
+inline void		handle_wchar(t_ftpf_info *info)
 {
 	info->wchar[0] = info->arg.i;
 	info->wchar[1] = 0;
 	info->arg.p = info->wchar;
 	info->prec = -1;
 	handle_wstr(info);
-	return (1);
 }

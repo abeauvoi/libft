@@ -10,26 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_print.f"
+#include "ft_printf.h"
 
-int			handle_str(t_ftpf_info *info)
+FORCE_INLINE int	handle_str(t_ftpf_info *info)
 {
-	info->a = (info->arg.p ? info.arg.p : "(null)");
-	info->z = ft_memchr(info->a, '\0', info->prec);
-	if (info->z == NULL)
-		info->z = info->a + info->prec;
+	info->workptr = (info->arg.p ? info->arg.p : "(null)");
+	info->endptr = ft_memchr(info->workptr, '\0', info->prec);
+	if (info->endptr == NULL)
+		info->endptr = info->workptr + info->prec;
 	else
-		info->prec = info->z - info->a;
+		info->prec = info->endptr - info->workptr;
 	info->flags &= ~ZERO_PAD;
 	return (NEED_PADDING);
 }
 
-int			handle_wstr(t_ftpf_info *info)
+FORCE_INLINE int	handle_wstr(t_ftpf_info *info)
 {
 	wchar_t		*ws;
 	int			mblen;
 	int			i;
-	char		mbs[4];
+	char		mbs[5];
 
 	ws = info->arg.p;
 	i = 0;
@@ -40,16 +40,17 @@ int			handle_wstr(t_ftpf_info *info)
 	if (mblen == -1)
 		return (-1);
 	info->prec = i;
-	pad_buffer(info, ' ', info->flags);
+	pad_buffer(info->width, info->prec, info->flags, info);
 	ws = info->arg.p;
 	i = 0;
 	while (i < 0U + info->prec && *ws
 			&& i + (mblen = ft_wchar_to_utf8(mbs, *ws++)) <= info->prec)
 	{
-		// copy to buffer;
+		mbs[mblen] = '\0';
+		str_to_internal_buf(mbs, info);
 		i += mblen;
 	}
-	pad_buffer(info, ' ', info->flags ^ LEFT_ADJ);
-	info->len_conv = (info->width > info->prec ? info->width : info->prec);
+	pad_buffer(info->width, info->prec, info->flags ^ LEFT_ADJ, info);
+	info->len = (info->width > info->prec ? info->width : info->prec);
 	return (1);
 }

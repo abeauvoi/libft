@@ -12,24 +12,26 @@
 
 #include "ft_printf.h"
 
-int		out_null(t_ftpf_info *info)
+inline int	out_null(t_ftpf_info *info)
 {
 	(void)info;
 	return (1);
 }
 
-int		out_fd(t_ftpf_info *info)
+inline int	out_fd(t_ftpf_info *info)
 {
+	info->workptr = '\0';
 	if (write(info->redir.fd, info->buf, info->workptr - info->buf) == -1)
 		return (-1);
-	info->workptr = buf;
+	info->workptr = info->buf;
 	return (1);
 }
 
-int		out_str(t_ftpf_info *info)
+inline int	out_str(t_ftpf_info *info)
 {
-	ft_strncpy(info->redir.outbuf, info->buf, MIN(info->outbufsz - info->done,
-				info->workptr - info->buf));
-	info->work_ptr = buf;
+	info->workptr = '\0';
+	ft_strncpy(info->redir.buf, info->buf,
+		MIN(info->redir_bufsz - info->done, info->workptr - info->buf));
+	info->workptr = info->buf;
 	return (1);
 }

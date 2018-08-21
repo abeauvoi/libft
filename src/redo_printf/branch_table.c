@@ -12,9 +12,9 @@
 
 #include "ft_printf.h"
 
-void	access_branch_table(t_ftpf_info *info)
+inline void	access_branch_table(t_ftpf_info *info)
 {
-	static int	(*const branch_tbl[sizeof(CONVERSION_SPECS) - 1])(t_ftpf_info *)
+	static int	(*const branch_tbl[sizeof(SPECIFIERS) - 1])(t_ftpf_info *)
 		= {
 			handle_bin_int,
 			handle_char,
@@ -34,6 +34,6 @@ void	access_branch_table(t_ftpf_info *info)
 		};
 	char		*addr_spec;
 
-	if ((addr_spec = ft_strchr(CONVERSION_SPECS, info->dup_fmt[-1])) != NULL)
-		branch_tbl[(ptrdiff_t)(addr_spec - CONVERSION_SPECS)](info);
+	if ((addr_spec = ft_strchr(SPECIFIERS, info->dup_fmt[-1])) != NULL)
+		branch_tbl[addr_spec - SPECIFIERS](info);
 }

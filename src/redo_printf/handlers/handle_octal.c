@@ -12,10 +12,10 @@
 
 #include "ft_printf.h"
 
-void	handle_oct_int(t_ftpf_info *info)
+inline void	handle_oct_int(t_ftpf_info *info)
 {
-	info->a = num_to_oct(info->arg.i, info->z);
-	if (info->arg.i && (info->flags & ALT_FORM))
+	info->workptr = num_to_oct(info->arg.i, info->endptr);
+	if (info->arg.i && (info->flags & ALT))
 	{
 		info->prefix_len = 1;
 		info->prefix += 5;

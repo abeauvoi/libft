@@ -12,20 +12,18 @@
 
 #include "ft_printf.h"
 
-static inline void 		_increment_byte_count(t_ftpf_info *info) \
-				__attribute__ ((always_inline))
+FORCE_INLINE static void 	_increment_byte_count(t_ftpf_info *info)
 {
-	if (info->tot_len >= 0)
+	if (info->done >= 0)
 	{
-		if (info->len > INT_MAX - info->tot_len)
-			info->tot_len = -1;
+		if (info->len > INT_MAX - info->done)
+			info->done = -1;
 		else
-			info->tot_len += info->len;
+			info->done += info->len;
 	}
 }
 
-static inline size_t 	_skip_literal_text(t_ftpf_info *info) \
-				__attribute__ ((always_inline))
+FORCE_INLINE static size_t	_skip_literal_text(t_ftpf_info *info)
 {
 	char 	*s;
 	char 	*a;
@@ -41,16 +39,17 @@ static inline size_t 	_skip_literal_text(t_ftpf_info *info) \
 		++z;
 		s += 2;
 	}
-	info->a = a;
-	info->z = z;
+	info->workptr = a;
+	info->endptr = z;
 	info->dup_fmt = s;
 	return (z - a);
 }
 
-static inline void 		_init(t_ftpf_info *info) __attribute__ ((always_inline))
+FORCE_INLINE static void	_init(t_ftpf_info *info)
 {
-	info->z = buf + sizeof(buf) - 1;
-	if (info->previous_state
+	info->pad_char = ' ';
+	info->endptr = info->num_buf + sizeof(info->num_buf) - 1;
+	if (info->prev_state
 			&& (info->dup_fmt[-1] == 'c'
 				|| info->dup_fmt[-1] == 's'))
 		info->dup_fmt[-1] &= ~32;
@@ -58,27 +57,27 @@ static inline void 		_init(t_ftpf_info *info) __attribute__ ((always_inline))
 		info->flags &= ~ZERO_PAD;
 }
 
-int 					ft_printf_core(t_ftpf_info *info)
+int 						ft_printf_core(t_ftpf_info *info)
 {
-	while (true)
+	while (1)
 	{
 		_increment_byte_count(info);
 		if (info->dup_fmt[0] == '\0')
 			break ;
 		info->len = _skip_literal_text(info);
 		if (!info->silent)
-			//copy from info->a over len char;
+			//copy from info->workptr over len char;
 		if (info->len)
 			continue ;
 		parse_flags(info);
-		if ((info->width = parse_field_width(info, &info->ap)) < 0)
+		if ((info->width = parse_field_width(info)) < 0)
 			return (-1);
-		info->precision = parse_precision(info, &info->ap);
+		info->prec = parse_precision(info);
 		if (parse_size_modifiers(info) == -1)
 			return (-1);
 		if (info->silent)
 			continue ;
 		_init(info);
 	}
-	return (info->tot_len);
+	return (info->done);
 }

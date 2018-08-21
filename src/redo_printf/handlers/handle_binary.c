@@ -12,18 +12,18 @@
 
 #include "ft_printf.h"
 
-void	handle_bin_int(t_ftpf_info *info)
+FORCE_INLINE int	handle_bin_int(t_ftpf_info *info)
 {
 	if (info->arg.i)
 	{
 		info->prefix += 9;
 		info->prefix_len = 2;
 	}
-	info->a = num_to_bin(info->arg.i, info->z);
+	info->workptr = num_to_bin(info->arg.i, info->endptr);
 	if (info->prec >= 0)
 		info->flags &= ~ZERO_PAD;
 	if (!info->arg.i && !info->prec)
-		info->a = info->z;
+		info->workptr = info->endptr;
 	else
-		info->prec = MAX(info->prec, info->z - info->a + !info->arg.i);
+		info->prec = MAX(info->prec, info->endptr - info->workptr + !info->arg.i);
 }

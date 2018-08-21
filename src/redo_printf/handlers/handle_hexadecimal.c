@@ -12,15 +12,15 @@
 
 #include "ft_printf.h"
 
-void	handle_hex_int(t_ftpf_info *info)
+FORCE_INLINE int			handle_hex_int(t_ftpf_info *info)
 {
 	if (info->dup_fmt[-1] == 'p')
 	{
-		info->precision = MAX(info->precision, 2 * sizeof(void *));
-		info->flags |= ALT_FORM;
+		info->prec = MAX(info->prec, 2 * sizeof(void *));
+		info->flags |= ALT;
 	}
-	info->a = num_to_hex(info->arg.i, info->z, info->dup_fmt[-1] & 32);
-	if (info->arg.i && (info->flags & ALT_FORM))
+	info->len = (int)ft_u64toa_b16(info->arg.i, info->num_buf, info->dup_fmt[-1] & 0x20);
+	if (info->arg.i && (info->flags & ALT))
 	{
 		info->prefix_len = 2;
 		info->prefix += (info->dup_fmt[-1] >> 4);
@@ -28,39 +28,57 @@ void	handle_hex_int(t_ftpf_info *info)
 	if (info->prec >= 0)
 		info->flags &= ~ZERO_PAD;
 	if (!info->arg.i && !info->prec)
-		info->a = info->z;
+		info->workptr = info->endptr;
 	else
-		info->prec = MAX(info->prec, info->z - info->a + !info->arg.i);
+		info->prec = MAX(info->prec, info->len);
+	return (1);
 }
 
-void	handle_hex_str(t_ftpf_info *info)
+FORCE_INLINE static int 	_ft_hexstrlen(const char *s, int prec)
 {
-	int		i;
-	char	buf[5];
+	int 			len;
 
-	buf[0] = '\\';
-	buf[1] = 'x' | (info->dup_fmt[-1] & 32);
-	buf[4] = '\0';
-	info->a = (info->arg.p ? info->arg.p : "(null)");
-	info->z = ft_memchr(info->a, '\0', info->prec);
-	if (info->z == NULL)
-		info->z = info->a + info->prec;
-	else
-		info->prec = info->z - info->a;
-	info->flags &= ~ZERO_PAD;
-	i = info->prec;
-	// this function should count the length of the non_printable string
-	while (i > 0)
+	len = 0;
+	while (*s && len <= prec) 
 	{
-		if (!ft_isprint(*(info->a)))
+		len += (ft_isprint(*s) ? 1 : 4);
+		++s;
+	}
+	return (len);
+}
+
+FORCE_INLINE int 			handle_hex_str(t_ftpf_info *info)
+{
+	char	esc_seq[5];
+	char 	*wp;
+	char 	*ep;
+	int 	to_lowercase;
+
+	to_lowercase = (info->dup_fmt[-1] & 0x20);
+	esc_seq[0] = '\\';
+	esc_seq[1] = 'X' | to_lowercase;
+	esc_seq[4] = '\0';
+	wp = (info->arg.p ? info->arg.p : "(null)");
+	ep = ft_memchr(wp, '\0', info->prec);
+	if (ep == NULL)
+		ep = wp + info->prec;
+	else
+		info->prec = ep - wp;
+	info->flags &= ~ZERO_PAD;
+	info->prec = _ft_hexstrlen(wp, info->prec);
+	pad_buffer(info->width, info->prec, info->flags, info);
+	while (wp != ep)
+	{
+		if (!ft_isprint(*wp))
 		{
-			buf[2] = HEX_DIGITS[((*(info->a) >> 4) & 0xf)];
-			buf[3] = HEX_DIGITS[(*(info->a) & 0xf)];
-			// copy seq to global_buffer
+			esc_seq[2] = XDIGITS_U[((*wp >> 4) & 0xf)] | to_lowercase;
+			esc_seq[3] = XDIGITS_U[(*wp & 0xf)] | to_lowercase;
+			str_to_internal_buf(esc_seq, info);
 		}
 		else
-			// copy *info->a to global_buffer
-		++info->a;
-		--i;
+			char_to_internal_buf(*wp, info);
+		++wp;
 	}
+	pad_buffer(info->width, info->prec, info->flags ^ LEFT_ADJ, info);
+	info->len = (info->width > info->prec ? info->width : info->prec);
 }

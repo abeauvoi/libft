@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-FORCE_INLINE static const size_t	digits16(uint64_t val)
+FORCE_INLINE static const int	digits16(uint64_t val)
 {
 	if (val < POW_16(P01))
 		return (1);
@@ -43,12 +43,12 @@ FORCE_INLINE static const size_t	digits16(uint64_t val)
 ** i => [0..511] so we need i to be an unsigned short !!
 */
 
-size_t								ft_u64toa_b16(uint64_t num, char *dst,
+int								ft_u64toa_b16(uint64_t num, char *dst,
 		uint8_t to_lowercase)
 {
 	static const char	lookup_table[sizeof(INIT_LU_TABLE_ITOA_B16)] =
 		INIT_LU_TABLE_ITOA_B16;
-	const size_t		length = digits16(num);
+	const int		length = digits16(num);
 	uint32_t			next;
 	uint16_t			i;
 

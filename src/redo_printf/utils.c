@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "ft_printf.h"
 
-int			ft_atoi_skip(const char **str)
+inline int				ft_atoi_skip(const char **str)
 {
 	int 	acc;
 	int 	digit;
@@ -23,34 +24,32 @@ int			ft_atoi_skip(const char **str)
 	return (acc);
 }
 
-void			pad_buffer(t_ftpf_info *d)
+void					pad_buffer(int w, int l, int flags, t_ftpf_info *info)
 {
 	char 	buf[256];
-	int 	len;
 
-	if ((d->flags & (LEFT_ADJ | ZERO_PAD)) || d->length >= d->width)
+	if ((flags & (LEFT_ADJ | ZERO_PAD)) || l >= w)
 		return ;
-	len = d->width - d->length;
-	ft_memset(buf, d->ch, (len > sizeof(buf) ? sizeof(buf) : len));
-	while (len >= sizeof(buf))
+	l = w - l;
+	ft_memset(buf, info->pad_char, (l > sizeof(buf) ? sizeof(buf) : l));
+	while (l >= sizeof(buf))
 	{
-		//output buf content w/ len == sizeof(buf);
-		len -= sizeof(buf);
+		str_to_internal_buf();
+		l -= sizeof(buf);
 	}
-	//output buf w/ len == len;
+	str_to_internal_buf();
 }
 
 /*
 ** 0xd800 to 0xdffff are reserved for UTF-16 surrogates
 */
 
-FORCE_INLINE int		is_utf8_elligible(unsigned int wc)
+inline int				is_utf8_elligible(unsigned int wc)
 {
 	return (wc < 0x110000 && (wc < 0xd800 || wc > 0xdfff));
 }
 
-FORCE_INLINE static int	4byte_seq(char *s, wchar_t wchar) \
-				__attribute__ ((always_inline,pure))
+static inline int		four_byte_seq(char *s, wchar_t wchar)
 {
 	*s++ = 0xf0 | ((wchar & 0x1c0000) >> 18);
 	*s++ = 0x80 | ((wchar & 0x3f000) >> 12);
@@ -83,6 +82,6 @@ int						ft_wchar_to_utf8(char *s, wchar_t wchar)
 		return (3);
 	}
 	else if (val < 0x110000)
-		return (4byte_seq(s, val));
+		return (four_byte_seq(s, val));
 	return (-1);
 }

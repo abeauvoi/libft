@@ -20,17 +20,13 @@ static const t_u8 g_states[STOP]['z' - 'A' + 1] =
 {
 	{
 		S('d') = INT, S('i') = INT, S('o') = UINT, S('u') = UINT, S('x') = UINT,
-		S('X') = UINT, S('e') = DBL, S('f') = DBL, S('g') = DBL, S('a') = DBL,
-		S('E') = DBL, S('F') = DBL, S('G') = DBL, S('A') = DBL, S('c') = CHAR,
-		S('C') = INT, S('s') = PTR, S('S') = PTR, S('p') = UIPTR, S('n') = PTR,
-		S('m') = NOARG, S('l') = LPRE, S('h') = HPRE, S('L') = BIGLPRE,
+		S('X') = UINT, S('c') = CHAR, S('C') = INT, S('s') = PTR, S('S') = PTR,
+		S('p') = UIPTR, S('n') = PTR, S('m') = NOARG, S('l') = LPRE, S('h') = HPRE,
 		S('z') = ZTPRE, S('j') = JPRE, S('t') = ZTPRE,
 	},
 	{
-		S('d') = LONG, S('i') = LONG, S('o') = ULONG, S('u') = ULONG,
-		S('x') = ULONG, S('X') = ULONG, S('e') = DBL, S('f') = DBL,
-		S('g') = DBL, S('a') = DBL, S('E') = DBL, S('F') = DBL, S('G') = DBL,
-		S('A') = DBL, S('c') = INT, S('s') = PTR, S('n') = PTR, S('l') = LLPRE,
+		S('d') = LONG, S('i') = LONG, S('o') = ULONG, S('u') = ULONG, S('x') = ULONG,
+		S('X') = ULONG, S('c') = INT, S('s') = PTR, S('n') = PTR, S('l') = LLPRE,
 	},
 	{
 		S('d') = LLONG, S('i') = LLONG, S('o') = ULLONG, S('u') = ULLONG,
@@ -43,11 +39,6 @@ static const t_u8 g_states[STOP]['z' - 'A' + 1] =
 	{
 		S('d') = CHAR, S('i') = CHAR, S('o') = UCHAR, S('u') = UCHAR,
 		S('x') = UCHAR, S('X') = UCHAR, S('n') = PTR,
-	},
-	{
-		S('e') = LDBL, S('f') = LDBL, S('g') = LDBL, S('a') = LDBL,
-		S('E') = LDBL, S('F') = LDBL, S('G') = LDBL, S('A') = LDBL,
-		S('n') = PTR,
 	},
 	{
 		S('d') = PDIFF, S('i') = PDIFF, S('o') = SIZET, S('u') = SIZET,
@@ -80,15 +71,17 @@ void 		parse_flags(t_ftpf_info *info)
 	info->dup_fmt = s;
 }
 
-int 		parse_field_width(t_ftpf_info *info, va_arg *ap)
+int 		parse_field_width(t_ftpf_info *info)
 {
 	int 	width;
 	char 	*s;
 
 	s = info->dup_fmt;
-	if (s[0] == '*')
+	if (IS_DIGIT(*s))
+		width = ft_atoi_skip(&s);
+	else if (*s == '*')
 	{
-		width = !info->silent ? va_arg(*ap, int) : 0;
+		width = (!info->silent ? va_arg(*info->ap, int) : 0);
 		++s;
 		if (width < 0)
 		{
@@ -96,25 +89,23 @@ int 		parse_field_width(t_ftpf_info *info, va_arg *ap)
 			width = -width;
 		}
 	}
-	else
-		width = ft_atoi_skip(&s);
 	info->dup_fmt = s;
 	return (width);
 }
 
-int 		parse_precision(t_ftpf_info *info, va_arg *ap)
+int 		parse_precision(t_ftpf_info *info)
 {
 	int 	precision;
 	char 	*s;
 
 	s = info->dup_fmt;
-	if (s[0] == '.' && s[1] == '*')
+	if (*s == ".")
+		precision = ft_atoi_skip(&s[1]);
+	else if (s[0] == '.' && s[1] == '*')
 	{
-		precision = !info->silent ? va_arg(*ap, int) : 0;
+		precision = (!info->silent ? va_arg(*info->ap, int) : 0);
 		s += 2;
 	}
-	else if (*s == '.')
-		precision = ft_atoi_skip(&++s);
 	else
 		precision = -1;
 	info->dup_fmt = s;
@@ -134,12 +125,10 @@ int 		parse_size_modifiers(t_ftpf_info *info)
 		if ((unsigned int)(*s - 'A') > 'z' - 'A')
 			return (-1);
 		previous_state = state;
-		state = g_states[state][*s - 'A'];
+		state = g_states[state]S(*s);
 	}
-	if (!state)
-		return (-1);
 	info->state = state;
-	info->previous_state = previous_state;
+	info->prev_state = previous_state;
 	info->dup_fmt = s;
-	return (1);
+	return (!state ? -1 : 1);
 }

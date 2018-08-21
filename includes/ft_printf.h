@@ -31,8 +31,8 @@
 ** Defines {{{1
 */
 # define	PREFIXES "-+   0X0x0b"
-# define	CONVERSION_SPECIFIERS "bcCdDioprsSuUxX"
-# define	FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | MARK_POS | THOUSEP)
+# define	SPECIFIERS "bcCdDioprsSuUxX"
+# define	FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | PLUS_SIGN | THOUSEP)
 # define	FT_PRINTF_BUFSZ 8192
 # define	NEED_PADDING 2
 # define	DA "0001020304050607080910111213141516171819"
@@ -53,6 +53,7 @@
 # define OA "0001020304050607101112131415161720212223242526273031323334353637"
 # define OB "4041424344454647505152535455565760616263646566677071727374757677"
 # define	INIT_LU_TABLE_ITOA_B8 OA OB
+# define 	S(x) [(x) - 'A']
 
 
 /*
@@ -99,7 +100,7 @@
 ** Type definitions {{{
 */
 
-enum 			e_flags
+enum 				e_flags
 {
 	ALT			= (1U << ('#' - ' ')),
 	ZERO_PAD 	= (1U << ('0' - ' ')),
@@ -109,7 +110,7 @@ enum 			e_flags
 	THOUSEP 	= (1U << ('\'' - ' '))
 };
 
-enum			e_base
+enum				e_base
 {
 	BINARY = 2,
 	OCTAL = 8,
@@ -120,24 +121,25 @@ enum			e_base
 		*/
 };
 
-union 			u_arg
+union 				u_arg
 {
 	uintmax_t i;
 	long double f;
 	void *p;
 };
 
-union 			u_outf
+union 				u_redir
 {
 	int 	fd;
-	char 	*outbuf;
+	char 	*buf;
 };
 
-typedef struct 	s_ftpf_info
+typedef struct 		s_ftpf_info
 {
-	char 			*a;
-	char 			*z;
+	char 			*workptr;
+	char 			*endptr;
 	char 			*dup_fmt;
+	char 			pad_char;
 	t_u32 			flags;
 	int 			width;
 	int 			prec;
@@ -151,19 +153,25 @@ typedef struct 	s_ftpf_info
 	const char 		*prefix;
 	int 			prefix_len;
 	wchar_t 		wchar[2];
-	union u_outf 	redir;
+	union u_redir 	redir;
+	size_t 			redir_bufsz;
 	bool 			silent;
-	char			spec;
-	va_list			ap;
-	size_t			max_len;
-} 				t_ftpf_info;
+	va_list			*ap;
+	int 			(*outf)(struct s_ftpf_info *);
+} 					t_ftpf_info;
 
-enum			e_ftpf_states
+enum				e_ftpf_states
 {
-	BARE, LPRE, LLPRE, HPRE, HHPRE, BIGLPRE, ZTPRE, JPRE, STOP, PTR, INT, UINT,
-	ULLONG, LONG, ULONG, SHORT, USHORT, CHAR, UCHAR, LLONG, SIZET, IMAX, UMAX,
-	PDIFF, UIPTR, DBL, LDBL, NOARG, MAXSTATE
+	BARE, LPRE, LLPRE, HPRE, HHPRE, ZTPRE, JPRE, STOP, PTR, INT, UINT,
+	ULLONG, LONG, ULONG, SHORT, USHORT, CHAR, UCHAR, NOARG, MAXSTATE
 };
+
+# define 	LLONG ULLONG
+# define 	SIZET ULONG
+# define 	IMAX ULONG
+# define	UMAX ULLONG
+# define 	PDIFF LONG
+# define 	UIPTR ULONG
 
 /*
 **}}}
@@ -174,9 +182,9 @@ enum			e_ftpf_states
 */
 
 /*
-** Tells gcc to check if an argument type match the format specification
+** Tells gcc that these functions behave like printf
 */
-# define _FUNC_TYPE(x, y) int __attribute__ ((format (printf, x, y)))
+# define 	_FUNC_TYPE(x, y) int __attribute__ ((format (printf, x, y)))
 
 _FUNC_TYPE(1, 2)	ft_printf(const char *format, ...);
 _FUNC_TYPE(2, 3)	ft_sprintf(char *str, const char *format, ...);
@@ -184,33 +192,50 @@ _FUNC_TYPE(3, 4)	ft_snprintf(char *str, size_t size, const char *fmt, ...);
 _FUNC_TYPE(2, 3)	ft_asprintf(char **ret, const char *fmt, ...);
 _FUNC_TYPE(2, 3)	ft_dprintf(int fd, const char *fmt, ...);
 
-_FUNC_TYPE(1, 0)	ft_vprintf(const char *format, va_list ap);
-_FUNC_TYPE(2, 0)	ft_vsprintf(char *str, const char *format, va_list ap);
+_FUNC_TYPE(1, 0)	ft_vprintf(const char *format, va_list *ap);
+_FUNC_TYPE(2, 0)	ft_vsprintf(char *str, const char *format, va_list *ap);
 _FUNC_TYPE(3, 0)	ft_vsnprintf(char *str, size_t size, const char *fmt,
-		va_list ap);
-_FUNC_TYPE(2, 0)	ft_vasprintf(char **ret, const char *fmt, va_list ap);
-_FUNC_TYPE(2, 0)	ft_vdprintf(int fd, const char *fmt, va_list ap);
+		va_list *ap);
+_FUNC_TYPE(2, 0)	ft_vasprintf(char **ret, const char *fmt, va_list *ap);
+_FUNC_TYPE(2, 0)	ft_vdprintf(int fd, const char *fmt, va_list *ap);
 /*
 ** Internal functions {{{2
 */
-int				ft_printf_core(t_ftpf_info *info);
+int					ft_printf_core(t_ftpf_info *info);
 
-void			parse_flags(t_ftpf_info *info);
-int				parse_field_width(t_ftpf_info *info, va_list *ap);
-int				parse_precision(t_ftpf_info *info);
-int				parse_size_modifiers(t_ftpf_info *info);
+FORCE_INLINE void	parse_flags(t_ftpf_info *info);
+FORCE_INLINE int	parse_field_width(t_ftpf_info *info);
+FORCE_INLINE int	parse_precision(t_ftpf_info *info);
+FORCE_INLINE int	parse_size_modifiers(t_ftpf_info *info);
 
-void			access_branch_table(t_ftpf_info *info);
+FORCE_INLINE void	access_branch_table(t_ftpf_info *info);
 
-int				ft_atoi_skip(const char **str);
-void			pad_buffer(t_ftpf_info *info);
-int				is_unicode(unsigned int wc);
-int				ft_wchar_to_utf8(char *s, wchar_t wchar);
+FORCE_INLINE int 	handle_bin_int(t_ftpf_info *info);
+FORCE_INLINE int 	handle_dec_int(t_ftpf_info *info);
+FORCE_INLINE int 	handle_dec_uint(t_ftpf_info *info);
+FORCE_INLINE int 	handle_char(t_ftpf_info *info);
+FORCE_INLINE int 	handle_wchar(t_ftpf_info *info);
+FORCE_INLINE int 	handle_oct_int(t_ftpf_info *info);
+FORCE_INLINE int 	handle_hex_int(t_ftpf_info *info);
+FORCE_INLINE int 	handle_hex_str(t_ftpf_info *info);
+FORCE_INLINE int 	handle_str(t_ftpf_info *info);
+FORCE_INLINE int 	handle_wstr(t_ftpf_info *info);
 
-char			*num_to_hex(uintmax_t num, char *buf, int to_lowercase);
-char			*num_to_oct(uintmax_t num, char *buf);
-char			*num_to_uint(uintmax_t num, char *buf);
-char			*num_to_bin(uintmax_t num, char *buf);
+FORCE_INLINE int	ft_atoi_skip(const char **str);
+FORCE_INLINE void	pad_buffer(int width, int prec, int flags,
+	t_ftpf_info *info);
+FORCE_INLINE int	is_unicode(unsigned int wc);
+int					ft_wchar_to_utf8(char *s, wchar_t wchar);
+
+FORCE_INLINE int 	out_null(t_ftpf_info *info);
+FORCE_INLINE int 	out_fd(t_ftpf_info *info);
+FORCE_INLINE int 	out_str(t_ftpf_info *info);
+
+int 				ft_u64toa_b16(uint64_t num, char *dest,
+	uint8_t to_lowercase);
+int  				ft_u64toa_b10(uint64_t num, char *dest);
+int 				ft_u64toa_b8(uint64_t num, char *dest);
+
 /*
 ** 2}}}
 */
@@ -225,7 +250,7 @@ char			*num_to_bin(uintmax_t num, char *buf);
 # if 0
 /*
 ** Reduced pointer names
-*/
+*
 
 # define WIDTH spec->width
 # define PREC spec->prec
