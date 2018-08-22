@@ -40,7 +40,7 @@
 # define	DC "4041424344454647484950515253545556575859"
 # define	DD "6061626364656667686970717273747576777879"
 # define	DE "8081828384858687888990919293949596979899"
-# define	INIT_LU_TABLE_ITOA_B10 DA DB DC DD DE
+# define	INIT_LUT_U64TOA_B10 DA DB DC DD DE
 # define XA "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F"
 # define XB "202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F"
 # define XC "404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F"
@@ -49,12 +49,11 @@
 # define XF "A0A1A2A3A4A5A6A7A8A9AAABACADAEAFB0B1B2B3B4B5B6B7B8B9BABBBCBDBEBF"
 # define XG "C0C1C2C3C4C5C6C7C8C9CACBCCCDCECFD0D1D2D3D4D5D6D7D8D9DADBDCDDDEDF"
 # define XH "E0E1E2E3E4E5E6E7E8E9EAEBECEDEEEFF0F1F2F3F4F5F6F7F8F9FAFBFCFDFEFF"
-# define	INIT_LU_TABLE_ITOA_B16 XA XB XC XD XE XF XG XH
+# define	INIT_LUT_U64TOA_B16 XA XB XC XD XE XF XG XH
 # define OA "0001020304050607101112131415161720212223242526273031323334353637"
 # define OB "4041424344454647505152535455565760616263646566677071727374757677"
-# define	INIT_LU_TABLE_ITOA_B8 OA OB
+# define	INIT_LUT_U64TOA_B8 OA OB
 # define 	S(x) [(x) - 'A']
-
 
 /*
 ** Powers of 10 {{{2
@@ -148,7 +147,7 @@ typedef struct 		s_ftpf_info
 	t_u32 			state;
 	t_u32 			prev_state;
 	int 			done;
-	char 			buf[FT_PRINTF_BUFSZ + 1];
+	char 			buf[FT_PRINTF_BUFSZ + 1] __attribute__ ((aligned (8)));
 	char			num_buf[INT_BUFSIZE_BOUND(uintmax_t)];
 	const char 		*prefix;
 	int 			prefix_len;
@@ -231,10 +230,10 @@ FORCE_INLINE int 	out_null(t_ftpf_info *info);
 FORCE_INLINE int 	out_fd(t_ftpf_info *info);
 FORCE_INLINE int 	out_str(t_ftpf_info *info);
 
-int 				ft_u64toa_b16(uint64_t num, char *dest,
-	uint8_t to_lowercase);
-int  				ft_u64toa_b10(uint64_t num, char *dest);
-int 				ft_u64toa_b8(uint64_t num, char *dest);
+size_t 				ft_u64toa_b16(uint64_t num, char *dest,
+	uint16_t to_lowercase);
+size_t  			ft_u64toa_b10(uint64_t num, char *dest);
+size_t 				ft_u64toa_b8(uint64_t num, char *dest);
 
 /*
 ** 2}}}

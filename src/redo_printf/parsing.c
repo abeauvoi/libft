@@ -125,7 +125,7 @@ int 		parse_size_modifiers(t_ftpf_info *info)
 		if ((unsigned int)(*s - 'A') > 'z' - 'A')
 			return (-1);
 		previous_state = state;
-		state = g_states[state]S(*s);
+		state = g_states[state]S(*s++);
 	}
 	info->state = state;
 	info->prev_state = previous_state;

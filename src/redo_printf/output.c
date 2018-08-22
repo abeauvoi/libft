@@ -35,3 +35,11 @@ inline int	out_str(t_ftpf_info *info)
 	info->workptr = info->buf;
 	return (1);
 }
+
+inline void	str_to_internal_buf(size_t len, char *dest, t_ftpf_info *info)
+{
+	if (info->endptr - info->workptr < len)
+	{
+		;	
+	}
+}

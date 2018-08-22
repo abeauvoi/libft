@@ -41,8 +41,8 @@ FORCE_INLINE static const size_t	digits8(uint64_t val)
 
 size_t								ft_u64toa_b8(uint64_t num, char *dst)
 {
-	static const char	lookup_table[sizeof(INIT_LU_TABLE_ITOA_B8)] =
-		INIT_LU_TABLE_ITOA_B8;
+	static const char	lut[sizeof(INIT_LUT_U64TOA_B8)] =
+		INIT_LUT_U64TOA_B8;
 	const size_t		length = digits8(num);
 	uint32_t			next;
 	uint8_t				i;
@@ -52,18 +52,13 @@ size_t								ft_u64toa_b8(uint64_t num, char *dst)
 	{
 		i = (num & 077) << 1;
 		num >>= 6;
-		dst[next] = lookup_table[i + 1];
-		dst[next - 1] = lookup_table[i];
+		*((short*)(dst + next - 1)) = *((short*)(lut + i));
 		next -= 2;
 	}
 	if (num < 010)
 		dst[next] = TO_CHAR((uint32_t)num);
 	else
-	{
-		i = ((uint32_t)num << 1);
-		dst[next] = lookup_table[i + 1];
-		dst[next - 1] = lookup_table[i];
-	}
+		*((short*)(dst + next - 1)) = *((short*)(lut + ((uint32_t)num << i)));
 	return (length);
 }
 

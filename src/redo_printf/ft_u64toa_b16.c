@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-FORCE_INLINE static const int	digits16(uint64_t val)
+FORCE_INLINE static const size_t	digits16(uint64_t val)
 {
 	if (val < POW_16(P01))
 		return (1);
@@ -41,14 +41,15 @@ FORCE_INLINE static const int	digits16(uint64_t val)
 
 /*
 ** i => [0..511] so we need i to be an unsigned short !!
+** @param to_lowercase must be either 0x0 or 0x2020
 */
 
-int								ft_u64toa_b16(uint64_t num, char *dst,
-		uint8_t to_lowercase)
+size_t							ft_u64toa_b16(uint64_t num, char *dst,
+		uint16_t to_lowercase)
 {
-	static const char	lookup_table[sizeof(INIT_LU_TABLE_ITOA_B16)] =
-		INIT_LU_TABLE_ITOA_B16;
-	const int		length = digits16(num);
+	static const char	lut[sizeof(INIT_LUT_U64TOA_B16)] =
+		INIT_LUT_U64TOA_B16;
+	const size_t		length = digits16(num);
 	uint32_t			next;
 	uint16_t			i;
 
@@ -57,18 +58,14 @@ int								ft_u64toa_b16(uint64_t num, char *dst,
 	{
 		i = (num & 0xFF) << 1;
 		num >>= 8;
-		dst[next] = lookup_table[i + 1] | to_lowercase;
-		dst[next - 1] = lookup_table[i] | to_lowercase;
+		*((short*)(dst + next - 1)) = *((short*)(lut + i)) | to_lowercase;
 		next -= 2;
 	}
 	if (num < 0x10)
-		dst[next] = XDIGITS_U[(uint32_t)num] | to_lowercase;
+		dst[next] = (char)(XDIGITS_U[(uint32_t)num] | to_lowercase);
 	else
-	{
-		i = ((uint32_t)num << 1);
-		dst[next] = lookup_table[i + 1] | to_lowercase;
-		dst[next - 1] = lookup_table[i] | to_lowercase;
-	}
+		*((short*)(dst + next - 1)) = *((short*)(lut + ((uint32_t)num << 1)))
+			| to_lowercase;
 	return (length);
 }
 
