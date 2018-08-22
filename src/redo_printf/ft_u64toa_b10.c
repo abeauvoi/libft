@@ -69,11 +69,7 @@ size_t 								ft_u64toa_b10(uint64_t num, char *dst)
 	if (num < 10)
 		dst[next] = TO_CHAR((uint32_t)num);
 	else
-	{
-		i = ((uint32_t)num << 1);
-		dst[next] = lut[i + 1];
-		dst[next - 1] = lut[i];
-	}
+		*((short*)(dst + next - 1)) = *((short*)(lut + (num << 1)));
 	return (length);
 }
 
