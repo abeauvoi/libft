@@ -92,6 +92,13 @@
 ** 2}}}
 */
 /*
+** Powers of 2 {{{2
+*/
+# define	POW_2(exp) (1U << exp)
+/*
+** 2}}}
+*/
+/*
 ** 1}}}
 */
 
@@ -155,7 +162,7 @@ typedef struct 		s_ftpf_info
 	union u_redir 	redir;
 	size_t 			redir_bufsz;
 	bool 			silent;
-	va_list			*ap;
+	va_list			ap;
 	int 			(*outf)(struct s_ftpf_info *);
 } 					t_ftpf_info;
 
@@ -183,52 +190,51 @@ enum				e_ftpf_states
 /*
 ** Tells gcc that these functions behave like printf
 */
-# define 	_FUNC_TYPE(x, y) int __attribute__ ((format (printf, x, y)))
+# define 	TYPE_PRINTF(x, y) int __attribute__((format (printf, x, y)))
 
-_FUNC_TYPE(1, 2)	ft_printf(const char *format, ...);
-_FUNC_TYPE(2, 3)	ft_sprintf(char *str, const char *format, ...);
-_FUNC_TYPE(3, 4)	ft_snprintf(char *str, size_t size, const char *fmt, ...);
-_FUNC_TYPE(2, 3)	ft_asprintf(char **ret, const char *fmt, ...);
-_FUNC_TYPE(2, 3)	ft_dprintf(int fd, const char *fmt, ...);
+TYPE_PRINTF(1, 2)	ft_printf(const char *format, ...);
+TYPE_PRINTF(2, 3)	ft_sprintf(char *str, const char *format, ...);
+TYPE_PRINTF(3, 4)	ft_snprintf(char *str, size_t size, const char *fmt, ...);
+TYPE_PRINTF(2, 3)	ft_asprintf(char **ret, const char *fmt, ...);
+TYPE_PRINTF(2, 3)	ft_dprintf(int fd, const char *fmt, ...);
 
-_FUNC_TYPE(1, 0)	ft_vprintf(const char *format, va_list *ap);
-_FUNC_TYPE(2, 0)	ft_vsprintf(char *str, const char *format, va_list *ap);
-_FUNC_TYPE(3, 0)	ft_vsnprintf(char *str, size_t size, const char *fmt,
-		va_list *ap);
-_FUNC_TYPE(2, 0)	ft_vasprintf(char **ret, const char *fmt, va_list *ap);
-_FUNC_TYPE(2, 0)	ft_vdprintf(int fd, const char *fmt, va_list *ap);
+TYPE_PRINTF(1, 0)	ft_vprintf(const char *format, va_list ap);
+TYPE_PRINTF(2, 0)	ft_vsprintf(char *str, const char *format, va_list ap);
+TYPE_PRINTF(3, 0)	ft_vsnprintf(char *str, size_t size, const char *fmt,
+		va_list ap);
+TYPE_PRINTF(2, 0)	ft_vasprintf(char **ret, const char *fmt, va_list ap);
+TYPE_PRINTF(2, 0)	ft_vdprintf(int fd, const char *fmt, va_list ap);
 /*
 ** Internal functions {{{2
 */
-int					ft_printf_core(t_ftpf_info *info);
+int					ft_printf_core(t_ftpf_info *info, va_list ap);
 
-FORCE_INLINE void	parse_flags(t_ftpf_info *info);
-FORCE_INLINE int	parse_field_width(t_ftpf_info *info);
-FORCE_INLINE int	parse_precision(t_ftpf_info *info);
-FORCE_INLINE int	parse_size_modifiers(t_ftpf_info *info);
+void				parse_flags(t_ftpf_info *info);
+int					parse_field_width(t_ftpf_info *info);
+int					parse_precision(t_ftpf_info *info);
+int					parse_size_modifiers(t_ftpf_info *info);
 
-FORCE_INLINE void	access_branch_table(t_ftpf_info *info);
+void				access_branch_table(t_ftpf_info *info);
 
-FORCE_INLINE int 	handle_bin_int(t_ftpf_info *info);
-FORCE_INLINE int 	handle_dec_int(t_ftpf_info *info);
-FORCE_INLINE int 	handle_dec_uint(t_ftpf_info *info);
-FORCE_INLINE int 	handle_char(t_ftpf_info *info);
-FORCE_INLINE int 	handle_wchar(t_ftpf_info *info);
-FORCE_INLINE int 	handle_oct_int(t_ftpf_info *info);
-FORCE_INLINE int 	handle_hex_int(t_ftpf_info *info);
-FORCE_INLINE int 	handle_hex_str(t_ftpf_info *info);
-FORCE_INLINE int 	handle_str(t_ftpf_info *info);
-FORCE_INLINE int 	handle_wstr(t_ftpf_info *info);
+int 				handle_bin_int(t_ftpf_info *info);
+int 				handle_dec_int(t_ftpf_info *info);
+int 				handle_dec_uint(t_ftpf_info *info);
+int 				handle_char(t_ftpf_info *info);
+int 				handle_wchar(t_ftpf_info *info);
+int 				handle_oct_int(t_ftpf_info *info);
+int 				handle_hex_int(t_ftpf_info *info);
+int 				handle_hex_str(t_ftpf_info *info);
+int 				handle_str(t_ftpf_info *info);
+int 				handle_wstr(t_ftpf_info *info);
 
-FORCE_INLINE int	ft_atoi_skip(const char **str);
-FORCE_INLINE void	pad_buffer(int width, int prec, int flags,
+int					ft_atoi_skip(const char **str);
+void				pad_buffer(int width, int prec, int flags,
 	t_ftpf_info *info);
-FORCE_INLINE int	is_unicode(unsigned int wc);
+int					is_utf8(unsigned int wc);
 int					ft_wchar_to_utf8(char *s, wchar_t wchar);
 
-FORCE_INLINE int 	out_null(t_ftpf_info *info);
-FORCE_INLINE int 	out_fd(t_ftpf_info *info);
-FORCE_INLINE int 	out_str(t_ftpf_info *info);
+int 				out_fd(t_ftpf_info *info);
+int 				out_str(t_ftpf_info *info);
 
 size_t 				ft_u64toa_b16(uint64_t num, char *dest,
 	uint16_t to_lowercase);

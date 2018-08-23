@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-FORCE_INLINE static const size_t	digits8(uint64_t val)
+static const size_t		digits8(uint64_t val)
 {
 	if (val < POW_8(P01))
 		return (1);
@@ -39,26 +39,26 @@ FORCE_INLINE static const size_t	digits8(uint64_t val)
 	return (12 + digits8(val / POW_8(P12)));
 }
 
-size_t								ft_u64toa_b8(uint64_t num, char *dst)
+size_t					ft_u64toa_b8(uint64_t num, char *dst)
 {
 	static const char	lut[sizeof(INIT_LUT_U64TOA_B8)] =
 		INIT_LUT_U64TOA_B8;
 	const size_t		length = digits8(num);
 	uint32_t			next;
-	uint8_t				i;
+	uint16_t			i;
 
 	next = length - 1;
 	while (num >= 0100)
 	{
 		i = (num & 077) << 1;
 		num >>= 6;
-		*((short*)(dst + next - 1)) = *((short*)(lut + i));
+		*((int16_t *)(dst + next - 1)) = *((int16_t *)(lut + i));
 		next -= 2;
 	}
 	if (num < 010)
-		dst[next] = TO_CHAR((uint32_t)num);
+		dst[next] = TO_CHAR(num);
 	else
-		*((short*)(dst + next - 1)) = *((short*)(lut + ((uint32_t)num << i)));
+		*((int16_t *)(dst + next - 1)) = *((int16_t *)(lut + ((uint32_t)num << i)));
 	return (length);
 }
 
@@ -84,4 +84,3 @@ int			main(void)
 	return (0);
 }
 #endif
-

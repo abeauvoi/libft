@@ -13,12 +13,10 @@
 #include "ft_printf.h"
 
 /*
-** u64toa implementation based on :
-** https://www.facebook.com/notes/facebook-engineering/three-optimization-tips-\
-** for-c/10151361643253920
+** itoa implementation based on : https://bit.ly/1npWQAB
 */
 
-FORCE_INLINE static const size_t	digits10(uint64_t val)
+static const size_t		digits10(uint64_t val)
 {
 	if (val < P01)
 		return (1);
@@ -50,7 +48,7 @@ FORCE_INLINE static const size_t	digits10(uint64_t val)
 ** This function writes 2 char at once with a cast of the lut ptr to short
 */
 
-size_t 								ft_u64toa_b10(uint64_t num, char *dst)
+size_t 					ft_u64toa_b10(uint64_t num, char *dst)
 {
 	static const char	lut[sizeof(INIT_LUT_U64TOA_B10)] =
 		INIT_LUT_U64TOA_B10;
@@ -63,13 +61,13 @@ size_t 								ft_u64toa_b10(uint64_t num, char *dst)
 	{
 		i = (num % 100) << 1;
 		num /= 100;
-		*((short*)(dst + next - 1)) = *((short*)(lut + i));
+		*((int16_t *)(dst + next - 1)) = *((int16_t *)(lut + i));
 		next -= 2;
 	}
 	if (num < 10)
-		dst[next] = TO_CHAR((uint32_t)num);
+		dst[next] = TO_CHAR(num);
 	else
-		*((short*)(dst + next - 1)) = *((short*)(lut + (num << 1)));
+		*((int16_t *)(dst + next - 1)) = *((int16_t *)(lut + (num << 1)));
 	return (length);
 }
 

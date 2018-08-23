@@ -11,9 +11,12 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+/*
+** Include needed for MB_CUR_MAX
+*/
 #include "ft_printf.h"
 
-inline int				ft_atoi_skip(const char **str)
+int				ft_atoi_skip(const char **str)
 {
 	int 	acc;
 	int 	digit;
@@ -24,9 +27,9 @@ inline int				ft_atoi_skip(const char **str)
 	return (acc);
 }
 
-void					pad_buffer(int w, int l, int flags, t_ftpf_info *info)
+void			pad_buffer(int w, int l, int flags, t_ftpf_info *info)
 {
-	char 	buf[256];
+	char 	buf[257];
 
 	if ((flags & (LEFT_ADJ | ZERO_PAD)) || l >= w)
 		return ;
@@ -34,22 +37,22 @@ void					pad_buffer(int w, int l, int flags, t_ftpf_info *info)
 	ft_memset(buf, info->pad_char, (l > sizeof(buf) ? sizeof(buf) : l));
 	while (l >= sizeof(buf))
 	{
-		str_to_internal_buf();
+		str_to_internal_buf(buf, sizeof(buf) - 1, info);
 		l -= sizeof(buf);
 	}
-	str_to_internal_buf();
+	str_to_internal_buf(buf, l, info);
 }
 
 /*
-** 0xd800 to 0xdffff are reserved for UTF-16 surrogates
+** 0xd800 to 0xdffff are reserved for UTF-16 surrogate pairs
 */
 
-inline int				is_utf8_elligible(unsigned int wc)
+int				is_utf8(t_u32 wc)
 {
 	return (wc < 0x110000 && (wc < 0xd800 || wc > 0xdfff));
 }
 
-static inline int		four_byte_seq(char *s, wchar_t wchar)
+static int		four_byte_seq(char *s, wchar_t wchar)
 {
 	*s++ = 0xf0 | ((wchar & 0x1c0000) >> 18);
 	*s++ = 0x80 | ((wchar & 0x3f000) >> 12);
@@ -58,11 +61,11 @@ static inline int		four_byte_seq(char *s, wchar_t wchar)
 	return (4);
 }
 
-int						ft_wchar_to_utf8(char *s, wchar_t wchar)
+int				ft_wchar_to_utf8(char *s, wchar_t wchar)
 {
-	unsigned int	val;
+	t_u32	val;
 
-	val = (unsigned int)wchar;
+	val = (t_u32)wchar;
 	if (MB_CUR_MAX == 1 || val < 0x80)
 	{
 		*s = (char)val;

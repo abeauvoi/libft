@@ -16,7 +16,7 @@
 ** Size-modifiers state machine {{{
 */ 
 
-static const t_u8 g_states[STOP]['z' - 'A' + 1] = 
+static const t_u8	g_states[STOP]['z' - 'A' + 1] = 
 {
 	{
 		S('d') = INT, S('i') = INT, S('o') = UINT, S('u') = UINT, S('x') = UINT,
@@ -54,11 +54,11 @@ static const t_u8 g_states[STOP]['z' - 'A' + 1] =
 **}}}
 */
 
-void 		parse_flags(t_ftpf_info *info)
+void 				parse_flags(t_ftpf_info *info)
 {
-	char 			*s;
-	unsigned int	flags;
-	unsigned int 	option;
+	char 	*s;
+	t_u32	flags;
+	t_u32 	option;
 
 	flags = 0;
 	s = info->dup_fmt;
@@ -71,7 +71,7 @@ void 		parse_flags(t_ftpf_info *info)
 	info->dup_fmt = s;
 }
 
-int 		parse_field_width(t_ftpf_info *info)
+int 				parse_field_width(t_ftpf_info *info)
 {
 	int 	width;
 	char 	*s;
@@ -81,7 +81,7 @@ int 		parse_field_width(t_ftpf_info *info)
 		width = ft_atoi_skip(&s);
 	else if (*s == '*')
 	{
-		width = (!info->silent ? va_arg(*info->ap, int) : 0);
+		width = va_arg(*(info->ap), int);
 		++s;
 		if (width < 0)
 		{
@@ -93,7 +93,7 @@ int 		parse_field_width(t_ftpf_info *info)
 	return (width);
 }
 
-int 		parse_precision(t_ftpf_info *info)
+int 				parse_precision(t_ftpf_info *info)
 {
 	int 	precision;
 	char 	*s;
@@ -103,7 +103,7 @@ int 		parse_precision(t_ftpf_info *info)
 		precision = ft_atoi_skip(&s[1]);
 	else if (s[0] == '.' && s[1] == '*')
 	{
-		precision = (!info->silent ? va_arg(*info->ap, int) : 0);
+		precision = va_arg(*(info->ap), int);
 		s += 2;
 	}
 	else
@@ -112,7 +112,7 @@ int 		parse_precision(t_ftpf_info *info)
 	return (precision);
 }	
 
-int 		parse_size_modifiers(t_ftpf_info *info)
+int 				parse_size_modifiers(t_ftpf_info *info)
 {
 	int 	state;
 	int 	previous_state;
@@ -122,7 +122,7 @@ int 		parse_size_modifiers(t_ftpf_info *info)
 	s = info->dup_fmt;
 	while (state < STOP)
 	{
-		if ((unsigned int)(*s - 'A') > 'z' - 'A')
+		if ((t_u32)(*s - 'A') > 'z' - 'A')
 			return (-1);
 		previous_state = state;
 		state = g_states[state]S(*s++);

@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-FORCE_INLINE int	handle_bin_int(t_ftpf_info *info)
+int	handle_bin_int(t_ftpf_info *info)
 {
 	if (info->arg.i)
 	{
