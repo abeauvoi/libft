@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 06:47:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/20 01:28:14 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/08/23 22:55:02 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-FORCE_INLINE static void 	_increment_byte_count(t_ftpf_info *info)
+static void 	_increment_byte_count(t_ftpf_info *info)
 {
 	if (info->done >= 0)
 	{
@@ -23,7 +23,7 @@ FORCE_INLINE static void 	_increment_byte_count(t_ftpf_info *info)
 	}
 }
 
-FORCE_INLINE static size_t	_skip_literal_text(t_ftpf_info *info)
+static size_t	_skip_literal_text(t_ftpf_info *info)
 {
 	char 	*s;
 	char 	*a;
@@ -45,7 +45,7 @@ FORCE_INLINE static size_t	_skip_literal_text(t_ftpf_info *info)
 	return (z - a);
 }
 
-FORCE_INLINE static void	_init(t_ftpf_info *info)
+static void	_init(t_ftpf_info *info)
 {
 	info->pad_char = ' ';
 	info->endptr = info->num_buf + sizeof(info->num_buf) - 1;
@@ -65,8 +65,7 @@ int 						ft_printf_core(t_ftpf_info *info)
 		if (info->dup_fmt[0] == '\0')
 			break ;
 		info->len = _skip_literal_text(info);
-		if (!info->silent)
-			//copy from info->workptr over len char;
+		//copy from info->workptr over len char;
 		if (info->len)
 			continue ;
 		parse_flags(info);

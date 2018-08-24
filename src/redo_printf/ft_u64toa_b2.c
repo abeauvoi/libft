@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_u64toa_b2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/08/23 22:56:09 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/08/23 23:19:44 by abeauvoi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-static const size_t	    digits2(uint64_t val)
+static const size_t		digits2(uint64_t val)
 {
 	if (val < POW_2(1))
 		return (1);
@@ -29,7 +41,7 @@ static const size_t	    digits2(uint64_t val)
 
 size_t					ft_u64toa_b2(uint64_t num, char *dst)
 {
-	static const char	lut[sizeof("00011011")] = "00011011";
+	static const char	lut[sizeof("0000000100100011010001010110011110001001101010111100110111101111")] = "00011011";
 	const size_t		length = digits2(num);
 	uint32_t			next;
 	uint8_t				i;
@@ -45,7 +57,8 @@ size_t					ft_u64toa_b2(uint64_t num, char *dst)
 	if (num < 2)
 		dst[next] = TO_CHAR(num);
 	else
-		*((int16_t *)(dst + next - 1)) = *((int16_t *)(lut + ((uint32_t)num << i)));
+		*((int16_t *)(dst + next - 1))
+			= *((int16_t *)(lut + ((uint32_t)num << i)));
 	return (length);
 }
 
@@ -60,13 +73,14 @@ int			main(void)
 	uint64_t	num;
 
 	printf("TEST for ft_u64toa_b2 :\n");
+	printf("POW_2(2):%u\nPOW_2(1):%u\n", POW_2(2));
 	for (int i = 0;i<2000;++i) {
 		printf("[test #%d]\n", i);
 		arc4random_buf(&num, sizeof(num));
 		len = ft_u64toa_b2(num, buf);
 		buf[len] = '\0';
-		printf("[num:%llo]\n[res:%s]\n", num, buf);
-		assert(strtoull(buf, NULL, 8) == num);
+		printf("[num:%lld]\n[res:%s]\n", num, buf);
+		assert(strtoull(buf, NULL, 2) == num);
 	}
 	return (0);
 }
