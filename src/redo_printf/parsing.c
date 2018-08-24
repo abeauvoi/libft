@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/19 03:59:17 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/08/24 07:28:57 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,18 @@
 ** Size-modifiers state machine {{{
 */ 
 
-static const t_u8	g_states[STOP]['z' - 'A' + 1] = 
+static const uint8_t	g_states[STOP]['z' - 'A' + 1] = 
 {
 	{
 		S('d') = INT, S('i') = INT, S('o') = UINT, S('u') = UINT, S('x') = UINT,
 		S('X') = UINT, S('c') = CHAR, S('C') = INT, S('s') = PTR, S('S') = PTR,
-		S('p') = UIPTR, S('n') = PTR, S('m') = NOARG, S('l') = LPRE, S('h') = HPRE,
-		S('z') = ZTPRE, S('j') = JPRE, S('t') = ZTPRE,
+		S('p') = UIPTR, S('n') = PTR, S('m') = NOARG, S('l') = LPRE,
+		S('h') = HPRE, S('z') = ZTPRE, S('j') = JPRE, S('t') = ZTPRE,
 	},
 	{
-		S('d') = LONG, S('i') = LONG, S('o') = ULONG, S('u') = ULONG, S('x') = ULONG,
-		S('X') = ULONG, S('c') = INT, S('s') = PTR, S('n') = PTR, S('l') = LLPRE,
+		S('d') = LONG, S('i') = LONG, S('o') = ULONG, S('u') = ULONG,
+		S('x') = ULONG, S('X') = ULONG, S('c') = INT, S('s') = PTR,
+		S('n') = PTR, S('l') = LLPRE,
 	},
 	{
 		S('d') = LLONG, S('i') = LLONG, S('o') = ULLONG, S('u') = ULLONG,
@@ -54,7 +55,7 @@ static const t_u8	g_states[STOP]['z' - 'A' + 1] =
 **}}}
 */
 
-void 				parse_flags(t_ftpf_info *info)
+uint32_t				parse_flags(t_ftpf_info *info)
 {
 	char 	*s;
 	t_u32	flags;
@@ -67,11 +68,11 @@ void 				parse_flags(t_ftpf_info *info)
 		flags |= option;
 		++s;
 	}
-	info->flags = flags;
 	info->dup_fmt = s;
+	return (flags);
 }
 
-int 				parse_field_width(t_ftpf_info *info)
+uint32_t				parse_field_width(t_ftpf_info *info, va_list ap)
 {
 	int 	width;
 	char 	*s;
@@ -81,7 +82,7 @@ int 				parse_field_width(t_ftpf_info *info)
 		width = ft_atoi_skip(&s);
 	else if (*s == '*')
 	{
-		width = va_arg(*(info->ap), int);
+		width = va_arg(ap, int);
 		++s;
 		if (width < 0)
 		{
@@ -93,7 +94,7 @@ int 				parse_field_width(t_ftpf_info *info)
 	return (width);
 }
 
-int 				parse_precision(t_ftpf_info *info)
+int						parse_precision(t_ftpf_info *info, va_list ap)
 {
 	int 	precision;
 	char 	*s;
@@ -103,7 +104,7 @@ int 				parse_precision(t_ftpf_info *info)
 		precision = ft_atoi_skip(&s[1]);
 	else if (s[0] == '.' && s[1] == '*')
 	{
-		precision = va_arg(*(info->ap), int);
+		precision = va_arg(ap, int);
 		s += 2;
 	}
 	else
@@ -112,7 +113,11 @@ int 				parse_precision(t_ftpf_info *info)
 	return (precision);
 }	
 
-int 				parse_size_modifiers(t_ftpf_info *info)
+/*
+** @TODO check if break statement makes sense
+*/
+
+void					parse_size_modifiers(t_ftpf_info *info, va_list ap)
 {
 	int 	state;
 	int 	previous_state;
@@ -123,12 +128,12 @@ int 				parse_size_modifiers(t_ftpf_info *info)
 	while (state < STOP)
 	{
 		if ((t_u32)(*s - 'A') > 'z' - 'A')
-			return (-1);
+			break ;
 		previous_state = state;
 		state = g_states[state]S(*s++);
 	}
-	info->state = state;
-	info->prev_state = previous_state;
 	info->dup_fmt = s;
-	return (!state ? -1 : 1);
+	get_arg(&info->arg, state, ap); 
+	if (previous_state && (s[-1] == 'c' || s[-1] == 's'))
+		s[-1] &= ~32;
 }

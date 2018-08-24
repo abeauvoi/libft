@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 06:47:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/23 22:55:02 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/08/24 07:32:37 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,11 @@ static void 	_increment_byte_count(t_ftpf_info *info)
 	}
 }
 
-static size_t	_skip_literal_text(t_ftpf_info *info)
+static size_t	_skip_literal_text(char *s, t_ftpf_info *info)
 {
-	char 	*s;
 	char 	*a;
 	char 	*z;
 
-	s = info->dup_fmt;
 	a = s;
 	while (*s != '\0' && *s != '%')
 		++s;
@@ -45,38 +43,32 @@ static size_t	_skip_literal_text(t_ftpf_info *info)
 	return (z - a);
 }
 
-static void	_init(t_ftpf_info *info)
-{
-	info->pad_char = ' ';
-	info->endptr = info->num_buf + sizeof(info->num_buf) - 1;
-	if (info->prev_state
-			&& (info->dup_fmt[-1] == 'c'
-				|| info->dup_fmt[-1] == 's'))
-		info->dup_fmt[-1] &= ~32;
-	if (info->flags & LEFT_ADJ)
-		info->flags &= ~ZERO_PAD;
-}
+/*
+** @TODO: finish refactoring, conversion handlers and generic padding
+*/
 
-int 						ft_printf_core(t_ftpf_info *info)
+int				ft_printf_core(t_ftpf_info *info, va_list ap)
 {
+	size_t	len;
+
 	while (1)
 	{
 		_increment_byte_count(info);
 		if (info->dup_fmt[0] == '\0')
 			break ;
-		info->len = _skip_literal_text(info);
-		//copy from info->workptr over len char;
-		if (info->len)
+		len = _skip_literal_text(info->dup_fmt, info);
+		if (len)
+		{
+			str_to_internal_work(info->workptr, len, info);
 			continue ;
-		parse_flags(info);
-		if ((info->width = parse_field_width(info)) < 0)
+		}
+		info->flags = parse_flags(info);
+		if ((info->width = parse_field_width(info, ap)) < 0)
 			return (-1);
-		info->prec = parse_precision(info);
-		if (parse_size_modifiers(info) == -1)
+		info->prec = parse_precision(info, ap);
+		if (parse_size_modifiers(info, ap) == -1)
 			return (-1);
-		if (info->silent)
-			continue ;
-		_init(info);
+		access_branch_table(info);
 	}
 	return (info->done);
 }

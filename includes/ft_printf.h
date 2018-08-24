@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/24 01:38:53 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/08/24 07:36:14 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,6 @@
 # define FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | PLUS_SIGN | THOUSEP)
 # define FT_PRINTF_BUFSZ 8192
 # define NEED_PADDING 2
-# define DA "0001020304050607080910111213141516171819"
-# define DB "2021222324252627282930313233343536373839"
-# define DC "4041424344454647484950515253545556575859"
-# define DD "6061626364656667686970717273747576777879"
-# define DE "8081828384858687888990919293949596979899"
-# define INIT_LUT_U64TOA_B10 DA DB DC DD DE
-# define XA "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
-# define XB "202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
-# define XC "404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f"
-# define XD "606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f"
-# define XE "808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f"
-# define XF "a0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebf"
-# define XG "c0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedf"
-# define XH "e0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff"
-# define INIT_LUT_U64TOA_B16 XA XB XC XD XE XF XG XH
-# define OA "00010203040506071011121314151617"
-# define OB "20212223242526273031323334353637"
-# define OC "40414243444546475051525354555657"
-# define OD "60616263646566677071727374757677"
-# define INIT_LUT_U64TOA_B8 OA OB OC OD
 # define S(x) [(x) - 'A']
 
 /*
@@ -118,17 +98,6 @@ enum 				e_flags
 	THOUSEP 	= (1U << ('\'' - ' '))
 };
 
-enum				e_base
-{
-	BINARY = 2,
-	OCTAL = 8,
-	DECIMAL = 10,
-	HEXADECIMAL = 16
-		/*
-		** Maybe add BASE_64 later
-		*/
-};
-
 union 				u_arg
 {
 	uintmax_t i;
@@ -142,32 +111,29 @@ union 				u_redir
 	char 	*buf;
 };
 
-typedef struct 		s_ftpf_info
+typedef struct 		s_ftpf
 {
 	char 			*workptr;
 	char 			*endptr;
-	char			*bufptr;
 	char 			*dup_fmt;
 	char 			pad_char;
-	t_u32 			flags;
-	int 			width;
+	uint32_t 		flags;
+	uint32_t 		width;
 	int 			prec;
 	int				len;
 	union u_arg 	arg;
-	t_u32 			state;
-	t_u32 			prev_state;
 	int 			done;
 	char 			buf[FT_PRINTF_BUFSZ + 1] __attribute__ ((aligned (8)));
-	char			num_buf[INT_BUFSIZE_BOUND(uintmax_t)];
+	size_t			bufpos;
+	char			convbuf[INT_BUFSIZE_BOUND(uintmax_t)];
 	const char 		*prefix;
 	int 			prefix_len;
 	wchar_t 		wchar[2];
 	union u_redir 	redir;
 	size_t 			redir_bufsz;
-	bool 			silent;
 	va_list			ap;
-	int 			(*outf)(struct s_ftpf_info *);
-} 					t_ftpf_info;
+	int 			(*outf)(struct s_ftpf *);
+} 					t_ftpf;
 
 enum				e_ftpf_states
 {
@@ -175,12 +141,12 @@ enum				e_ftpf_states
 	ULLONG, LONG, ULONG, SHORT, USHORT, CHAR, UCHAR, NOARG, MAXSTATE
 };
 
-# define 	LLONG ULLONG
-# define 	SIZET ULONG
-# define 	IMAX ULONG
-# define	UMAX ULLONG
-# define 	PDIFF LONG
-# define 	UIPTR ULONG
+# define LLONG ULLONG
+# define SIZET ULONG
+# define IMAX ULONG
+# define UMAX ULLONG
+# define PDIFF LONG
+# define UIPTR ULONG
 
 /*
 **}}}
@@ -210,39 +176,40 @@ TYPE_PRINTF(2, 0)	ft_vdprintf(int fd, const char *fmt, va_list ap);
 /*
 ** Internal functions {{{2
 */
-int					ft_printf_core(t_ftpf_info *info, va_list ap);
+int					ft_printf_core(t_ftpf *info, va_list ap);
 
-void				parse_flags(t_ftpf_info *info);
-int					parse_field_width(t_ftpf_info *info);
-int					parse_precision(t_ftpf_info *info);
-int					parse_size_modifiers(t_ftpf_info *info);
+uint32_t			parse_flags(t_ftpf *info);
+uint32_t			parse_field_width(t_ftpf *info, va_list ap);
+int					parse_precision(t_ftpf *info, va_list ap);
+void				parse_size_modifiers(t_ftpf *info);
 
-void				access_branch_table(t_ftpf_info *info);
+void				access_branch_table(t_ftpf *info);
 
-int 				handle_bin_int(t_ftpf_info *info);
-int 				handle_dec_int(t_ftpf_info *info);
-int 				handle_dec_uint(t_ftpf_info *info);
-int 				handle_char(t_ftpf_info *info);
-int 				handle_wchar(t_ftpf_info *info);
-int 				handle_oct_int(t_ftpf_info *info);
-int 				handle_hex_int(t_ftpf_info *info);
-int 				handle_hex_str(t_ftpf_info *info);
-int 				handle_str(t_ftpf_info *info);
-int 				handle_wstr(t_ftpf_info *info);
+int 				handle_bin_int(t_ftpf *info);
+int 				handle_dec_int(t_ftpf *info);
+int 				handle_dec_uint(t_ftpf *info);
+int 				handle_char(t_ftpf *info);
+int 				handle_wchar(t_ftpf *info);
+int 				handle_oct_int(t_ftpf *info);
+int 				handle_hex_int(t_ftpf *info);
+int 				handle_hex_str(t_ftpf *info);
+int 				handle_str(t_ftpf *info);
+int 				handle_wstr(t_ftpf *info);
 
 int					ft_atoi_skip(const char **str);
-void				pad_buffer(int width, int prec, int flags,
-	t_ftpf_info *info);
-int					is_utf8(unsigned int wc);
+void				pad_buffer(uint32_t width, int32_t prec, int32_t flags,
+		t_ftpf *info);
+int					is_utf8(uint32_t wc);
 int					ft_wchar_to_utf8(char *s, wchar_t wchar);
 
-int 				out_fd(t_ftpf_info *info);
-int 				out_str(t_ftpf_info *info);
+int 				out_fd(t_ftpf *info);
+int 				out_str(t_ftpf *info);
 
-size_t 				ft_u64toa_b16(uint64_t num, char *dest,
-	uint16_t to_lowercase);
-size_t  			ft_u64toa_b10(uint64_t num, char *dest);
+size_t 				ft_u64toa_b16(uint64_t num, char *dest, uint16_t locase);
+size_t				ft_u64toa_b10(uint64_t num, char *dest);
 size_t 				ft_u64toa_b8(uint64_t num, char *dest);
+
+void				get_arg(union u_arg *arg, int32_t type, va_list ap);
 
 /*
 ** 2}}}
@@ -349,13 +316,13 @@ typedef enum				e_ftpf_flag
 typedef int					t_wchar;
 typedef	unsigned char		t_uc;
 
-typedef struct				s_ftpf_info
+typedef struct				s_ftpf
 {
 	t_ftpf_size		size;
 	t_ftpf_flag		flags;
 	int				prec;
 	int				width;
-}							t_ftpf_info;
+}							t_ftpf;
 
 typedef struct				s_ftpf_buf
 {
@@ -367,7 +334,7 @@ typedef struct				s_ftpf_buf
 }							t_ftpf_buf;
 
 typedef t_step				(*t_ftpf_parser)(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 typedef void				(*t_ftpf_get_val)(va_list *ap, t_uc mode,
 		void *data);
 
@@ -383,69 +350,69 @@ int							ft_printf_core(const char *format, va_list *ap);
 */
 
 t_step						parse_one_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						colors(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						space_flag(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						unknown_form(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						alt_flag(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						percent_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						group_flag(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						get_width(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						sign_flag(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						left_flag(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						get_precision(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						zero_flag(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						get_width(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						char_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						integer_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						long_double_mod(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						octal_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						string_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						hex_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						binary_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						half_mod(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						intmax_mod(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						long_mod(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						number_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						pointer_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						non_printable_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						string_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						unsigned_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						fd_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						hex_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						size_mod(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 t_step						float_spec(const char **format, va_list *ap,
-		t_ftpf_info *spec, t_ftpf_buf *buffer);
+		t_ftpf *spec, t_ftpf_buf *buffer);
 
 /*
 ** Argument retrieval
@@ -478,7 +445,7 @@ void						padding(t_ftpf_buf *buffer, int stat,
 char						*ft_strstrn(const char *big, const char *little,
 		size_t n);
 char						get_sign(intmax_t nb, t_ftpf_flag flags);
-void						print_null(t_ftpf_info *spec, t_ftpf_buf *buffer);
+void						print_null(t_ftpf *spec, t_ftpf_buf *buffer);
 void						flush_buffer(t_ftpf_buf *buffer, size_t len);
 bool						ft_iswprint(t_wchar wc);
 # endif

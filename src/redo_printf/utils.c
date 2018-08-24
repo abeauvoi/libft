@@ -6,14 +6,15 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 05:11:05 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/20 07:06:27 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/08/24 06:52:46 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 /*
 ** Include needed for MB_CUR_MAX
 */
+
+#include <stdlib.h>
 #include "ft_printf.h"
 
 int				ft_atoi_skip(const char **str)
