@@ -28,7 +28,7 @@ int				ft_atoi_skip(const char **str)
 	return (acc);
 }
 
-void			pad_buffer(int w, int l, int flags, t_ftpf_info *info)
+void			pad_buffer(t_u32 w, int l, t_u16 flags, t_ftpf *info)
 {
 	char 	buf[257];
 
@@ -48,7 +48,7 @@ void			pad_buffer(int w, int l, int flags, t_ftpf_info *info)
 ** 0xd800 to 0xdffff are reserved for UTF-16 surrogate pairs
 */
 
-int				is_utf8(t_u32 wc)
+int				is_utf8(wchar_t wc)
 {
 	return (wc < 0x110000 && (wc < 0xd800 || wc > 0xdfff));
 }

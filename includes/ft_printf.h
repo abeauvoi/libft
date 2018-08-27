@@ -31,7 +31,7 @@
 ** Defines {{{1
 */
 # define PREFIXES "-+   0X0x0b"
-# define SPECIFIERS "bcCdDioprsSuUxX"
+# define SPECIFIERS "%bcCdDioprsSuUxX"
 # define FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | PLUS_SIGN | THOUSEP)
 # define FT_PRINTF_BUFSZ 8192
 # define NEED_PADDING 2
@@ -98,41 +98,33 @@ enum 				e_flags
 	THOUSEP 	= (1U << ('\'' - ' '))
 };
 
-union 				u_arg
-{
-	uintmax_t i;
-	long double f;
-	void *p;
-};
-
 union 				u_redir
 {
-	int 	fd;
+	long 	fd;
 	char 	*buf;
-};
+}__attribute__((__transparent_union__));
 
 typedef struct 		s_ftpf
 {
+	void 			*arg;
 	char 			*workptr;
 	char 			*endptr;
 	char 			*dup_fmt;
-	char 			pad_char;
-	uint32_t 		flags;
-	uint32_t 		width;
-	int 			prec;
-	int				len;
-	union u_arg 	arg;
-	int 			done;
-	char 			buf[FT_PRINTF_BUFSZ + 1] __attribute__ ((aligned (8)));
-	size_t			bufpos;
-	char			convbuf[INT_BUFSIZE_BOUND(uintmax_t)];
 	const char 		*prefix;
-	int 			prefix_len;
+	t_u8 			prefix_len:2;
+	char 			pad_char:7;
+	t_u16 			flags:14;
+	t_u32 			width;
+	int 			prec;
+	t_u32 			len;
+	int 			done;
+	char 			buf[FT_PRINTF_BUFSZ];
+	t_u16 			bufpos:12;
+	char			convbuf[INT_BUFSIZE_BOUND(t_u64)];
 	wchar_t 		wchar[2];
 	union u_redir 	redir;
-	size_t 			redir_bufsz;
-	va_list			ap;
-	int 			(*outf)(struct s_ftpf *);
+	t_u32 			redir_bufsz:30;
+	int 			(*outf)(union u_redir, const char *, struct s_ftpf *);
 } 					t_ftpf;
 
 enum				e_ftpf_states
@@ -178,10 +170,10 @@ TYPE_PRINTF(2, 0)	ft_vdprintf(int fd, const char *fmt, va_list ap);
 */
 int					ft_printf_core(t_ftpf *info, va_list ap);
 
-uint32_t			parse_flags(t_ftpf *info);
-uint32_t			parse_field_width(t_ftpf *info, va_list ap);
+t_u32				parse_flags(t_ftpf *info);
+t_u32 				parse_field_width(t_ftpf *info, va_list ap);
 int					parse_precision(t_ftpf *info, va_list ap);
-void				parse_size_modifiers(t_ftpf *info);
+void				parse_size_modifiers(t_ftpf *info, va_list ap);
 
 void				access_branch_table(t_ftpf *info);
 
@@ -197,19 +189,19 @@ int 				handle_str(t_ftpf *info);
 int 				handle_wstr(t_ftpf *info);
 
 int					ft_atoi_skip(const char **str);
-void				pad_buffer(uint32_t width, int32_t prec, int32_t flags,
-		t_ftpf *info);
-int					is_utf8(uint32_t wc);
+void				pad_buffer(t_u32 width, int prec, t_u16 flags, t_ftpf *info);
+int					is_utf8(wchar_t wc);
 int					ft_wchar_to_utf8(char *s, wchar_t wchar);
 
-int 				out_fd(t_ftpf *info);
-int 				out_str(t_ftpf *info);
+int 				out_fd(union u_redir redir, const char *src, size_t len);
+int 				out_str(union u_redir redir, const char *src, size_t len);
 
-size_t 				ft_u64toa_b16(uint64_t num, char *dest, uint16_t locase);
-size_t				ft_u64toa_b10(uint64_t num, char *dest);
-size_t 				ft_u64toa_b8(uint64_t num, char *dest);
+t_u8 				ft_u64toa_b16(t_u64 num, char *dest, t_u16 locase);
+t_u8				ft_u64toa_b10(t_u64 num, char *dest);
+t_u8 				ft_u64toa_b8(t_u64 num, char *dest);
+t_u8 				ft_u64toa_b2(t_u64 num, char *dest);
 
-void				get_arg(union u_arg *arg, int32_t type, va_list ap);
+void				*promote_arg(t_u32 state, void *value);
 
 /*
 ** 2}}}

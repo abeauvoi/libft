@@ -12,36 +12,30 @@
 
 #include "ft_printf.h"
 
-int		out_fd(t_ftpf_info *info)
+inline int		out_fd(union u_redir redir, const char *src, size_t len)
 {
-	if (write(info->redir.fd, info->buf, info->bufpos) == -1)
+	if (write(redir.fd, src, len) == -1)
 	{
-		ft_putstr_fd("ft_printf_core: syscall 'write' failed\n", 2);
+		ft_putstr_fd("In function: "__FUNCTION__": syscall write failed\n", 2);
 		return (-1);
 	}
-	info->bufptr = info->buf;
 	return (1);
 }
 
-int		out_str(t_ftpf_info *info)
+inline int		out_str(union u_redir redir, const char *src, size_t len)
 {
-	ft_strncpy(info->redir.buf, info->buf,
-		MIN(info->redir_bufsz - info->done, info->bufptr - info->buf));
-	info->workptr = info->buf;
+	ft_strncpy(redir.buf, src, len);
 	return (1);
 }
 
-int 	str_to_internal_buf(char *str, size_t len, t_ftpf_info *info)
+int 			str_to_internal_buf(char *str, size_t len, t_ftpf *info)
 {
 	char	last_char;
 
 	last_char = str[len];
 	str[len] = '\0';
-	if (FT_PRINTF_BUFSZ - info->bufpos < len)
-	{
-		if (info->outf(info) == -1)
+	if (len > FT_PRINTF_BUFSZ - len && info->outf(info->redir, info->buf, info->bufpos) == -1)
 			return (-1);
-	}
 	ft_strcpy(info->buf, str);
 	str[len] = last_char;
 	info->bufpos = len;

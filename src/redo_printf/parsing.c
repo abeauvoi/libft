@@ -16,7 +16,7 @@
 ** Size-modifiers state machine {{{
 */ 
 
-static const uint8_t	g_states[STOP]['z' - 'A' + 1] = 
+static const t_u8	 	g_states[STOP]['z' - 'A' + 1] = 
 {
 	{
 		S('d') = INT, S('i') = INT, S('o') = UINT, S('u') = UINT, S('x') = UINT,
@@ -55,7 +55,14 @@ static const uint8_t	g_states[STOP]['z' - 'A' + 1] =
 **}}}
 */
 
-uint32_t				parse_flags(t_ftpf_info *info)
+/*
+** @name: parse_flags
+** @synopsys: Returns the bitwise or'ing of every valid option flag
+** encountered in this conversion specification
+** @param (info): main data structure
+*/
+
+uint32_t				parse_flags(t_ftpf *info)
 {
 	char 	*s;
 	t_u32	flags;
@@ -72,7 +79,14 @@ uint32_t				parse_flags(t_ftpf_info *info)
 	return (flags);
 }
 
-uint32_t				parse_field_width(t_ftpf_info *info, va_list ap)
+/*
+** @name: parse_field_width
+** @synopsys: Retrieves the width of the resulting conversion
+** @param (info): main data structure
+** @param (ap): self-explanatory
+*/
+
+uint32_t				parse_field_width(t_ftpf *info, va_list ap)
 {
 	int 	width;
 	char 	*s;
@@ -94,7 +108,14 @@ uint32_t				parse_field_width(t_ftpf_info *info, va_list ap)
 	return (width);
 }
 
-int						parse_precision(t_ftpf_info *info, va_list ap)
+/*
+** @name: parse_precision
+** @synopsys: Retrieves the precision of the resulting conversion
+** @param (info): main data structure
+** @param (ap): self-explanatory
+*/
+
+int						parse_precision(t_ftpf *info, va_list ap)
 {
 	int 	precision;
 	char 	*s;
@@ -114,26 +135,30 @@ int						parse_precision(t_ftpf_info *info, va_list ap)
 }	
 
 /*
-** @TODO check if break statement makes sense
+** @name: parse_size_modifiers
+** @synopsys: Processes every size modifier character, updating a state
+** that will be used to cast the return value of va_arg()
+** @param -> global data structure that contains a non-const
+** copy of the format string
 */
 
-void					parse_size_modifiers(t_ftpf_info *info, va_list ap)
+void					parse_size_modifiers(t_ftpf *info, va_list ap)
 {
-	int 	state;
-	int 	previous_state;
+	t_u32	state;
+	t_u32 	previous_state;
 	char 	*s;
 
 	state = 0;
 	s = info->dup_fmt;
 	while (state < STOP)
 	{
-		if ((t_u32)(*s - 'A') > 'z' - 'A')
+		if ((t_u8)(*s - 'A') > 'z' - 'A')
 			break ;
 		previous_state = state;
 		state = g_states[state]S(*s++);
 	}
-	info->dup_fmt = s;
-	get_arg(&info->arg, state, ap); 
-	if (previous_state && (s[-1] == 'c' || s[-1] == 's'))
+	if ((previous_state & (LPRE | LLPRE)) != 0 && (s[-1] == 'c' || s[-1] == 's'))
 		s[-1] &= ~32;
+	info->arg = promote_arg(state, va_arg(ap, void *));
+	info->dup_fmt = s;
 }

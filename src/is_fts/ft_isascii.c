@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isascii(int c)
+#include "libft_types.h"
+
+inline bool		ft_isascii(int c)
 {
-	return (0 <= c && c <= 127);
+	return ((t_u8)c <= 127);
 }

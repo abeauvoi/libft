@@ -17,13 +17,15 @@
 ** Various useful macros {{{
 */
 # define XDIGITS_U "0123456789ABCDEF"
-# define TO_DIGIT(x) ((unsigned int)(x) - '0')
+# define TO_DIGIT(x) ((unsigned char)(x) - '0')
 # define TO_CHAR(x)	((x) + '0')	
-# define TO_LOWER(x) ((unsigned int)(x) - 32)
-# define TO_UPPER(x) ((unsigned int)(x) | 32)
+# define TO_LOWER(x) ((unsigned char)(x) - 32)
+# define TO_UPPER(x) ((unsigned char)(x) | 32)
 # define IS_DIGIT(x) (TO_DIGIT(x) <= 9)
-# define IS_ALPHA(x) (('A' <= (x) && (x) <= 'Z') || ('a' <= (x) && (x) <= 'z'))
-# define IS_ALNUM(x)	(IS_DIGIT(x) || IS_ALPHA(x))
+# define IS_LOWER(x) ((unsigned char)(x) - 'a' < 26)
+# define IS_UPPER(x) ((unsigne char)(x) - 'A' < 26)
+# define IS_ALPHA(x) (IS_LOWER(x) || IS_UPPER(x))
+# define IS_ALNUM(x) (IS_DIGIT(x) || IS_ALPHA(x))
 # ifndef MAX
 #  define MAX(x, y) (x > y ? x : y)
 # endif
@@ -47,14 +49,14 @@
 /*
 ** Long word copy {{{
 */
-# define	ALIGNMENT_TEST(x) ((long)x & (sizeof(long) - 1))
-# define	UNALIGNED(x, y) (ALIGNMENT_TEST(x) | ALIGNMENT_TEST(y))
-# define	TOO_SMALL(len) ((len) < BIG_BLOCK_SIZE)
-# define	_UNALIGNED(X) ((long)X % LITTLE_BLOCK_SIZE)
-# define	BIG_BLOCK_SIZE (sizeof(long) << 2)
-# define	LITTLE_BLOCK_SIZE (sizeof(long))
+# define ALIGNMENT_TEST(x) ((long)x & (sizeof(long) - 1))
+# define UNALIGNED(x, y) (ALIGNMENT_TEST(x) | ALIGNMENT_TEST(y))
+# define TOO_SMALL(len) ((len) < BIG_BLOCK_SIZE)
+# define _UNALIGNED(X) ((long)X % LITTLE_BLOCK_SIZE)
+# define BIG_BLOCK_SIZE (sizeof(long) * 4)
+# define LITTLE_BLOCK_SIZE (sizeof(long))
 # define DETECT_NULL(X) (((X) - 0x0101010101010101) & ~(X) & 0x8080808080808080)
-# define	DETECT_CHAR(X, MASK) (DETECT_NULL(X ^ MASK))
+# define DETECT_CHAR(X, MASK) (DETECT_NULL(X ^ MASK))
 /*
 ** }}}
 */
@@ -63,7 +65,7 @@
 ** Gcc function attributes {{{
 */
 # ifdef TEST_INLINE
-#  define FORCE_INLINE inline __attribute__((always_inline))
+#  define FORCE_INLINE __attribute__((always_inline))
 # else
 #  define FORCE_INLINE
 # endif

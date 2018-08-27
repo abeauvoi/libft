@@ -13,12 +13,13 @@
 #include "libft_types.h"
 
 /*
-** l = 1 if n == 0;
+** Returns the length of the string representation of n
+** @param n -> the value that needs counting
 */
 
-size_t		ft_numstrlen(intmax_t n)
+t_u8		ft_numstrlen(t_u64 n)
 {
-	size_t		l;
+	t_u8	l;
 
 	l = !n;
 	while (n)

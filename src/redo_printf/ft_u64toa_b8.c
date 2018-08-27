@@ -19,7 +19,7 @@
 #endif
 #include "ft_printf.h"
 
-static const size_t		digits8(uint64_t val)
+static const t_u8		digits8(uint64_t val)
 {
 	if (val < POW_8(P01))
 		return (1);
@@ -46,7 +46,7 @@ static const size_t		digits8(uint64_t val)
 	return (12 + digits8(val / POW_8(P12)));
 }
 
-static const t_u16		g_odigits100[64] =
+static const t_u16		g_digits100[64] =
 {
 	0x3030, 0x3130, 0x3230, 0x3330, 0x3430, 0x3530, 0x3630, 0x3730, 0x3031,
 	0x3131, 0x3231, 0x3331, 0x3431, 0x3531, 0x3631, 0x3731, 0x3032, 0x3132,
@@ -58,22 +58,22 @@ static const t_u16		g_odigits100[64] =
 	0x3737
 };
 
-size_t					ft_u64toa_b8(uint64_t num, char *dst)
+t_u8					ft_u64toa_b8(uint64_t num, char *dst)
 {
-	const size_t		length = digits8(num);
-	uint32_t			next;
+	const t_u8	length = digits8(num);
+	t_u8		next;
 
 	next = length - 1;
-	while (num > 077)
+	while (num >= 0100)
 	{
-		*((int16_t *)(dst + next - 1)) = g_odigits100[num & 077];
+		*((int16_t *)(dst + next - 1)) = g_digits100[num % 0100];
 		num >>= 6;
 		next -= 2;
 	}
 	if (num < 010)
 		dst[next] = TO_CHAR(num);
 	else
-		*((int16_t *)(dst + next - 1)) = g_odigits100[num];
+		*((int16_t *)(dst + next - 1)) = g_digits100[num];
 	return (length);
 }
 
@@ -85,12 +85,11 @@ int						main(void)
 	uint64_t	num;
 	int			i;
 
-	printf("TEST for ft_u64toa_b8 :\n");
+	printf("TEST for ft_u64toa_b8:\n");
 	i = 0;
-	while (i++ < NTESTS)
+	while (i < NTESTS)
 	{
-		printf("[test #%d]\n", i);
-		++i;
+		printf("[test #%d]\n", i++);
 		arc4random_buf(&num, sizeof(num));
 		buf[ft_u64toa_b8(num, buf)] = '\0';
 		printf("[num:%llo]\n[res:%s]\n", num, buf);

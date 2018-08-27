@@ -12,26 +12,22 @@
 
 #include "ft_printf.h"
 
-inline void			get_arg(union u_arg *arg, uint8_t type, va_list ap)
+inline void			*promote_arg(t_u32 state, void *value)
 {
-	if (type > MAXSTATE)
-		return ;
-	else if (type == CHAR)
-		arg->i = (char)va_arg(ap, int32_t);
-	else if (type == UCHAR)
-		arg->i = (uint8_t)va_arg(ap, int32_t);
-	else if (type == SHORT)
-		arg->i = (int16_t)va_arg(ap, int32_t);
-	else if (type == USHORT)
-		arg->i = (uint16_t)va_arg(ap, int32_t);
-	else if (type == INT)
-		arg->i = va_arg(ap, int32_t);
-	else if (type == UINT)
-		arg->i = va_arg(ap, uint32_t);
-	else if (type == LONG)
-		arg->i = va_arg(ap, int64_t);
-	else if (type == ULONG)
-		arg->i = va_arg(ap, uint64_t);
-	else if (type == PTR)
-		arg->p = va_arg(ap, void *);
+    if (state == INT)
+        return ((void *)(int)value);
+    else if (state == UINT)
+        return ((void *)(t_u32)value);
+    else if (state == LONG)
+        return ((void *)(t_s64)value);
+    else if (state == ULONG)
+        return ((void *)(t_u64)value);
+    else if (state == SHORT)
+        return ((void *)(t_s16)value);
+    else if (state == USHORT)
+        return ((void *)(t_u16)value);
+    else if (state == CHAR)
+        return ((void *)(char)value);
+    else if (state == UCHAR)
+        return ((void *)(t_u8)value);
 }

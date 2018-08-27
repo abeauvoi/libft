@@ -12,14 +12,14 @@
 
 #include <libft.h>
 
-bool		ft_isdigit_str(const char *s)
+inline bool		ft_isdigit_str(const char *s)
 {
 	while (ft_isdigit(*s))
 		++s;
 	return (*s == '\0');
 }
 
-bool		ft_isdigit_nstr(const char *s, size_t n)
+inline bool		ft_isdigit_nstr(const char *s, size_t n)
 {
 	while (n-- && ft_isdigit(*s))
 		++s;

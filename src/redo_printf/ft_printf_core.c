@@ -12,62 +12,58 @@
 
 #include "ft_printf.h"
 
-static void 	_increment_byte_count(t_ftpf_info *info)
+static void 	_increment_done(t_ftpf *info, size_t len)
 {
 	if (info->done >= 0)
 	{
-		if (info->len > INT_MAX - info->done)
+		if (len > INT_MAX - info->done)
 			info->done = -1;
 		else
-			info->done += info->len;
+			info->done += len;
 	}
 }
 
-static size_t	_skip_literal_text(char *s, t_ftpf_info *info)
+static size_t	_find_conversion_spec(char *s, t_ftpf *info)
 {
 	char 	*a;
-	char 	*z;
+	size_t 	len;
 
-	a = s;
-	while (*s != '\0' && *s != '%')
-		++s;
-	z = s;
-	while (s[0] == '%' && s[1] == '%')
+	if (*s == '%' || *s == '{')
+		return (0);
+	a = ft_strchrset(s, "%{");
+	if (a == NULL)
 	{
-		++z;
-		s += 2;
+		len = ft_strlen(s);
+		info->outf(info->redir, s, len);
 	}
-	info->workptr = a;
-	info->endptr = z;
-	info->dup_fmt = s;
-	return (z - a);
+	else
+		len = a - s;
+	info->dup_fmt = s + len;
+	return (len);
 }
 
 /*
 ** @TODO: finish refactoring, conversion handlers and generic padding
 */
 
-int				ft_printf_core(t_ftpf_info *info, va_list ap)
+int				ft_printf_core(t_ftpf *info, va_list ap)
 {
 	size_t	len;
 
 	while (1)
 	{
-		_increment_byte_count(info);
+		_increment_done(info, len);
 		if (info->dup_fmt[0] == '\0')
 			break ;
-		len = _skip_literal_text(info->dup_fmt, info);
-		if (len)
-		{
-			str_to_internal_work(info->workptr, len, info);
+		if ((len = _find_conversion_spec(info->dup_fmt, info)) > 0)
 			continue ;
-		}
+		if (info->dup_fmt[0] == '{')
+			parse_colors();
+		++info->dup_fmt;
 		info->flags = parse_flags(info);
-		if ((info->width = parse_field_width(info, ap)) < 0)
-			return (-1);
+		info->width = parse_field_width(info, ap);
 		info->prec = parse_precision(info, ap);
-		if (parse_size_modifiers(info, ap) == -1)
-			return (-1);
+		parse_size_modifiers(info, ap);
 		access_branch_table(info);
 	}
 	return (info->done);

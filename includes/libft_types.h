@@ -31,10 +31,16 @@ typedef struct		s_str
 	size_t	l;
 }					t_str;
 
+/*
+** Shortened types
+*/
+
 typedef unsigned char	t_u8;
 typedef unsigned short	t_u16;
 typedef unsigned int	t_u32;
 typedef unsigned long	t_u64;
+typedef short int 		t_s16;
+typedef long int 		t_s64;
 
 /*
 ** ft_getopt

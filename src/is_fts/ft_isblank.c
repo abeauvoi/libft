@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_types.h"
 
-bool	ft_isblank(char c)
+inline bool	ft_isblank(char c)
 {
 	return (c == ' ' || c == '\t');
 }

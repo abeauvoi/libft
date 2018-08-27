@@ -20,7 +20,7 @@
 
 #include "ft_printf.h"
 
-static const size_t	digits16(uint64_t val)
+static const t_u8	digits16(uint64_t val)
 {
 	if (val < POW_16(P01))
 		return (1);
@@ -47,7 +47,7 @@ static const size_t	digits16(uint64_t val)
 	return (12 + digits16(val / POW_16(P12)));
 }
 
-static const t_u16	g_xdigits100[256] =
+static const t_u16	g_digits100[256] =
 {
 	0x3030, 0x3130, 0x3230, 0x3330, 0x3430, 0x3530, 0x3630, 0x3730, 0x3830,
 	0x3930, 0x4130, 0x4230, 0x4330, 0x4430, 0x4530, 0x4630, 0x3031, 0x3131,
@@ -84,22 +84,22 @@ static const t_u16	g_xdigits100[256] =
 ** @param tolower -> 0 or 0x2020
 */
 
-size_t				ft_u64toa_b16(uint64_t num, char *dst, t_u16 tolower)
+t_u8 				ft_u64toa_b16(uint64_t num, char *dst, t_u16 tolower)
 {
-	const size_t	length = digits16(num);
-	uint32_t		next;
+	const t_u8	length = digits16(num);
+	t_u8		next;
 
 	next = length - 1;
-	while (num > 0xFF)
+	while (num >= 0x100)
 	{
-		*((int16_t *)(dst + next - 1)) = g_xdigits100[num & 0xFF] | tolower;
+		*((int16_t *)(dst + next - 1)) = g_digits100[num % 0x100] | tolower;
 		num >>= 8;
 		next -= 2;
 	}
 	if (num < 0x10)
-		dst[next] = (g_xdigits100[num] | tolower) >> 8;
+		dst[next] = (char)(g_digits100[num] | tolower);
 	else
-		*((int16_t *)(dst + next - 1)) = g_xdigits100[num] | tolower;
+		*((int16_t *)(dst + next - 1)) = g_digits100[num] | tolower;
 	return (length);
 }
 
@@ -118,8 +118,7 @@ int					main(int argc, char *const argv[])
 	i = 0;
 	while (i < NTESTS)
 	{
-		printf("[test #%d]\n", i);
-		++i;
+		printf("[test #%d]\n", i++);
 		arc4random_buf(&num, sizeof(num));
 		buf[ft_u64toa_b16(num, buf, tolower)] = '\0';
 		printf_format[8] |= tolower;

@@ -16,13 +16,14 @@
 ** @TODO: add padding section here
 */
 
-void		access_branch_table(t_ftpf_info *info)
+void		access_branch_table(t_ftpf *info)
 {
-	static int	(*const branch_tbl[sizeof(SPECIFIERS) - 1])(t_ftpf_info *) =
+	static int	(*const branch_tbl[sizeof(SPECIFIERS) - 1])(t_ftpf *) =
 	{
-			handle_bin_int, handle_char, handle_wchar, handle_dec_int,
-			handle_dec_int, handle_dec_int, handle_oct_int, handle_hex_int,
-			handle_hex_str, handle_str, handle_wstr, handle_dec_uint,
+			handle_bin_int, handle_char, handle_wchar,
+			handle_dec_int, handle_dec_int, handle_dec_int,
+			handle_oct_int, handle_hex_int, handle_hex_str,
+			handle_str, handle_wstr, handle_dec_uint,
 			handle_dec_uint, handle_hex_int, handle_hex_int
 	};
 	char		*addr_spec;

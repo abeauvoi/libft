@@ -23,7 +23,7 @@
 ** itoa implementation based on : https://bit.ly/1npWQAB
 */
 
-static const size_t	digits10(uint64_t val)
+static const t_u8	digits10(uint64_t val)
 {
 	if (val < P01)
 		return (1);
@@ -70,10 +70,10 @@ static const t_u16	g_digits100[100] =
 	0x3939
 };
 
-size_t				ft_u64toa_b10(uint64_t num, char *dst)
+t_u8				ft_u64toa_b10(uint64_t num, char *dst)
 {
-	const size_t		length = digits10(num);
-	uint32_t			next;
+	const t_u8 	length = digits10(num);
+	t_u8		next;
 
 	next = length - 1;
 	while (num >= 100)
@@ -110,5 +110,4 @@ int					main(void)
 	}
 	return (0);
 }
-
 #endif

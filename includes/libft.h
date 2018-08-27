@@ -38,7 +38,7 @@ void				ft_bzero(void *str, size_t count);
 int					ft_xdigittoint(char c);
 int					ft_digittoint(char c);
 void				ft_delcontent(void *content, size_t content_size);
-int					ft_isalnum(int c);
+bool				ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
 int					ft_isdigit(int c);
@@ -54,7 +54,7 @@ bool				ft_isalnum_str(const char *s);
 bool				ft_isalnum_nstr(const char *s, size_t n);
 bool				ft_isdigit_str(const char *s);
 bool				ft_isdigit_nstr(const char *s, size_t n);
-size_t				ft_numstrlen(intmax_t n);
+t_u8				ft_numstrlen(t_u64 n);
 
 /*
 ** Linked lists
