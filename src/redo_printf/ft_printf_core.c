@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 06:47:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/24 07:32:37 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 00:29:30 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,13 @@ static void 	_increment_done(t_ftpf *info, size_t len)
 static size_t	_find_conversion_spec(char *s, t_ftpf *info)
 {
 	char 	*a;
-	size_t 	len;
 
-	if (*s == '%' || *s == '{')
-		return (0);
-	a = ft_strchrset(s, "%{");
-	if (a == NULL)
-	{
-		len = ft_strlen(s);
-		info->outf(info->redir, s, len);
-	}
-	else
-		len = a - s;
-	info->dup_fmt = s + len;
-	return (len);
+	a = s;
+	while (*s && *s != '%' && *s != '{')
+		++s;
+	if (s != a)
+		str_to_internal_buf(a, s - a, info);
+	return (s - a);
 }
 
 /*
@@ -58,7 +51,10 @@ int				ft_printf_core(t_ftpf *info, va_list ap)
 		if ((len = _find_conversion_spec(info->dup_fmt, info)) > 0)
 			continue ;
 		if (info->dup_fmt[0] == '{')
+		{
 			parse_colors();
+			continue ;
+		}
 		++info->dup_fmt;
 		info->flags = parse_flags(info);
 		info->width = parse_field_width(info, ap);

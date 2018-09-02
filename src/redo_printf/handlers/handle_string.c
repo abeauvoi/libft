@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 08:16:28 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/19 08:47:09 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 01:09:59 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-FORCE_INLINE int	handle_str(t_ftpf_info *info)
+int		handle_str(t_ftpf *info)
 {
 	info->workptr = (info->arg.p ? info->arg.p : "(null)");
 	info->endptr = ft_memchr(info->workptr, '\0', info->prec);
@@ -24,14 +24,14 @@ FORCE_INLINE int	handle_str(t_ftpf_info *info)
 	return (NEED_PADDING);
 }
 
-FORCE_INLINE int	handle_wstr(t_ftpf_info *info)
+int		handle_wstr(t_ftpf *info)
 {
 	wchar_t		*ws;
 	int			mblen;
 	int			i;
 	char		mbs[5];
 
-	ws = info->arg.p;
+	ws = (wchar_t *)info->arg;
 	i = 0;
 	while (i < 0U + info->prec && *ws
 			&& (mblen = ft_wchar_to_utf8(mbs, *ws++)) != -1

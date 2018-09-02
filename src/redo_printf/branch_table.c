@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 22:39:27 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/24 07:32:37 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 01:48:49 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,6 @@ void		access_branch_table(t_ftpf *info)
 	info->endptr = info->convbuf + sizeof(info->convbuf) - 1;
 	if ((addr_spec = ft_strchr(SPECIFIERS, info->dup_fmt[-1])) != NULL)
 		branch_tbl[addr_spec - SPECIFIERS](info);
+	if (info->prec < info->len)
+		info->prec = info->len;
 }

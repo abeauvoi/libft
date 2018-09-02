@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/24 07:28:57 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 00:24:33 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,6 @@ void					parse_size_modifiers(t_ftpf *info, va_list ap)
 	}
 	if ((previous_state & (LPRE | LLPRE)) != 0 && (s[-1] == 'c' || s[-1] == 's'))
 		s[-1] &= ~32;
-	info->arg = promote_arg(state, va_arg(ap, void *));
+	info->arg = call_va_arg(state, ap);
 	info->dup_fmt = s;
 }

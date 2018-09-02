@@ -6,9 +6,17 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/23 22:56:09 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/23 23:19:44 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 00:07:30 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifdef FT_U64TOA_B2_TEST
+
+# include <stdlib.h>
+# include <stdio.h>
+# include <assert.h>
+
+#endif
 
 #include "ft_printf.h"
 
@@ -59,10 +67,8 @@ t_u8					ft_u64toa_b2(uint64_t num, char *dst)
 	return (length);
 }
 
-#ifdef TEST
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
+#ifdef FT_U64TOA_B2_TEST
+
 int			main(void)
 {
 	char		buf[INT_BUFSIZE_BOUND(uint64_t)];
@@ -81,4 +87,5 @@ int			main(void)
 	}
 	return (0);
 }
+
 #endif

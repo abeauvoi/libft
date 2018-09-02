@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 08:12:13 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/24 05:44:29 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 00:10:22 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifdef DEBUG
+#ifdef FT_U64TOA_B16_TEST
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -103,7 +103,7 @@ t_u8 				ft_u64toa_b16(uint64_t num, char *dst, t_u16 tolower)
 	return (length);
 }
 
-#ifdef DEBUG
+#ifdef FT_U64TOA_B16_TEST
 
 int					main(int argc, char *const argv[])
 {
@@ -114,7 +114,7 @@ int					main(int argc, char *const argv[])
 	int			i;
 
 	tolower = (argc == 2 && ft_strcmp(argv[1], "-l") == 0 ? 0x2020 : 0);
-	printf("TEST for ft_u64toa_b16 :\n");
+	printf("<<< Test for ft_u64toa_b16 >>>\n");
 	i = 0;
 	while (i < NTESTS)
 	{

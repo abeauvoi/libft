@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 01:28:21 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/24 06:51:23 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 00:26:50 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ int 			str_to_internal_buf(char *str, size_t len, t_ftpf *info)
 
 	last_char = str[len];
 	str[len] = '\0';
-	if (len > FT_PRINTF_BUFSZ - len && info->outf(info->redir, info->buf, info->bufpos) == -1)
+	if (info->done + len < info->redir_bufsiz
+			&& info->bufpos + len > FT_PRINTF_BUFSZ
+			&& info->outf(info->redir, info->buf, info->bufpos) == -1)
 			return (-1);
 	ft_strcpy(info->buf, str);
 	str[len] = last_char;

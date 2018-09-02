@@ -6,17 +6,18 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 05:45:52 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/24 05:46:38 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 00:29:48 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifdef DEBUG
+#ifdef FT_U64TOA_B10_TEST
 
 # include <stdlib.h>
 # include <stdio.h>
 # include <assert.h>
 
 #endif
+
 #include "ft_printf.h"
 
 /*
@@ -89,7 +90,7 @@ t_u8				ft_u64toa_b10(uint64_t num, char *dst)
 	return (length);
 }
 
-#ifdef DEBUG
+#ifdef FT_U64TOA_B10_TEST
 
 int					main(void)
 {
@@ -97,7 +98,7 @@ int					main(void)
 	uint64_t	num;
 	int			i;
 
-	printf("DEBUG for ft_u64toa_b10 :\n");
+	printf("<<< Test for ft_u64toa_b10 >>>\n");
 	i = 0;
 	while (i < NTESTS)
 	{
@@ -110,4 +111,5 @@ int					main(void)
 	}
 	return (0);
 }
+
 #endif

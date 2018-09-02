@@ -6,20 +6,23 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 22:49:16 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/19 09:14:37 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/03 00:59:53 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-FORCE_INLINE int			handle_hex_int(t_ftpf_info *info)
+int			handle_hex_int(t_ftpf_info *info)
 {
+	size_t	conv_len;
+
 	if (info->dup_fmt[-1] == 'p')
 	{
 		info->prec = MAX(info->prec, 2 * sizeof(void *));
 		info->flags |= ALT;
 	}
-	info->len = (int)ft_u64toa_b16(info->arg.i, info->num_buf, info->dup_fmt[-1] & 0x20);
+	conv_len = (int)ft_u64toa_b16(info->arg, info->num_buf
+			info->dup_fmt[-1] & 0x20);
 	if (info->arg.i && (info->flags & ALT))
 	{
 		info->prefix_len = 2;
@@ -34,7 +37,8 @@ FORCE_INLINE int			handle_hex_int(t_ftpf_info *info)
 	return (1);
 }
 
-FORCE_INLINE static int 	_ft_hexstrlen(const char *s, int prec)
+static int 	ft_hexstrlen(const char *s, int prec)
+	__attribute__ ((always_inline))
 {
 	int 			len;
 
@@ -47,7 +51,7 @@ FORCE_INLINE static int 	_ft_hexstrlen(const char *s, int prec)
 	return (len);
 }
 
-FORCE_INLINE int 			handle_hex_str(t_ftpf_info *info)
+int 		handle_hex_str(t_ftpf_info *info)
 {
 	char	esc_seq[5];
 	char 	*wp;
@@ -58,7 +62,7 @@ FORCE_INLINE int 			handle_hex_str(t_ftpf_info *info)
 	esc_seq[0] = '\\';
 	esc_seq[1] = 'X' | to_lowercase;
 	esc_seq[4] = '\0';
-	wp = (info->arg.p ? info->arg.p : "(null)");
+	wp = (info->arg != NULL ? info->arg : "(null)");
 	ep = ft_memchr(wp, '\0', info->prec);
 	if (ep == NULL)
 		ep = wp + info->prec;

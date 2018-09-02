@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_char.c                                      :+:      :+:    :+:   */
+/*   handle_pointer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/19 05:28:53 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 01:30:00 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/03 01:22:25 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/03 01:28:39 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printtf.h"
 
-int			handle_char(t_ftpf_info *info)
+int			handle_pointer(t_ftpf *info)
 {
-	info->prec = 1;
-	info->workptr = info->endptr - 1;
-	*(info->workptr) = (char)info->arg;
-	info->flags &= ~ZERO_PAD;
-	return (1);
-}
-
-int			handle_wchar(t_ftpf_info *info)
-{
-	info->wchar[0] = info->arg.i;
-	info->wchar[1] = 0;
-	info->arg = info->wchar;
-	info->prec = -1;
-	return (handle_wstr(info));
+	info->prec = MAX(sizeof(void *) * 2, info->prec);
+	info->flags |= ALT;
+	return (handle_hex_int(info));
 }
