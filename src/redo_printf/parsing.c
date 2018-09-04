@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 00:24:33 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/04 21:42:31 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,33 +21,33 @@ static const t_u8	 	g_states[STOP]['z' - 'A' + 1] =
 	{
 		S('d') = INT, S('i') = INT, S('o') = UINT, S('u') = UINT, S('x') = UINT,
 		S('X') = UINT, S('c') = CHAR, S('C') = INT, S('s') = PTR, S('S') = PTR,
-		S('p') = UIPTR, S('n') = PTR, S('m') = NOARG, S('l') = LPRE,
-		S('h') = HPRE, S('z') = ZTPRE, S('j') = JPRE, S('t') = ZTPRE,
+		S('p') = UIPTR, S('l') = LPRE, S('h') = HPRE, S('z') = ZTPRE,
+		S('j') = JPRE, S('t') = ZTPRE,
 	},
 	{
 		S('d') = LONG, S('i') = LONG, S('o') = ULONG, S('u') = ULONG,
 		S('x') = ULONG, S('X') = ULONG, S('c') = INT, S('s') = PTR,
-		S('n') = PTR, S('l') = LLPRE,
+		S('l') = LLPRE,
 	},
 	{
 		S('d') = LLONG, S('i') = LLONG, S('o') = ULLONG, S('u') = ULLONG,
-		S('x') = ULLONG, S('X') = ULLONG, S('n') = PTR,
+		S('x') = ULLONG, S('X') = ULLONG, 
 	},
 	{
 		S('d') = SHORT, S('i') = SHORT, S('o') = USHORT, S('u') = USHORT,
-		S('x') = USHORT, S('X') = USHORT, S('n') = PTR, S('h') = HHPRE,
+		S('x') = USHORT, S('X') = USHORT, S('h') = HHPRE,
 	},
 	{
 		S('d') = CHAR, S('i') = CHAR, S('o') = UCHAR, S('u') = UCHAR,
-		S('x') = UCHAR, S('X') = UCHAR, S('n') = PTR,
+		S('x') = UCHAR, S('X') = UCHAR, 
 	},
 	{
 		S('d') = PDIFF, S('i') = PDIFF, S('o') = SIZET, S('u') = SIZET,
-		S('x') = SIZET, S('X') = SIZET, S('n') = PTR,
+		S('x') = SIZET, S('X') = SIZET, 
 	},
 	{
 		S('d') = IMAX, S('i') = IMAX, S('o') = UMAX, S('u') = UMAX,
-		S('x') = UMAX, S('X') = UMAX, S('n') = PTR,
+		S('x') = UMAX, S('X') = UMAX, 
 	}
 };
 
@@ -56,10 +56,8 @@ static const t_u8	 	g_states[STOP]['z' - 'A' + 1] =
 */
 
 /*
-** @name: parse_flags
-** @synopsys: Returns the bitwise or'ing of every valid option flag
-** encountered in this conversion specification
-** @param (info): main data structure
+** Returns the logical OR of every valid option flag encountered in this
+** conversion specification
 */
 
 uint32_t				parse_flags(t_ftpf *info)
@@ -80,10 +78,7 @@ uint32_t				parse_flags(t_ftpf *info)
 }
 
 /*
-** @name: parse_field_width
-** @synopsys: Retrieves the width of the resulting conversion
-** @param (info): main data structure
-** @param (ap): self-explanatory
+** Retrieves the width of the resulting conversion
 */
 
 uint32_t				parse_field_width(t_ftpf *info, va_list ap)
@@ -109,10 +104,7 @@ uint32_t				parse_field_width(t_ftpf *info, va_list ap)
 }
 
 /*
-** @name: parse_precision
-** @synopsys: Retrieves the precision of the resulting conversion
-** @param (info): main data structure
-** @param (ap): self-explanatory
+** Retrieves the precision of the resulting conversion
 */
 
 int						parse_precision(t_ftpf *info, va_list ap)
@@ -135,11 +127,8 @@ int						parse_precision(t_ftpf *info, va_list ap)
 }	
 
 /*
-** @name: parse_size_modifiers
-** @synopsys: Processes every size modifier character, updating a state
-** that will be used to cast the return value of va_arg()
-** @param -> global data structure that contains a non-const
-** copy of the format string
+** Processes every size modifier character, updating a state that will be used
+** to cast the return value of va_arg()
 */
 
 void					parse_size_modifiers(t_ftpf *info, va_list ap)
@@ -157,7 +146,8 @@ void					parse_size_modifiers(t_ftpf *info, va_list ap)
 		previous_state = state;
 		state = g_states[state]S(*s++);
 	}
-	if ((previous_state & (LPRE | LLPRE)) != 0 && (s[-1] == 'c' || s[-1] == 's'))
+	if ((previous_state & (LPRE | LLPRE)) != 0
+			&& (s[-1] == 'c' || s[-1] == 's'))
 		s[-1] &= ~32;
 	info->arg = call_va_arg(state, ap);
 	info->dup_fmt = s;

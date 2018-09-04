@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 00:24:08 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/04 21:42:31 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define SPECIFIERS "%bcCdDioprsSuUxX"
 # define FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | PLUS_SIGN | THOUSEP)
 # define FT_PRINTF_BUFSZ 8192
+# define DONE 1
 # define NEED_PADDING 2
 # define S(x) [(x) - 'A']
 
@@ -130,12 +131,11 @@ typedef struct 		s_ftpf
 enum				e_ftpf_states
 {
 	BARE, LPRE, LLPRE, HPRE, HHPRE, ZTPRE, JPRE, STOP, PTR, INT, UINT,
-	ULLONG, LONG, ULONG, SHORT, USHORT, CHAR, UCHAR, NOARG, MAXSTATE
+	LLONG, ULLONG, LONG, ULONG, SHORT, USHORT, CHAR, UCHAR, MAXSTATE
 };
 
-# define LLONG ULLONG
 # define SIZET ULONG
-# define IMAX ULONG
+# define IMAX LLONG
 # define UMAX ULLONG
 # define PDIFF LONG
 # define UIPTR ULONG
@@ -210,8 +210,8 @@ int 				handle_wstr(t_ftpf *info)
 	__attribute__ ((visibility("hidden"));
 
 int					ft_atoi_skip(const char **str);
-void				pad_buffer(t_u32 width, int prec, t_u16 flags, t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+void				pad_internal_buf(t_u32 width, int prec, t_u16 flags,
+	t_ftpf *info) __attribute__ ((visibility("hidden"));
 int					is_utf8(wchar_t wc);
 int					ft_wchar_to_utf8(char *s, wchar_t wchar);
 

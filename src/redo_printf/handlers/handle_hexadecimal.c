@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 22:49:16 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 00:59:53 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/04 21:16:36 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,28 @@
 
 int			handle_hex_int(t_ftpf_info *info)
 {
-	size_t	conv_len;
-
 	if (info->dup_fmt[-1] == 'p')
 	{
 		info->prec = MAX(info->prec, 2 * sizeof(void *));
 		info->flags |= ALT;
 	}
-	conv_len = (int)ft_u64toa_b16(info->arg, info->num_buf
+	info->len = ft_u64toa_b16(info->arg, info->convbuf,
 			info->dup_fmt[-1] & 0x20);
-	if (info->arg.i && (info->flags & ALT))
+	if (info->arg != NULL && (info->flags & ALT))
 	{
 		info->prefix_len = 2;
 		info->prefix += (info->dup_fmt[-1] >> 4);
 	}
 	if (info->prec >= 0)
 		info->flags &= ~ZERO_PAD;
-	if (!info->arg.i && !info->prec)
-		info->workptr = info->endptr;
+	if (info->arg == NULL && info->prec == 0)
+		info->len = 0;
 	else
 		info->prec = MAX(info->prec, info->len);
 	return (1);
 }
 
-static int 	ft_hexstrlen(const char *s, int prec)
-	__attribute__ ((always_inline))
+static int 	__attribute__((always_inline))ft_hexstrlen(const char *s, int prec)
 {
 	int 			len;
 
@@ -84,5 +81,6 @@ int 		handle_hex_str(t_ftpf_info *info)
 		++wp;
 	}
 	pad_buffer(info->width, info->prec, info->flags ^ LEFT_ADJ, info);
-	info->len = (info->width > info->prec ? info->width : info->prec);
+	info->len = MAX(info->width, info->prec);
+	return (DONE);
 }

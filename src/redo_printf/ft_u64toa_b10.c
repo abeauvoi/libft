@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 05:45:52 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 00:29:48 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/04 20:45:24 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static const t_u8	digits10(uint64_t val)
 }
 
 /*
-** Little-endian binary lookup table of every ascii digit pair of mod 256 values
+** Little-endian binary lookup table of every possible value returned by mod 100
 */
 
 static const t_u16	g_digits100[100] =

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 05:11:05 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/24 06:52:46 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/04 21:09:03 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int				ft_atoi_skip(const char **str)
 	return (acc);
 }
 
-void			pad_buffer(t_u32 w, int l, t_u16 flags, t_ftpf *info)
+void			pad_internal_buf(t_u32 w, int l, t_u16 flags, t_ftpf *info)
 {
 	char 	buf[257];
 
@@ -53,7 +53,7 @@ int				is_utf8(wchar_t wc)
 	return (wc < 0x110000 && (wc < 0xd800 || wc > 0xdfff));
 }
 
-static int		four_byte_seq(char *s, wchar_t wchar)
+static inline int	four_byte_seq(char *s, wchar_t wchar)
 {
 	*s++ = 0xf0 | ((wchar & 0x1c0000) >> 18);
 	*s++ = 0x80 | ((wchar & 0x3f000) >> 12);
@@ -62,7 +62,7 @@ static int		four_byte_seq(char *s, wchar_t wchar)
 	return (4);
 }
 
-int				ft_wchar_to_utf8(char *s, wchar_t wchar)
+int					ft_wchar_to_utf8(char *s, wchar_t wchar)
 {
 	t_u32	val;
 
