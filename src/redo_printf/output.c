@@ -34,7 +34,7 @@ int 			str_to_internal_buf(char *str, size_t len, t_ftpf *info)
 
 	last_char = str[len];
 	str[len] = '\0';
-	if (info->done + len < info->redir_bufsiz
+	if (info->done + len < info->redir_bufsz
 			&& info->bufpos + len > FT_PRINTF_BUFSZ)
 	{
 		if (info->outf(info->redir, info->buf, info->bufpos) == -1)

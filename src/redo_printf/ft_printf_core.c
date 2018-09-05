@@ -52,7 +52,7 @@ int				ft_printf_core(t_ftpf *info, va_list ap)
 			continue ;
 		if (info->dup_fmt[0] == '{')
 		{
-			parse_colors();
+			parse_color_tag();
 			continue ;
 		}
 		++info->dup_fmt;

@@ -28,15 +28,15 @@ typedef struct 	s_getopt
 # define OPTIND 	(g_getopt.optind)
 # define OPTRESET	(g_getopt.optreset)
 
-t_getopt 		g_getopt;
+static t_getopt 	g_getopt;
 
 struct 			s_getopt_internal
 {
 	int 				argc;
-	char *const 		argv[];
+	char		 		**argv;
 	const char 			*optstring;
-	static const char 	*nextchar = NULL;
-	static bool			initialized = false;
+	char 				*nextchar;
+	bool				initialized;
 	bool 				print_errors;
 	int 				(*cmpf)(const char *, const char *, size_t);
 	int 				flags;

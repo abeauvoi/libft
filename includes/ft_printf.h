@@ -39,6 +39,20 @@
 # define S(x) [(x) - 'A']
 
 /*
+** ANSI color codes {{{2
+*/
+ 
+# define CA "eoc0bold1uline4blink5hl7hidden8rbold21ruline24"
+# define CB "rblink25rhl27rhidden28black30red31green32yellow33"
+# define CC "blue34pink35cyan36white37bblack40bred41bgreen42"
+# define CD "byellow43bblue44bpink45bcyan46bwhite47"
+# define COLOR_TABLE CA CB CC CD
+
+/*
+** 2}}}
+*/
+
+/*
 ** Powers of 10 {{{2
 */
 # define	P01 10ull
@@ -177,48 +191,48 @@ int			ft_vdprintf(int fd, const char *fmt, va_list ap)
 int					ft_printf_core(t_ftpf *info, va_list ap);
 
 t_u32				parse_flags(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 t_u32 				parse_field_width(t_ftpf *info, va_list ap)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int					parse_precision(t_ftpf *info, va_list ap)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 void				parse_size_modifiers(t_ftpf *info, va_list ap)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 
 void				access_branch_table(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 
 int 				handle_bin_int(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_dec_int(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_dec_uint(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_char(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_wchar(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_oct_int(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_hex_int(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_hex_str(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_str(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				handle_wstr(t_ftpf *info)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 
 int					ft_atoi_skip(const char **str);
 void				pad_internal_buf(t_u32 width, int prec, t_u16 flags,
-	t_ftpf *info) __attribute__ ((visibility("hidden"));
+	t_ftpf *info) __attribute__ ((visibility("hidden")));
 int					is_utf8(wchar_t wc);
 int					ft_wchar_to_utf8(char *s, wchar_t wchar);
 
 int 				out_fd(union u_redir redir, const char *src, size_t len)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 int 				out_str(union u_redir redir, const char *src, size_t len)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 
 t_u8 				ft_u64toa_b16(t_u64 num, char *dest, t_u16 locase);
 t_u8				ft_u64toa_b10(t_u64 num, char *dest);
@@ -226,7 +240,7 @@ t_u8 				ft_u64toa_b8(t_u64 num, char *dest);
 t_u8 				ft_u64toa_b2(t_u64 num, char *dest);
 
 void				*call_va_arg(t_u32 state, va_list ap)
-	__attribute__ ((visibility("hidden"));
+	__attribute__ ((visibility("hidden")));
 
 /*
 ** 2}}}
