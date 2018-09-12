@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 22:39:27 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/04 21:19:02 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 00:36:47 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static inline void	pad_and_copy_to_internal_buf(t_ftpf *info)
+static void		pad_and_copy_to_internal_buf(t_ftpf *info)
 {
 	t_u32		min_len;
 
@@ -32,7 +32,7 @@ static inline void	pad_and_copy_to_internal_buf(t_ftpf *info)
 	info->len = info->width;
 }
 
-void				access_branch_table(t_ftpf *info)
+void			access_branch_table(t_ftpf *info)
 {
 	static int	(*const branch_tbl[sizeof(SPECIFIERS) - 1])(t_ftpf *) =
 	{

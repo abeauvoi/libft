@@ -6,15 +6,15 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 08:16:28 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 01:09:59 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 01:43:36 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		handle_str(t_ftpf *info)
+int					handle_str(t_ftpf *info)
 {
-	info->workptr = (info->arg.p ? info->arg.p : "(null)");
+	info->workptr = (info->arg != NULL ? (char *)info->arg : "(null)");
 	info->endptr = ft_memchr(info->workptr, '\0', info->prec);
 	if (info->endptr == NULL)
 		info->endptr = info->workptr + info->prec;
@@ -24,16 +24,33 @@ int		handle_str(t_ftpf *info)
 	return (NEED_PADDING);
 }
 
-int		handle_wstr(t_ftpf *info)
+static INLINED void	ft_wstrcpy(char mbs[5], t_u8 mblen, wchar_t *ws,
+		t_ftpf *info)
 {
-	wchar_t		*ws;
-	int			mblen;
-	int			i;
+	int		i;
+
+	i = 0;
+	while (i < 0U + info->prec
+			&& *ws
+			&& i + (mblen = ft_wchar_to_utf8(mbs, *ws++)) <= info->prec)
+	{
+		mbs[mblen] = '\0';
+		str_to_internal_buf(mbs, info);
+		i += mblen;
+	}
+}
+
+int					handle_wstr(t_ftpf *info)
+{
 	char		mbs[5];
+	wchar_t		*ws;
+	t_u8		mblen;
+	int			i;
 
 	ws = (wchar_t *)info->arg;
 	i = 0;
-	while (i < 0U + info->prec && *ws
+	while (i < 0U + info->prec
+			&& *ws
 			&& (mblen = ft_wchar_to_utf8(mbs, *ws++)) != -1
 			&& mblen <= 0U + info->prec - i)
 		i += mblen;
@@ -41,16 +58,8 @@ int		handle_wstr(t_ftpf *info)
 		return (-1);
 	info->prec = i;
 	pad_buffer(info->width, info->prec, info->flags, info);
-	ws = info->arg.p;
-	i = 0;
-	while (i < 0U + info->prec && *ws
-			&& i + (mblen = ft_wchar_to_utf8(mbs, *ws++)) <= info->prec)
-	{
-		mbs[mblen] = '\0';
-		str_to_internal_buf(mbs, info);
-		i += mblen;
-	}
+	ft_wstrcpy(mbs, mblen, (wchar_t *)info->arg, info);
 	pad_buffer(info->width, info->prec, info->flags ^ LEFT_ADJ, info);
-	info->len = (info->width > info->prec ? info->width : info->prec);
-	return (1);
+	info->len = MAX(info->width, info->prec); 
+	return (DONE);
 }

@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 06:47:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 00:29:30 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 00:33:41 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void 	_increment_done(t_ftpf *info, size_t len)
+static void 	increment_done(t_ftpf *info, size_t len)
 {
 	if (info->done >= 0)
 	{
@@ -23,7 +23,7 @@ static void 	_increment_done(t_ftpf *info, size_t len)
 	}
 }
 
-static size_t	_find_conversion_spec(char *s, t_ftpf *info)
+static size_t	find_conversion_spec(char *s, t_ftpf *info)
 {
 	char 	*a;
 
@@ -35,20 +35,16 @@ static size_t	_find_conversion_spec(char *s, t_ftpf *info)
 	return (s - a);
 }
 
-/*
-** @TODO: finish refactoring, conversion handlers and generic padding
-*/
-
 int				ft_printf_core(t_ftpf *info, va_list ap)
 {
 	size_t	len;
 
 	while (1)
 	{
-		_increment_done(info, len);
+		increment_done(info, len);
 		if (info->dup_fmt[0] == '\0')
 			break ;
-		if ((len = _find_conversion_spec(info->dup_fmt, info)) > 0)
+		if ((len = find_conversion_spec(info->dup_fmt, info)) > 0)
 			continue ;
 		if (info->dup_fmt[0] == '{')
 		{

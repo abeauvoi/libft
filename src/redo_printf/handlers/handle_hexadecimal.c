@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 22:49:16 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/04 21:16:36 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 01:34:31 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int			handle_hex_int(t_ftpf_info *info)
+int					handle_hex_int(t_ftpf *info)
 {
 	if (info->dup_fmt[-1] == 'p')
 	{
@@ -21,53 +21,44 @@ int			handle_hex_int(t_ftpf_info *info)
 	}
 	info->len = ft_u64toa_b16(info->arg, info->convbuf,
 			info->dup_fmt[-1] & 0x20);
-	if (info->arg != NULL && (info->flags & ALT))
+	if ((t_u64)info->arg != 0 && (info->flags & ALT) != 0)
 	{
 		info->prefix_len = 2;
 		info->prefix += (info->dup_fmt[-1] >> 4);
 	}
 	if (info->prec >= 0)
 		info->flags &= ~ZERO_PAD;
-	if (info->arg == NULL && info->prec == 0)
+	if ((t_u64)info->arg == 0 && info->prec == 0)
 		info->len = 0;
 	else
 		info->prec = MAX(info->prec, info->len);
-	return (1);
+	return (NEED_PADDING);
 }
 
-static int 	__attribute__((always_inline))ft_hexstrlen(const char *s, int prec)
+static INLINED int	ft_hexstrlen(const char *s, int prec)
 {
 	int 			len;
 
 	len = 0;
 	while (*s && len <= prec) 
 	{
-		len += (ft_isprint(*s) ? 1 : 4);
+		if (ft_isprintf(*s) == true)
+			++len;
+		else
+			len += 4;
 		++s;
 	}
 	return (len);
 }
 
-int 		handle_hex_str(t_ftpf_info *info)
+static INLINED void	ft_hexstrcpy(char *wp, char *ep, t_u8 to_lowercase,
+		t_ftpf *info)
 {
 	char	esc_seq[5];
-	char 	*wp;
-	char 	*ep;
-	int 	to_lowercase;
 
-	to_lowercase = (info->dup_fmt[-1] & 0x20);
 	esc_seq[0] = '\\';
 	esc_seq[1] = 'X' | to_lowercase;
 	esc_seq[4] = '\0';
-	wp = (info->arg != NULL ? info->arg : "(null)");
-	ep = ft_memchr(wp, '\0', info->prec);
-	if (ep == NULL)
-		ep = wp + info->prec;
-	else
-		info->prec = ep - wp;
-	info->flags &= ~ZERO_PAD;
-	info->prec = _ft_hexstrlen(wp, info->prec);
-	pad_buffer(info->width, info->prec, info->flags, info);
 	while (wp != ep)
 	{
 		if (!ft_isprint(*wp))
@@ -80,6 +71,25 @@ int 		handle_hex_str(t_ftpf_info *info)
 			char_to_internal_buf(*wp, info);
 		++wp;
 	}
+}
+
+int					handle_hex_str(t_ftpf *info)
+{
+	char 	*wp;
+	char 	*ep;
+	t_u8 	to_lowercase;
+
+	to_lowercase = (info->dup_fmt[-1] & 0x20);
+	wp = (info->arg != NULL ? (char *)info->arg : "(null)");
+	ep = ft_memchr(wp, '\0', info->prec);
+	if (ep == NULL)
+		ep = wp + info->prec;
+	else
+		info->prec = ep - wp;
+	info->flags &= ~ZERO_PAD;
+	info->prec = ft_hexstrlen(wp, info->prec);
+	pad_buffer(info->width, info->prec, info->flags, info);
+	ft_hexstrcpy(wp, ep, to_lowercase, info);
 	pad_buffer(info->width, info->prec, info->flags ^ LEFT_ADJ, info);
 	info->len = MAX(info->width, info->prec);
 	return (DONE);

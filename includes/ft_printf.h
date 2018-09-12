@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/04 21:42:31 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 02:33:21 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@
 # define PREFIXES "-+   0X0x0b"
 # define SPECIFIERS "%bcCdDioprsSuUxX"
 # define FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | PLUS_SIGN | THOUSEP)
-# define FT_PRINTF_BUFSZ 8192
+# define FT_PRINTF_BUFSZ 2048
 # define DONE 1
 # define NEED_PADDING 2
 # define S(x) [(x) - 'A']
+# define INLINED __attribute__ ((always_inline))
 
 /*
 ** Powers of 10 {{{2
@@ -103,7 +104,7 @@ union 				u_redir
 {
 	long 	fd;
 	char 	*buf;
-}__attribute__((__transparent_union__));
+} __attribute__((__transparent_union__));
 
 typedef struct 		s_ftpf
 {
@@ -112,31 +113,31 @@ typedef struct 		s_ftpf
 	char 			*endptr;
 	char 			*dup_fmt;
 	const char 		*prefix;
-	t_u8 			prefix_len:2;
-	char 			pad_char:7;
-	t_u16 			flags:14;
+	t_u8 			prefix_len;
+	char 			pad_char;
+	t_u16 			flags;
 	t_u32 			width;
 	int 			prec;
 	t_u32 			len;
 	int 			done;
-	char 			buf[FT_PRINTF_BUFSZ];
-	t_u16 			bufpos:12;
+	char 			buf[FT_PRINTF_BUFSZ + 1];
+	t_u16 			bufpos;
 	char			convbuf[INT_BUFSIZE_BOUND(t_u64)];
 	wchar_t 		wchar[2];
 	union u_redir 	redir;
-	t_u32 			redir_bufsz:30;
+	t_u32 			redir_bufsz;
 	int 			(*outf)(union u_redir, const char *, struct s_ftpf *);
 } 					t_ftpf;
 
 enum				e_ftpf_states
 {
-	BARE, LPRE, LLPRE, HPRE, HHPRE, ZTPRE, JPRE, STOP, PTR, INT, UINT,
-	LLONG, ULLONG, LONG, ULONG, SHORT, USHORT, CHAR, UCHAR, MAXSTATE
+	BARE, LPRE, LLPRE, HPRE, HHPRE, ZTPRE, JPRE, STOP,
+	PTR, INT, UINT, LONG, ULONG, SHORT, USHORT, CHAR, UCHAR, MAXSTATE
 };
 
 # define SIZET ULONG
-# define IMAX LLONG
-# define UMAX ULLONG
+# define IMAX LONG
+# define UMAX ULONG
 # define PDIFF LONG
 # define UIPTR ULONG
 

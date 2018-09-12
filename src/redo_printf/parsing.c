@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/04 21:42:31 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 02:33:21 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static const t_u8	 	g_states[STOP]['z' - 'A' + 1] =
 		S('l') = LLPRE,
 	},
 	{
-		S('d') = LLONG, S('i') = LLONG, S('o') = ULLONG, S('u') = ULLONG,
-		S('x') = ULLONG, S('X') = ULLONG, 
+		S('d') = LONG, S('i') = LONG, S('o') = ULONG, S('u') = ULONG,
+		S('x') = ULONG, S('X') = ULONG, 
 	},
 	{
 		S('d') = SHORT, S('i') = SHORT, S('o') = USHORT, S('u') = USHORT,
@@ -55,11 +55,6 @@ static const t_u8	 	g_states[STOP]['z' - 'A' + 1] =
 **}}}
 */
 
-/*
-** Returns the logical OR of every valid option flag encountered in this
-** conversion specification
-*/
-
 uint32_t				parse_flags(t_ftpf *info)
 {
 	char 	*s;
@@ -76,10 +71,6 @@ uint32_t				parse_flags(t_ftpf *info)
 	info->dup_fmt = s;
 	return (flags);
 }
-
-/*
-** Retrieves the width of the resulting conversion
-*/
 
 uint32_t				parse_field_width(t_ftpf *info, va_list ap)
 {
@@ -103,10 +94,6 @@ uint32_t				parse_field_width(t_ftpf *info, va_list ap)
 	return (width);
 }
 
-/*
-** Retrieves the precision of the resulting conversion
-*/
-
 int						parse_precision(t_ftpf *info, va_list ap)
 {
 	int 	precision;
@@ -126,11 +113,6 @@ int						parse_precision(t_ftpf *info, va_list ap)
 	return (precision);
 }	
 
-/*
-** Processes every size modifier character, updating a state that will be used
-** to cast the return value of va_arg()
-*/
-
 void					parse_size_modifiers(t_ftpf *info, va_list ap)
 {
 	t_u32	state;
@@ -141,14 +123,19 @@ void					parse_size_modifiers(t_ftpf *info, va_list ap)
 	s = info->dup_fmt;
 	while (state < STOP)
 	{
-		if ((t_u8)(*s - 'A') > 'z' - 'A')
+		if ((t_u8)(*s - 'A') > (t_u8)('z' - 'A'))
 			break ;
 		previous_state = state;
 		state = g_states[state]S(*s++);
 	}
 	if ((previous_state & (LPRE | LLPRE)) != 0
 			&& (s[-1] == 'c' || s[-1] == 's'))
-		s[-1] &= ~32;
+		s[-1] &= ~0x20;
 	info->arg = call_va_arg(state, ap);
 	info->dup_fmt = s;
+}
+
+void					parse_colors(t_ftpf *info)
+{
+	
 }
