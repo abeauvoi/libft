@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 02:33:21 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 03:10:57 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@
 # define DONE 1
 # define NEED_PADDING 2
 # define S(x) [(x) - 'A']
-# define INLINED __attribute__ ((always_inline))
+# define INLINED __attribute__((always_inline))
+# define UNUSED(x) __attribute__((unused)) x
 
 /*
 ** ANSI color codes {{{2

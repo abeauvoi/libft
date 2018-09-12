@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 01:28:21 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/04 21:22:10 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 04:32:49 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ inline int		out_fd(union u_redir redir, const char *src, size_t len)
 {
 	if (write(redir.fd, src, len) == -1)
 	{
-		ft_putstr_fd("function "__FUNCTION__": syscall write failed\n", 2);
+		ft_putstr_fd("function " __FUNCTION__ ": syscall write failed\n", 2);
 		return (-1);
 	}
 	return (1);
@@ -28,22 +28,18 @@ inline int		out_str(union u_redir redir, const char *src, size_t len)
 	return (1);
 }
 
-int 			str_to_internal_buf(char *str, size_t len, t_ftpf *info)
+inline int		out_null(union u_redir UNUSED(redir), const char UNUSED(*src),
+		size_t UNUSED(len))
 {
-	char	last_char;
+	return (1);
+}
 
-	last_char = str[len];
-	str[len] = '\0';
-	if (info->done + len < info->redir_bufsz
-			&& info->bufpos + len > FT_PRINTF_BUFSZ)
+inline int		out_stream(union u_redir redir, const char *src, size_t len)
+{
+	if (ft_fwrite((void *)str, sizeof(char), len, redir.stream) == -1)
 	{
-		if (info->outf(info->redir, info->buf, info->bufpos) == -1)
-			return (-1);
-		else
-			info->bufpos = 0;
+		ft_putstr_fd("function " __FUNCTION__ ": ft_fwrite failed\n", 2);
+		return (-1);
 	}
-	ft_strcpy(info->buf, str);
-	str[len] = last_char;
-	info->bufpos += len;
 	return (1);
 }

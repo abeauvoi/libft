@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 06:47:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 00:33:41 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 03:27:44 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int				ft_printf_core(t_ftpf *info, va_list ap)
 			continue ;
 		if (info->dup_fmt[0] == '{')
 		{
-			parse_color_tag();
+			parse_color_tag(info);
 			continue ;
 		}
 		++info->dup_fmt;

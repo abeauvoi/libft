@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 09:14:50 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/20 01:53:34 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/12 03:15:22 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int			ft_vdprintf(int fd, const char *fmt, va_list ap)
 {
-	t_ftpf_info		info;
+	t_ftpf		info;
 
 	ft_memset(&info, 0, sizeof(info));
 	info.outf = out_fd;
@@ -26,7 +26,7 @@ int			ft_vdprintf(int fd, const char *fmt, va_list ap)
 
 int			ft_vprintf(const char *fmt, va_list ap)
 {
-	t_ftpf_info		info;
+	t_ftpf		info;
 
 	ft_memset(&info, 0, sizeof(info));
 	info.dup_fmt = (char *)fmt;
@@ -38,14 +38,14 @@ int			ft_vprintf(const char *fmt, va_list ap)
 
 int			ft_vasprintf(char **ret, const char *fmt, va_list ap)
 {
-	t_ftpf_info		info;
-	int				ret;
+	t_ftpf		info;
+	int			done;
 
 	ft_memset(&info, 0, sizeof(info));
 	info.dup_fmt = (char*)fmt;
 	info.prefix = PREFIXES;
-	ret = ft_printf_core(&info, ap);
-	if (ret == -1 || (*ret = (char*)malloc(ret + 1)) == NULL)
+	done = ft_printf_core(&info, ap);
+	if (done == -1 || (*ret = (char*)malloc(done + 1)) == NULL)
 		return (-1);
 	info.dup_fmt = (char*)fmt;
 	info.prefix = PREFIXES;
@@ -55,7 +55,7 @@ int			ft_vasprintf(char **ret, const char *fmt, va_list ap)
 
 int			ft_vsprintf(char *str, const char *fmt, va_list ap)
 {
-	t_ftpf_info		info;
+	t_ftpf		info;
 
 	ft_memset(&info, 0, sizeof(info));
 	info.dup_fmt = (char*)fmt;
@@ -66,7 +66,7 @@ int			ft_vsprintf(char *str, const char *fmt, va_list ap)
 
 int			ft_vsnprintf(char *str, size_t size, const char *fmt, va_list ap)
 {
-	t_ftpf_info		info;
+	t_ftpf		info;
 
 	ft_memset(&info, 0, sizeof(info));
 	info.dup_fmt = (char*)fmt;
