@@ -28,22 +28,23 @@ int					ft_atoi_skip(const char **str)
 	return (acc);
 }
 
-void				pad_internal_buf(t_u32 width, int len, t_u16 flags,
+int					pad_internal_buf(t_u32 width, int len, t_u16 flags,
 		t_ftpf *info)
 {
 	char	buf[256];
 
-	if ((flags & (LEFT_ADJ | ZERO_PAD)) || l >= width)
+	if ((flags & (LEFT_ADJ | ZERO_PAD)) || len >= width)
 		return ;
 	len = width - len;
 	ft_memset(buf, info->pad_char,
 			(len > sizeof(buf) ? sizeof(buf) : len));
 	while (len >= sizeof(buf))
 	{
-		str_to_internal_buf(buf, sizeof(buf), info);
+		if (str_to_internal_buf(buf, sizeof(buf), info) == -1)
+			return (-1);
 		len -= sizeof(buf);
 	}
-	str_to_internal_buf(buf, len, info);
+	return (str_to_internal_buf(buf, len, info));
 }
 
 /*
@@ -52,7 +53,7 @@ void				pad_internal_buf(t_u32 width, int len, t_u16 flags,
 
 inline int			is_utf8(wchar_t wc)
 {
-	return (wc < 0x110000 && (wc < 0xd800 || wc > 0xdfff));
+	return (wc > 127 && wc < 0x110000 && (wc < 0xd800 || wc > 0xdfff));
 }
 
 static INLINED int	four_byte_seq(char *s, wchar_t wchar)

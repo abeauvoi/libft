@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static void 	increment_done(t_ftpf *info, size_t len)
+static INLINED void 	increment_byte_count(t_ftpf *info, int len)
 {
 	if (info->done >= 0)
 	{
@@ -23,32 +23,34 @@ static void 	increment_done(t_ftpf *info, size_t len)
 	}
 }
 
-static size_t	find_conversion_spec(char *s, t_ftpf *info)
+static int				find_conversion_spec(char *s, t_ftpf *info)
 {
 	char 	*a;
 
 	a = s;
 	while (*s && *s != '%' && *s != '{')
 		++s;
-	if (s != a)
-		str_to_internal_buf(a, s - a, info);
+	if (s != a && str_to_internal_buf(a, s - a, info) == -1)
+		return (-1);
 	return (s - a);
 }
 
-int				ft_printf_core(t_ftpf *info, va_list ap)
+int						ft_printf_core(t_ftpf *info, va_list ap)
 {
-	size_t	len;
+	int		len;
 
 	while (1)
 	{
-		increment_done(info, len);
+		if (len == -1)
+			return (-1);
+		increment_byte_count(info, len);
 		if (info->dup_fmt[0] == '\0')
 			break ;
-		if ((len = find_conversion_spec(info->dup_fmt, info)) > 0)
+		if ((len = find_conversion_spec(info->dup_fmt, info)) != 0)
 			continue ;
 		if (info->dup_fmt[0] == '{')
 		{
-			parse_color_tag(info);
+			len = parse_color_tag(info);
 			continue ;
 		}
 		++info->dup_fmt;
@@ -57,6 +59,7 @@ int				ft_printf_core(t_ftpf *info, va_list ap)
 		info->prec = parse_precision(info, ap);
 		parse_size_modifiers(info, ap);
 		access_branch_table(info);
+		len = info->len;
 	}
 	return (info->done);
 }
