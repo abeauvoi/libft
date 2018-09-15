@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 08:16:28 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 01:43:36 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 19:57:01 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int					handle_str(t_ftpf *info)
+int				handle_str(t_ftpf *info)
 {
 	info->workptr = (info->arg != NULL ? (char *)info->arg : "(null)");
 	info->endptr = ft_memchr(info->workptr, '\0', info->prec);
@@ -21,10 +21,10 @@ int					handle_str(t_ftpf *info)
 	else
 		info->prec = info->endptr - info->workptr;
 	info->flags &= ~ZERO_PAD;
-	return (NEED_PADDING);
+	return (handle_padding(info));
 }
 
-static INLINED void	ft_wstrcpy(char mbs[5], t_u8 mblen, wchar_t *ws,
+static void		ft_wstrcpy(char mbs[5], t_u8 mblen, wchar_t *ws,
 		t_ftpf *info)
 {
 	int		i;
@@ -40,7 +40,7 @@ static INLINED void	ft_wstrcpy(char mbs[5], t_u8 mblen, wchar_t *ws,
 	}
 }
 
-int					handle_wstr(t_ftpf *info)
+int				handle_wstr(t_ftpf *info)
 {
 	char		mbs[5];
 	wchar_t		*ws;
@@ -60,6 +60,5 @@ int					handle_wstr(t_ftpf *info)
 	pad_buffer(info->width, info->prec, info->flags, info);
 	ft_wstrcpy(mbs, mblen, (wchar_t *)info->arg, info);
 	pad_buffer(info->width, info->prec, info->flags ^ LEFT_ADJ, info);
-	info->len = MAX(info->width, info->prec); 
-	return (DONE);
+	return (MAX(info->width, info->prec));
 }

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 05:03:07 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 01:34:31 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 17:47:16 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ int		handle_oct_int(t_ftpf_info *info)
 		info->prefix_len = 1;
 		info->prefix += 5;
 	}
-	return (NEED_PADDING);
+	return (handle_padding(info));
 }

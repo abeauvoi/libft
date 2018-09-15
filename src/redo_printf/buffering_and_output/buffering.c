@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 03:34:15 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 04:49:51 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 19:21:58 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,29 @@ int 		str_to_internal_buf(char *str, int len, t_ftpf *info)
 	ft_strcpy(info->buf, str);
 	info->bufpos = len;
 	return (1);
+}
+
+int			pad_internal_buf(t_u32 flags, char pad_char, t_ftpf *info,
+		struct s_ftpf_pad pad_info)
+{
+	int			len;
+	static char	blanks[PRINTF_PADSIZE] = 
+	{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',\
+		' '};
+	static char	zeroes[PRINTF_PADSIZE] = 
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',\
+		'0'};
+	char		*p;
+
+	if ((flags & (LEFT_ADJ | ZERO_PAD)) || pad_info.len >= pad_info.width)
+		return (0);
+	p = (pad_char == ' ' ? blanks : zeroes);
+	len = pad_info.width - pad_info.len;
+	while (len >= PRINTF_PADSIZE)
+	{
+		if (str_to_internal_buf(p, PRINTF_PADSIZE, info) == -1)
+			return (-1);
+		len -= PRINTF_PADSIZE;
+	}
+	return (str_to_internal_buf(p, len, info));
 }

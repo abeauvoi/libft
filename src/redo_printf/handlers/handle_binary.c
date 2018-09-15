@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 04:53:24 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 01:21:26 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 17:39:44 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ int	handle_bin_int(t_ftpf_info *info)
 		info->len = 0;
 	else if (info->prec < info->len)
 		info->prec = info->len;
-	return (NEED_PADDING);
+	return (handle_padding(info));
 }

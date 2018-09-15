@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 03:10:57 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 19:52:12 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,22 @@
 # define PREFIXES "-+   0X0x0b"
 # define SPECIFIERS "%bcCdDioprsSuUxX"
 # define FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | PLUS_SIGN | THOUSEP)
-# define FT_PRINTF_BUFSZ 2048
-# define DONE 1
-# define NEED_PADDING 2
-# define S(x) [(x) - 'A']
+# define FT_PRINTF_BUFSZ 512
 /*
-** Gcc attributes
+** Don't forget to change the content of the associated padding buffers :^)
 */
-# define INLINED __attribute__((always_inline))
-# define UNUSED(x) __attribute__((unused)) x
-# define HIDDEN __attribute__((visibility ("hidden")))
-# define PRINTF_FORMAT(a,b) __attribute__ ((format (printf, a, b)))
-
+# define PRINTF_PADSIZE 16
 /*
 ** ANSI color codes {{{2
 */
- 
-# define CA "eoc0bold1uline4blink5hl7hidden8rbold21ruline24"
-# define CB "rblink25rhl27rhidden28black30red31green32yellow33"
-# define CC "blue34pink35cyan36white37bblack40bred41bgreen42"
-# define CD "byellow43bblue44bpink45bcyan46bwhite47"
+# define CA "EOC0BOLD1ULINE4BLINK5HL7HIDDEN8RBOLD21RULINE24"
+# define CB "RBLINK25RHL27RHIDDEN28BLACK30RED31GREEN32YELLOW33"
+# define CC "BLUE34PINK35CYAN36WHITE37BBLACK40BRED41BGREEN42"
+# define CD "BYELLOW43BBLUE44BPINK45BCYAN46BWHITE47"
 # define COLOR_TABLE CA CB CC CD
-
 /*
 ** 2}}}
 */
-
 /*
 ** Powers of 10 {{{2
 */
@@ -81,7 +71,6 @@
 /*
 ** 2}}}
 */
-
 /*
 ** Powers of 16 {{{2
 */
@@ -90,7 +79,6 @@
 /*
 ** 2}}}
 */
-
 /*
 ** Powers of 8 {{{2
 */
@@ -117,19 +105,27 @@
 enum 				e_flags
 {
 	ALT			= (1U << ('#' - ' ')),
-	ZERO_PAD 	= (1U << ('0' - ' ')),
-	LEFT_ADJ 	= (1U << ('-' - ' ')),
+	ZERO_PAD	= (1U << ('0' - ' ')),
+	LEFT_ADJ	= (1U << ('-' - ' ')),
 	SPACE		= (1U << (' ' - ' ')),
 	PLUS_SIGN	= (1U << ('+' - ' ')),
-	THOUSEP 	= (1U << ('\'' - ' '))
+	THOUSEP		= (1U << ('\'' - ' '))
 };
 
 union 				u_redir
 {
-	long 	fd;
-	char 	*buf;
-	FILE 	*stream;
+	long	fd;
+	char	*buf;
+	FILE	*stream;
 } __attribute__((__transparent_union__));
+
+
+struct				s_ftpf_pad
+{
+	t_u32		width;
+	int			len;
+	const char	*pad_buf;
+};
 
 typedef struct 		s_ftpf
 {
@@ -139,7 +135,6 @@ typedef struct 		s_ftpf
 	char 			*dup_fmt;
 	const char 		*prefix;
 	t_u8 			prefix_len;
-	char 			pad_char;
 	t_u16 			flags;
 	t_u32 			width;
 	int 			prec;
@@ -176,13 +171,15 @@ enum				e_ftpf_states
 
 int PRINTF_FORMAT(1,2)	ft_printf(const char *format, ...);
 int	PRINTF_FORMAT(2,3)	ft_sprintf(char *str, const char *format, ...);
-int	PRINTF_FORMAT(3,4)	ft_snprintf(char *str, size_t size, const char *fmt, ...);
+int	PRINTF_FORMAT(3,4)	ft_snprintf(char *str, size_t size, const char *fmt,
+		...);
 int PRINTF_FORMAT(2,3)	ft_asprintf(char **ret, const char *fmt, ...);
 int PRINTF_FORMAT(2,3)	ft_dprintf(int fd, const char *fmt, ...);
 
 int	PRINTF_FORMAT(1,0)	ft_vprintf(const char *format, va_list ap);
 int	PRINTF_FORMAT(2,0)	ft_vsprintf(char *str, const char *format, va_list ap);
-int PRINTF_FORMAT(3,0)	ft_vsnprintf(char *str, size_t size, const char *fmt, va_list ap);
+int PRINTF_FORMAT(3,0)	ft_vsnprintf(char *str, size_t size, const char *fmt,
+		va_list ap);
 int PRINTF_FORMAT(2,0)	ft_vasprintf(char **ret, const char *fmt, va_list ap);
 int PRINTF_FORMAT(2,0)	ft_vdprintf(int fd, const char *fmt, va_list ap);
 
@@ -192,42 +189,47 @@ int PRINTF_FORMAT(2,0)	ft_vdprintf(int fd, const char *fmt, va_list ap);
 
 int						ft_printf_core(t_ftpf *info, va_list ap);
 
-t_u32 HIDDEN			parse_flags(t_ftpf *info);
-t_u32 HIDDEN 			parse_field_width(t_ftpf *info, va_list ap);
-int	HIDDEN				parse_precision(t_ftpf *info, va_list ap);
-void HIDDEN				parse_size_modifiers(t_ftpf *info, va_list ap);
-t_u8 HIDDEN				parse_color_tag(t_ftpf *info);
+t_u32					parse_flags(t_ftpf *info);
+t_u32					parse_field_width(t_ftpf *info, va_list ap);
+int						parse_precision(t_ftpf *info, va_list ap);
+void					parse_size_modifiers(t_ftpf *info, va_list ap);
+t_u8					parse_color_tag(t_ftpf *info);
 
-void HIDDEN				access_branch_table(t_ftpf *info);
+void					access_branch_table(t_ftpf *info);
 
-int HIDDEN 				handle_bin_int(t_ftpf *info);
-int HIDDEN				handle_dec_int(t_ftpf *info);
-int HIDDEN 				handle_dec_uint(t_ftpf *info);
-int HIDDEN 				handle_char(t_ftpf *info);
-int HIDDEN 				handle_wchar(t_ftpf *info);
-int HIDDEN				handle_oct_int(t_ftpf *info);
-int HIDDEN 				handle_hex_int(t_ftpf *info);
-int HIDDEN 				handle_hex_str(t_ftpf *info);
-int HIDDEN 				handle_str(t_ftpf *info);
-int HIDDEN 				handle_wstr(t_ftpf *info);
+int						handle_bin_int(t_ftpf *info);
+int						handle_dec_int(t_ftpf *info);
+int						handle_dec_uint(t_ftpf *info);
+int						handle_char(t_ftpf *info);
+int						handle_wchar(t_ftpf *info);
+int						handle_oct_int(t_ftpf *info);
+int						handle_hex_int(t_ftpf *info);
+int						handle_hex_str(t_ftpf *info);
+int						handle_str(t_ftpf *info);
+int						handle_wstr(t_ftpf *info);
 
 int						ft_atoi_skip(const char **str);
-int	HIDDEN 				pad_internal_buf(t_u32 width, int prec, t_u16 flags, t_ftpf *info);
-int	INLINED				is_utf8(wchar_t wc);
+int						pad_internal_buf(t_u32 width, int prec, t_u16 flags,
+		t_ftpf *info);
+int INLINED				is_utf8(wchar_t wc);
 int						ft_wchar_to_utf8(char *buf, wchar_t wchar);
 
-int HIDDEN 				out_fd(union u_redir redir, const char *src, size_t len);
-int HIDDEN 				out_str(union u_redir redir, const char *src, size_t len);
-int HIDDEN 				out_null(union u_redir UNUSED(redir), const char UNUSED(*src),
+int						out_fd(union u_redir redir, const char *src,
+		size_t len);
+int						out_str(union u_redir redir, const char *src,
+		size_t len);
+int						out_null(union u_redir UNUSED(redir),
+		const char UNUSED(*src),
 	size_t UNUSED(len));
-int HIDDEN 				out_stream(union u_redir redir, const char *src, size_t len);
+int						out_stream(union u_redir redir, const char *src,
+		size_t len);
 
-t_u8 					ft_u64toa_b16(t_u64 num, char *dest, t_u16 locase);
+t_u8					ft_u64toa_b16(t_u64 num, char *dest, t_u16 locase);
 t_u8					ft_u64toa_b10(t_u64 num, char *dest);
-t_u8 					ft_u64toa_b8(t_u64 num, char *dest);
-t_u8 					ft_u64toa_b2(t_u64 num, char *dest);
+t_u8					ft_u64toa_b8(t_u64 num, char *dest);
+t_u8					ft_u64toa_b2(t_u64 num, char *dest);
 
-void HIDDEN				*call_va_arg(t_u32 state, va_list ap);
+void					*call_va_arg(t_u32 state, va_list ap);
 
 /*
 ** 2}}}

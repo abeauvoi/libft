@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 05:08:54 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 01:19:41 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 17:43:47 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		handle_dec_int(t_ftpf_info *info)
 		info->len = 0;
 	else if (info->prec < conv_len)
 		info->prec = info->len;
-	return (NEED_PADDING);
+	return (handle_padding(info));
 }
 
 int		handle_dec_uint(t_ftpf_info *info)
@@ -45,5 +45,5 @@ int		handle_dec_uint(t_ftpf_info *info)
 		info->len = 0;
 	else if (info->prec < info->len)
 		info->prec = info->len; 
-	return (NEED_PADDING);
+	return (handle_padding(info));
 }

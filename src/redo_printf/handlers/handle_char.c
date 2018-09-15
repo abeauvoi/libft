@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 05:28:53 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 01:44:50 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 18:44:33 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int			handle_char(t_ftpf_info *info)
 	info->prec = 1;
 	info->workptr = (char *)info->arg;
 	info->flags &= ~ZERO_PAD;
-	return (DONE);
+	return (handle_padding(info));
 }
 
 int			handle_wchar(t_ftpf_info *info)

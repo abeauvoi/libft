@@ -6,7 +6,7 @@
 /*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 05:06:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/20 09:14:32 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 19:52:12 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*
 ** Various useful macros {{{
 */
-# define XDIGITS_U "0123456789ABCDEF"
+# define XDIGITS_UPCASE "0123456789ABCDEF"
 # define TO_DIGIT(x) ((unsigned char)(x) - '0')
 # define TO_CHAR(x)	((x) + '0')	
 # define TO_LOWER(x) ((unsigned char)(x) - 32)
@@ -64,11 +64,9 @@
 /*
 ** Gcc function attributes {{{
 */
-# ifdef TEST_INLINE
-#  define FORCE_INLINE __attribute__((always_inline))
-# else
-#  define FORCE_INLINE
-# endif
+# define INLINED __attribute__((always_inline))
+# define UNUSED(x) __attribute__((unused)) x
+# define PRINTF_FORMAT(a,b) __attribute__ ((format (printf, a, b)))
 /*
 ** }}}
 */

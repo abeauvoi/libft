@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 06:47:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 03:27:44 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 19:56:11 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static INLINED void 	increment_byte_count(t_ftpf *info, int len)
+static void 	increment_byte_count(t_ftpf *info, int len)
 {
 	if (info->done >= 0)
 	{
@@ -23,7 +23,7 @@ static INLINED void 	increment_byte_count(t_ftpf *info, int len)
 	}
 }
 
-static int				find_conversion_spec(char *s, t_ftpf *info)
+static int		find_conversion_spec(char *s, t_ftpf *info)
 {
 	char 	*a;
 
@@ -35,7 +35,7 @@ static int				find_conversion_spec(char *s, t_ftpf *info)
 	return (s - a);
 }
 
-int						ft_printf_core(t_ftpf *info, va_list ap)
+int				ft_printf_core(t_ftpf *info, va_list ap)
 {
 	int		len;
 
@@ -58,8 +58,7 @@ int						ft_printf_core(t_ftpf *info, va_list ap)
 		info->width = parse_field_width(info, ap);
 		info->prec = parse_precision(info, ap);
 		parse_size_modifiers(info, ap);
-		access_branch_table(info);
-		len = info->len;
+		len = access_branch_table(info);
 	}
 	return (info->done);
 }

@@ -6,33 +6,38 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 17:12:47 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 07:22:36 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 19:45:31 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_types.h"
 
-char			*ft_strnstr(const char *haystack, const char *ndl, size_t len)
+/*
+** hs (HayStack, botte de foin) -> string to look into
+** ndl (NeeDLe, aiguille) -> portion of hs to be matched
+*/
+
+char			*ft_strnstr(const char *hs, const char *ndl, size_t len)
 {
 	const char	*n;
 	const char	*h;
 	size_t		i;
 
 	n = ndl;
-	if (*ndl == 0)
-		return ((char *)haystack);
-	while (*haystack && len)
+	if (ndl[0] == '\0')
+		return ((char *)hs);
+	while (*hs && len)
 	{
-		if (*haystack == *n)
+		if (*hs == *n)
 		{
-			h = haystack;
+			h = hs;
 			i = len;
 			while (i-- && *h++ == *n++)
 				if (!*n)
-					return ((char *)haystack);
+					return ((char *)hs);
 		}
 		--len;
-		++haystack;
+		++hs;
 		n = ndl;
 	}
 	return (NULL);

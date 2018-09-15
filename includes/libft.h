@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/07/25 04:52:04 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 19:50:46 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,21 @@
 # include "get_next_line.h"
 
 /*
-** Math related
+** Math related {{{
 */
-
 long				ft_pow(int nb, unsigned int pow);
 uintmax_t			ft_abs(intmax_t i);
 long				ft_round(double db);
 intmax_t			ft_min(intmax_t a, intmax_t b);
 intmax_t			ft_max(intmax_t a, intmax_t b);
 bool				ft_ispow2(unsigned long x);
-
 /*
-** Misc.
+** }}}
 */
 
+/*
+** Misc. {{{
+*/
 int					ft_atoi(const char *s);
 int					ft_atoi_skip(const char **s);
 void				ft_bzero(void *str, size_t count);
@@ -55,11 +56,13 @@ bool				ft_isalnum_nstr(const char *s, size_t n);
 bool				ft_isdigit_str(const char *s);
 bool				ft_isdigit_nstr(const char *s, size_t n);
 t_u8				ft_numstrlen(t_u64 n);
-
 /*
-** Linked lists
+** }}}
 */
 
+/*
+** Linked lists {{{
+*/
 void				ft_lstadd(t_list **alst, t_list *new_elem);
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
@@ -71,11 +74,13 @@ size_t				ft_lstsize(t_list *list);
 t_list				*ft_lststrsplit(const char *s, char c);
 void				ft_lstprint_base(t_list *list,
 		unsigned char size_of_content, unsigned char radix);
-
 /*
-** Memory mgmt
+** }}}
 */
 
+/*
+** Memory mgmt {{{
+*/
 void				*ft_memalloc(size_t size);
 void				*ft_memccpy(void *dst, const void *src, int c, size_t cnt);
 void				*ft_memchr(const void *s, int c, size_t n);
@@ -84,11 +89,13 @@ void				*ft_memcpy(void *dst, const void *src, size_t count);
 void				ft_memdel(void **ap);
 void				*ft_memmove(void *dst, const void *src, size_t count);
 void				*ft_memset(void *dst, int c, size_t count);
-
 /*
-** Output
+** }}}
 */
 
+/*
+** Output {{{
+*/
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putendl(char const *s);
@@ -100,11 +107,13 @@ void				ft_putstr(char const *str);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_print_int_tab_base(void *data, unsigned char size_of,
 		size_t len, unsigned char radix);
-
 /*
-** String manipulation
+** }}}
 */
 
+/*
+** string.h {{{
+*/
 void				ft_revstr(char *s);
 char				*ft_strcat(char *dst, const char *src);
 char				*ft_strchr(const char *s, int c);
@@ -143,12 +152,17 @@ char				*ft_strchrset(const char *s, const char *charset);
 int					ft_strrchr2(const char *const str, char c, size_t lenstr);
 int					ft_strchr2(const char *const str, char c);
 unsigned int		ft_strnoccur(const char *s, const char c);
-
 /*
-** Char conversion
+** }}}
 */
 
-int					ft_tolower(int c);
-int					ft_toupper(int c);
+/*
+** Char conversion {{{
+*/
+DEPRECATED int		ft_tolower(int c);
+DEPRECATED int		ft_toupper(int c);
+/*
+** }}}
+*/
 
 #endif

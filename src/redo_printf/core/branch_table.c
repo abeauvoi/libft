@@ -6,37 +6,26 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 22:39:27 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 00:36:47 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/15 19:59:41 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void		pad_and_copy_to_internal_buf(t_ftpf *info)
-{
-	t_u32		min_len;
+/*
+** Chooses the conversion routine associated with the conversion specifier
+** character.
+** SPECIFIERS is a string literal containing valid conversion specifiers.
+** DO NOT CHANGE THE ORDER OF THE FUNCTION POINTERS initialized in branch_tbl
+** The conversion routine for %p is handled as a special case inside
+** handle_hexadecimal.
+*/
 
-	if (info->prec < info->len)
-		info->prec = info->len;
-	min_len = info->prefix_len + info->prec;
-	if (info->width < min_len)
-		info->width = min_len;
-	pad_internal_buf(info->width, min_len, info->flags, info);
-	str_to_internal_buf(info->prefix, info->prefix_len, info);
-	info->pad_char = '0';
-	pad_internal_buf(info->width, min_len, info->flags ^ ZERO_PAD, info);
-	pad_internal_buf(info->prec, info->len, 0, info);
-	info->pad_char = ' ';
-	str_to_internal_buf(info->workptr, info->len, info);
-	pad_internal_buf(info->width, min_len, info->flags ^ LEFT_ADJ, info);
-	info->len = info->width;
-}
-
-void			access_branch_table(t_ftpf *info)
+int			access_branch_table(t_ftpf *info)
 {
 	static int	(*const branch_tbl[sizeof(SPECIFIERS) - 1])(t_ftpf *) =
 	{
-			handle_bin_int, handle_char, handle_wchar,
+			handle_percent, handle_bin_int, handle_char, handle_wchar,
 			handle_dec_int, handle_dec_int, handle_dec_int,
 			handle_oct_int, handle_hex_int, handle_hex_str,
 			handle_str, handle_wstr, handle_dec_uint,
@@ -46,8 +35,7 @@ void			access_branch_table(t_ftpf *info)
 
 	if (info->flags & LEFT_ADJ)
 		info->flags &= ~ZERO_PAD;
-	info->pad_char = ' ';
 	if ((addr_spec = ft_strchr(SPECIFIERS, info->dup_fmt[-1])) != NULL)
-		branch_tbl[addr_spec - SPECIFIERS](info);
-	pad_and_copy_to_internal_buf(info);
+		return (branch_tbl[addr_spec - SPECIFIERS](info));
+	return (0);
 }
