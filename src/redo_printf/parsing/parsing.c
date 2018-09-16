@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:43:23 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 03:50:51 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int					parse_precision(t_ftpf *info, va_list ap)
 void				parse_size_modifiers(t_ftpf *info, va_list ap)
 {
 	t_u32	state;
-	t_u32 	previous_state;
+	t_u32 	prev_state;
 	char 	*s;
 
 	state = 0;
@@ -133,15 +133,14 @@ void				parse_size_modifiers(t_ftpf *info, va_list ap)
 		if (OUT_OF_RANGE(*s))
 # undef OUT_OF_RANGE
 			break ;
-		previous_state = state;
+		prev_state = state;
 		state = g_states[state]S(*s++);
 # undef S
 	}
 	info->dup_fmt = s;
 	if (s[-1] == '%')
 		return ;
-	if ((previous_state & (LPRE | LLPRE)) != 0
-			&& (s[-1] == 'c' || s[-1] == 's'))
+	if ((prev_state & (LPRE | LLPRE)) != 0 && (s[-1] == 'c' || s[-1] == 's'))
 		s[-1] &= ~0x20;
 	info->arg = call_va_arg(state, ap);
 }
