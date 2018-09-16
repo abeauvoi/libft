@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 08:16:28 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:57:01 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 03:39:26 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 int				handle_str(t_ftpf *info)
 {
+	char	*ep;
+	int		len;
+
 	info->workptr = (info->arg != NULL ? (char *)info->arg : "(null)");
-	info->endptr = ft_memchr(info->workptr, '\0', info->prec);
-	if (info->endptr == NULL)
-		info->endptr = info->workptr + info->prec;
-	else
-		info->prec = info->endptr - info->workptr;
+	len = ft_strlen(info->workptr);
 	info->flags &= ~ZERO_PAD;
-	return (handle_padding(info));
+	return (handle_padding(len, info));
 }
 
-static void		ft_wstrcpy(char mbs[5], t_u8 mblen, wchar_t *ws,
-		t_ftpf *info)
+static int		ft_wstrcpy(char mbs[5], char mblen, wchar_t *ws, t_ftpf *info)
 {
 	int		i;
 
@@ -35,17 +33,20 @@ static void		ft_wstrcpy(char mbs[5], t_u8 mblen, wchar_t *ws,
 			&& i + (mblen = ft_wchar_to_utf8(mbs, *ws++)) <= info->prec)
 	{
 		mbs[mblen] = '\0';
-		str_to_internal_buf(mbs, info);
+		if (str_to_internal_buf(mbs, mblen, info) == -1)
+			return (-1);
 		i += mblen;
 	}
+	return (1);
 }
 
 int				handle_wstr(t_ftpf *info)
 {
-	char		mbs[5];
-	wchar_t		*ws;
-	t_u8		mblen;
-	int			i;
+	char				mbs[5];
+	wchar_t				*ws;
+	char				mblen;
+	int					i;
+	struct s_ftpf_pad	pad_info;
 
 	ws = (wchar_t *)info->arg;
 	i = 0;
@@ -57,8 +58,11 @@ int				handle_wstr(t_ftpf *info)
 	if (mblen == -1)
 		return (-1);
 	info->prec = i;
-	pad_buffer(info->width, info->prec, info->flags, info);
-	ft_wstrcpy(mbs, mblen, (wchar_t *)info->arg, info);
-	pad_buffer(info->width, info->prec, info->flags ^ LEFT_ADJ, info);
+	pad_info = (struct s_ftpf_pad){.width = info->width, .len = info->prec};
+	if (pad_internal_buf(info->flags, ' ', info, pad_info) == -1
+			|| ft_wstrcpy(mbs, mblen, (wchar_t *)info->arg, info) == -1
+			|| pad_internal_buf(info->flags ^ LEFT_ADJ, ' ', info, pad_info)
+			== -1)
+		return (-1);
 	return (MAX(info->width, info->prec));
 }

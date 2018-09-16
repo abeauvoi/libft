@@ -6,17 +6,9 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 08:12:13 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 00:10:22 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 03:32:02 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#ifdef FT_U64TOA_B16_TEST
-
-# include <stdlib.h>
-# include <stdio.h>
-# include <assert.h>
-
-#endif
 
 #include "ft_printf.h"
 
@@ -47,8 +39,7 @@ static const t_u8	digits16(uint64_t val)
 	return (12 + digits16(val / POW_16(P12)));
 }
 
-static const t_u16	g_digits100[256] =
-{
+static const t_u16	g_digits100[256] = {
 	0x3030, 0x3130, 0x3230, 0x3330, 0x3430, 0x3530, 0x3630, 0x3730, 0x3830,
 	0x3930, 0x4130, 0x4230, 0x4330, 0x4430, 0x4530, 0x4630, 0x3031, 0x3131,
 	0x3231, 0x3331, 0x3431, 0x3531, 0x3631, 0x3731, 0x3831, 0x3931, 0x4131,
@@ -77,14 +68,13 @@ static const t_u16	g_digits100[256] =
 	0x3145, 0x3245, 0x3345, 0x3445, 0x3545, 0x3645, 0x3745, 0x3845, 0x3945,
 	0x4145, 0x4245, 0x4345, 0x4445, 0x4545, 0x4645, 0x3046, 0x3146, 0x3246,
 	0x3346, 0x3446, 0x3546, 0x3646, 0x3746, 0x3846, 0x3946, 0x4146, 0x4246,
-	0x4346, 0x4446, 0x4546, 0x4646
-};
+	0x4346, 0x4446, 0x4546, 0x4646 };
 
 /*
-** @param tolower -> 0 or 0x2020
+** @param locase -> 0 or 0x2020
 */
 
-t_u8 				ft_u64toa_b16(uint64_t num, char *dst, t_u16 tolower)
+t_u8				ft_u64toa_b16(uint64_t num, char *dst, t_u16 locase)
 {
 	const t_u8	length = digits16(num);
 	t_u8		next;
@@ -92,40 +82,13 @@ t_u8 				ft_u64toa_b16(uint64_t num, char *dst, t_u16 tolower)
 	next = length - 1;
 	while (num >= 0x100)
 	{
-		*((int16_t *)(dst + next - 1)) = g_digits100[num % 0x100] | tolower;
+		*((int16_t *)(dst + next - 1)) = g_digits100[num % 0x100] | locase;
 		num >>= 8;
 		next -= 2;
 	}
 	if (num < 0x10)
-		dst[next] = (char)(g_digits100[num] | tolower);
+		dst[next] = (char)(g_digits100[num] | locase);
 	else
-		*((int16_t *)(dst + next - 1)) = g_digits100[num] | tolower;
+		*((int16_t *)(dst + next - 1)) = g_digits100[num] | locase;
 	return (length);
 }
-
-#ifdef FT_U64TOA_B16_TEST
-
-int					main(int argc, char *const argv[])
-{
-	char		buf[INT_BUFSIZE_BOUND(uint64_t)];
-	static char	printf_format[] = "[num:%llX]\n[res:%s]\n";
-	uint64_t	num;
-	uint16_t	tolower;
-	int			i;
-
-	tolower = (argc == 2 && ft_strcmp(argv[1], "-l") == 0 ? 0x2020 : 0);
-	printf("<<< Test for ft_u64toa_b16 >>>\n");
-	i = 0;
-	while (i < NTESTS)
-	{
-		printf("[test #%d]\n", i++);
-		arc4random_buf(&num, sizeof(num));
-		buf[ft_u64toa_b16(num, buf, tolower)] = '\0';
-		printf_format[8] |= tolower;
-		printf(printf_format, num, buf);
-		assert(strtoull(buf, NULL, 16) == num);
-	}
-	return (0);
-}
-
-#endif

@@ -6,17 +6,9 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 10:15:31 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/03 00:11:05 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 03:32:28 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#ifdef FT_U64TOA_B8_TEST
-
-# include <stdlib.h>
-# include <stdio.h>
-# include <assert.h>
-
-#endif
 
 #include "ft_printf.h"
 
@@ -77,26 +69,3 @@ t_u8					ft_u64toa_b8(uint64_t num, char *dst)
 		*((int16_t *)(dst + next - 1)) = g_digits100[num];
 	return (length);
 }
-
-#ifdef FT_U64TOA_B8_TEST
-
-int						main(void)
-{
-	char		buf[INT_BUFSIZE_BOUND(uint64_t)];
-	uint64_t	num;
-	int			i;
-
-	printf("<<< Test for ft_u64toa_b8 >>>\n");
-	i = 0;
-	while (i < NTESTS)
-	{
-		printf("[test #%d]\n", i++);
-		arc4random_buf(&num, sizeof(num));
-		buf[ft_u64toa_b8(num, buf)] = '\0';
-		printf("[num:%llo]\n[res:%s]\n", num, buf);
-		assert(strtoull(buf, NULL, 8) == num);
-	}
-	return (0);
-}
-
-#endif

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 03:34:15 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:21:58 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 03:36:46 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,31 @@
 
 int			char_to_internal_buf(char c, t_ftpf *info)
 {
-	if (info->max_length > 0)
+	if (info->bufpos == FT_PRINTF_BUFSZ)
 	{
-		if (info->bufpos == FT_PRINTF_BUFSZ)
-		{
-			if (info->outf(info->redir, info->buf, info->bufpos) == -1)
-				return (-1);
-			else
-				info->bufpos = 0;
-		}
-		info->buf[info->bufpos++] = c;
-		--info->max_length;
+		if (info->outf(info->redir, info->buf, info->bufpos) == -1)
+			return (-1);
+		else
+			info->bufpos = 0;
 	}
+	info->buf[info->bufpos++] = c;
 	return (1);
 }
 
-int 		flush_internal_buf(t_ftpf *info)
+int			flush_internal_buf(t_ftpf *info)
 {
 	int		flushed_len;
 
-	flushed_len = MIN(info->bufpos, info->max_length);
+	flushed_len = (int)MIN(info->bufpos, info->max_length - info->done);
+	if (flushed_len < 0)
+		flushed_len = 0;
 	if (info->outf(info->redir, info->buf, flushed_len) == -1)
 		return (-1);
-	info->max_length -= flushed_len;
 	info->bufpos = 0;
 	return (1);
 }
 
-int 		str_to_internal_buf(char *str, int len, t_ftpf *info)
+int			str_to_internal_buf(const char *str, int len, t_ftpf *info)
 {
 	while (len > FT_PRINTF_BUFSZ)
 	{
@@ -59,21 +56,21 @@ int 		str_to_internal_buf(char *str, int len, t_ftpf *info)
 	return (1);
 }
 
-int			pad_internal_buf(t_u32 flags, char pad_char, t_ftpf *info,
+int			pad_internal_buf(t_u32 flags, char c, t_ftpf *info,
 		struct s_ftpf_pad pad_info)
 {
-	int			len;
-	static char	blanks[PRINTF_PADSIZE] = 
-	{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',\
-		' '};
-	static char	zeroes[PRINTF_PADSIZE] = 
-	{'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',\
-		'0'};
-	char		*p;
+	char				*p;
+	int					len;
+	static const char	blanks[PRINTF_PADSIZE] =
+	{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+		' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+	static const char	zeroes[PRINTF_PADSIZE] =
+	{'0', '0', '0', '0', '0', '0', '0', '0',
+		'0', '0', '0', '0', '0', '0', '0', '0'};
 
 	if ((flags & (LEFT_ADJ | ZERO_PAD)) || pad_info.len >= pad_info.width)
 		return (0);
-	p = (pad_char == ' ' ? blanks : zeroes);
+	p = (c == ' ' ? blanks : zeroes);
 	len = pad_info.width - pad_info.len;
 	while (len >= PRINTF_PADSIZE)
 	{

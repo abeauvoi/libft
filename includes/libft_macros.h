@@ -6,7 +6,7 @@
 /*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 05:06:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:52:12 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 02:53:23 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@
 # define INLINED __attribute__((always_inline))
 # define UNUSED(x) __attribute__((unused)) x
 # define PRINTF_FORMAT(a,b) __attribute__ ((format (printf, a, b)))
+# define DEPRECATED __attribute__ ((deprecated))
 /*
 ** }}}
 */

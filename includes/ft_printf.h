@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:52:12 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 03:42:25 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,30 +124,30 @@ struct				s_ftpf_pad
 {
 	t_u32		width;
 	int			len;
-	const char	*pad_buf;
 };
 
 typedef struct 		s_ftpf
 {
 	void 			*arg;
 	char 			*workptr;
-	char 			*endptr;
 	char 			*dup_fmt;
 	const char 		*prefix;
 	t_u8 			prefix_len;
 	t_u16 			flags;
 	t_u32 			width;
 	int 			prec;
-	int 			len;
 	int 			done;
 	char 			buf[FT_PRINTF_BUFSZ + 1];
 	t_u16 			bufpos;
 	char			convbuf[INT_BUFSIZE_BOUND(t_u64)];
+# undef MAX_PREFIX_LEN
 	wchar_t 		wchar[2];
 	union u_redir 	redir;
-	t_u32 			max_length;
+	size_t			max_length;
 	int 			(*outf)(union u_redir, const char *, struct s_ftpf *);
 } 					t_ftpf;
+
+typedef int			(*t_ftpf_handler)(t_ftpf *);
 
 enum				e_ftpf_states
 {
@@ -169,19 +169,19 @@ enum				e_ftpf_states
 ** Function declarations {{{1
 */
 
-int PRINTF_FORMAT(1,2)	ft_printf(const char *format, ...);
-int	PRINTF_FORMAT(2,3)	ft_sprintf(char *str, const char *format, ...);
-int	PRINTF_FORMAT(3,4)	ft_snprintf(char *str, size_t size, const char *fmt,
+PRINTF_FORMAT(1,2) int	ft_printf(const char *format, ...);
+PRINTF_FORMAT(2,3) int	ft_sprintf(char *str, const char *format, ...);
+PRINTF_FORMAT(3,4) int	ft_snprintf(char *str, size_t size, const char *fmt,
 		...);
-int PRINTF_FORMAT(2,3)	ft_asprintf(char **ret, const char *fmt, ...);
-int PRINTF_FORMAT(2,3)	ft_dprintf(int fd, const char *fmt, ...);
+PRINTF_FORMAT(2,3) int	ft_asprintf(char **ret, const char *fmt, ...);
+PRINTF_FORMAT(2,3) int	ft_dprintf(int fd, const char *fmt, ...);
 
-int	PRINTF_FORMAT(1,0)	ft_vprintf(const char *format, va_list ap);
-int	PRINTF_FORMAT(2,0)	ft_vsprintf(char *str, const char *format, va_list ap);
-int PRINTF_FORMAT(3,0)	ft_vsnprintf(char *str, size_t size, const char *fmt,
+PRINTF_FORMAT(1,0) int	ft_vprintf(const char *format, va_list ap);
+PRINTF_FORMAT(2,0) int	ft_vsprintf(char *str, const char *format, va_list ap);
+PRINTF_FORMAT(3,0) int	ft_vsnprintf(char *str, size_t size, const char *fmt,
 		va_list ap);
-int PRINTF_FORMAT(2,0)	ft_vasprintf(char **ret, const char *fmt, va_list ap);
-int PRINTF_FORMAT(2,0)	ft_vdprintf(int fd, const char *fmt, va_list ap);
+PRINTF_FORMAT(2,0) int	ft_vasprintf(char **ret, const char *fmt, va_list ap);
+PRINTF_FORMAT(2,0) int	ft_vdprintf(int fd, const char *fmt, va_list ap);
 
 /*
 ** Internal functions {{{2
@@ -207,11 +207,16 @@ int						handle_hex_int(t_ftpf *info);
 int						handle_hex_str(t_ftpf *info);
 int						handle_str(t_ftpf *info);
 int						handle_wstr(t_ftpf *info);
+int						handle_padding(int len, t_ftpf *info);
+
+int						char_to_internal_buf(char c, t_ftpf *info);
+int						str_to_internal_buf(const char *str, int len,
+		t_ftpf *info);
+int						pad_internal_buf(t_u32 flags, char pad_char,
+		t_ftpf *info, struct s_ftpf_pad pad_info);
 
 int						ft_atoi_skip(const char **str);
-int						pad_internal_buf(t_u32 width, int prec, t_u16 flags,
-		t_ftpf *info);
-int INLINED				is_utf8(wchar_t wc);
+INLINED int				is_utf8(wchar_t wc);
 int						ft_wchar_to_utf8(char *buf, wchar_t wchar);
 
 int						out_fd(union u_redir redir, const char *src,
@@ -219,8 +224,7 @@ int						out_fd(union u_redir redir, const char *src,
 int						out_str(union u_redir redir, const char *src,
 		size_t len);
 int						out_null(union u_redir UNUSED(redir),
-		const char UNUSED(*src),
-	size_t UNUSED(len));
+		const char UNUSED(*src), size_t UNUSED(len));
 int						out_stream(union u_redir redir, const char *src,
 		size_t len);
 

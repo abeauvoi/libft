@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_binary.c                                    :+:      :+:    :+:   */
+/*   va_list_wrappers_2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/19 04:53:24 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 02:31:05 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/16 01:21:27 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/16 01:43:28 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		handle_bin_int(t_ftpf_info *info)
-{
-	int		len;
-	t_u64	nb;
+/*
+** @TODO: Add stream locking and flushing mechanisms
+*/
 
-	nb = (t_u64)info->arg;
-	if (nb != 0)
-	{
-		info->prefix += 9;
-		info->prefix_len = 2;
-	}
-	len = ft_u64toa_b2(nb, info->convbuf);
-	if (info->prec != -1)
-		info->flags &= ~ZERO_PAD;
-	if (nb == 0 && info->prec == 0)
-		len = 0;
-	info->workptr = info->convbuf;
-	return (handle_padding(len, info));
+int			ft_vfprintf(FILE *stream, const char *fmt, va_list ap)
+{
+	t_ftpf		info;
+
+	ft_memset(&info, 0, sizeof(info));
+	info.outf = out_stream;
+	info.max_length = -1U;
+	info.dup_fmt = (char *)fmt;
+	info.prefix = PREFIXES;
+	info.redir.stream = stream;
+	return (ft_printf_core(&info, ap));
 }

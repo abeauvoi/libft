@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 03:19:58 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:45:54 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 01:08:56 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_u8		copy_value_to_buf(char *lookup, char esc_seq[12], t_u8 pos,
 ** First, this function locates a delimiter (';' or '}'),
 ** starting from info->dup_fmt[1] (info->dup_fmt[0] == '{' here).
 ** The address of the delimiter is stored in ep. This mechanism allows us to
-** get the length of a sequence by subtracting wp to ep.
+** get the length of a sequence by subtracting ep by wp.
 **
 ** Then, it stores the length of the sequence (a sequence being for ex. "RED")
 ** before saving the address of a potential match in lookup.

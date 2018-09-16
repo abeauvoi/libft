@@ -6,17 +6,9 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 05:45:52 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/04 20:45:24 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 03:31:40 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#ifdef FT_U64TOA_B10_TEST
-
-# include <stdlib.h>
-# include <stdio.h>
-# include <assert.h>
-
-#endif
 
 #include "ft_printf.h"
 
@@ -73,7 +65,7 @@ static const t_u16	g_digits100[100] =
 
 t_u8				ft_u64toa_b10(uint64_t num, char *dst)
 {
-	const t_u8 	length = digits10(num);
+	const t_u8	length = digits10(num);
 	t_u8		next;
 
 	next = length - 1;
@@ -89,27 +81,3 @@ t_u8				ft_u64toa_b10(uint64_t num, char *dst)
 		*((int16_t *)(dst + next - 1)) = g_digits100[num];
 	return (length);
 }
-
-#ifdef FT_U64TOA_B10_TEST
-
-int					main(void)
-{
-	char		buf[INT_BUFSIZE_BOUND(uint64_t)];
-	uint64_t	num;
-	int			i;
-
-	printf("<<< Test for ft_u64toa_b10 >>>\n");
-	i = 0;
-	while (i < NTESTS)
-	{
-		printf("[test #%d]\n", i);
-		++i;
-		arc4random_buf(&num, sizeof(num));
-		buf[ft_u64toa_b10(num, buf)] = '\0';
-		printf("[num:%llu]\n[buf:%s]\n", num, buf);
-		assert(strtoull(buf, NULL, 10) == num);
-	}
-	return (0);
-}
-
-#endif

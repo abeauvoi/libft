@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:24:57 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 03:43:23 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 */ 
 
 
-static const t_u8	 	g_states[STOP]['z' - 'A' + 1] = 
+static const t_u8	g_states[STOP]['z' - 'A' + 1] = 
 {
 	{
 		S('d') = INT, S('i') = INT, S('o') = UINT, S('u') = UINT, S('x') = UINT,
@@ -59,7 +59,7 @@ static const t_u8	 	g_states[STOP]['z' - 'A' + 1] =
 **}}}
 */
 
-uint32_t				parse_flags(t_ftpf *info)
+t_u32				parse_flags(t_ftpf *info)
 {
 	char 	*s;
 	t_u32	flags;
@@ -76,7 +76,7 @@ uint32_t				parse_flags(t_ftpf *info)
 	return (flags);
 }
 
-uint32_t				parse_field_width(t_ftpf *info, va_list ap)
+t_u32				parse_field_width(t_ftpf *info, va_list ap)
 {
 	int			width;
 	const char 	*s;
@@ -98,7 +98,7 @@ uint32_t				parse_field_width(t_ftpf *info, va_list ap)
 	return (width);
 }
 
-int						parse_precision(t_ftpf *info, va_list ap)
+int					parse_precision(t_ftpf *info, va_list ap)
 {
 	int			precision;
 	const char 	*s;
@@ -120,7 +120,7 @@ int						parse_precision(t_ftpf *info, va_list ap)
 	return (precision);
 }	
 
-void					parse_size_modifiers(t_ftpf *info, va_list ap)
+void				parse_size_modifiers(t_ftpf *info, va_list ap)
 {
 	t_u32	state;
 	t_u32 	previous_state;
