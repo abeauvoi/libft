@@ -6,40 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 08:12:13 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:32:02 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:35:55 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static const t_u8	digits16(uint64_t val)
-{
-	if (val < POW_16(P01))
-		return (1);
-	if (val < POW_16(P02))
-		return (2);
-	if (val < POW_16(P03))
-		return (3);
-	if (val < POW_16(P12))
-	{
-		if (val < POW_16(P08))
-		{
-			if (val < POW_16(P06))
-			{
-				if (val < POW_16(P04))
-					return (4);
-				return (5 + (val >= POW_16(P05)));
-			}
-			return (7 + (val >= POW_16(P07)));
-		}
-		if (val < POW_16(P10))
-			return (9 + (val >= POW_16(P09)));
-		return (11 + (val >= POW_16(P11)));
-	}
-	return (12 + digits16(val / POW_16(P12)));
-}
-
-static const t_u16	g_digits100[256] = {
+static const uint16_t	g_digits256[256] = {
 	0x3030, 0x3130, 0x3230, 0x3330, 0x3430, 0x3530, 0x3630, 0x3730, 0x3830,
 	0x3930, 0x4130, 0x4230, 0x4330, 0x4430, 0x4530, 0x4630, 0x3031, 0x3131,
 	0x3231, 0x3331, 0x3431, 0x3531, 0x3631, 0x3731, 0x3831, 0x3931, 0x4131,
@@ -70,25 +43,21 @@ static const t_u16	g_digits100[256] = {
 	0x3346, 0x3446, 0x3546, 0x3646, 0x3746, 0x3846, 0x3946, 0x4146, 0x4246,
 	0x4346, 0x4446, 0x4546, 0x4646 };
 
-/*
-** @param locase -> 0 or 0x2020
-*/
-
-t_u8				ft_u64toa_b16(uint64_t num, char *dst, t_u16 locase)
+uint8_t					ft_u64toa_b16(uint64_t num, char *dst, uint16_t locase)
 {
-	const t_u8	length = digits16(num);
-	t_u8		next;
+	const uint8_t	length = ft_nbrlen_b16(num);
+	uint8_t			next;
 
 	next = length - 1;
-	while (num >= 0x100)
+	while (num >= 256)
 	{
-		*((int16_t *)(dst + next - 1)) = g_digits100[num % 0x100] | locase;
+		*((uint16_t *)(dst + next - 1)) = g_digits256[num % 256] | locase;
 		num >>= 8;
 		next -= 2;
 	}
-	if (num < 0x10)
-		dst[next] = (char)(g_digits100[num] | locase);
+	if (num < 16)
+		dst[next] = XDIGITS_UPCASE[num] | (uint8_t)locase;
 	else
-		*((int16_t *)(dst + next - 1)) = g_digits100[num] | locase;
+		*((uint16_t *)(dst + next - 1)) = g_digits100[num] | locase;
 	return (length);
 }

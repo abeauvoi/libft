@@ -1,27 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit_str.c                                   :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/15 05:05:10 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/15 06:03:38 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/15 18:10:35 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 06:10:06 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-
-inline bool		ft_isdigit_str(const char *s)
+inline int		ft_isascii(int c)
 {
-	while (ft_isdigit(*s))
-		++s;
-	return (*s == '\0');
-}
-
-inline bool		ft_isdigit_nstr(const char *s, size_t n)
-{
-	while (n-- && ft_isdigit(*s))
-		++s;
-	return (n == 0);
+	return ((unsigned char)c <= '~');
 }

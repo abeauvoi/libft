@@ -6,20 +6,21 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 17:31:02 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/06 20:09:51 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/17 08:07:46 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long		ft_pow(int base, unsigned int exponent)
+uintmax_t	ft_pow(int value,
+		unsigned int exponent)
 {
-	long	result;
+	uintmax_t	result;
 
 	if (exponent == 0)
 		return (1);
 	result = 1;
 	while (exponent-- > 0)
-		result *= base;
+		result *= value;
 	return (result);
 }

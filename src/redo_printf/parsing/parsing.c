@@ -6,52 +6,51 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:50:51 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 22:20:19 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-# define S(x) [(x) - 'A']
-# define OUT_OF_RANGE(x) (t_u8)((x) - 'A') > (t_u8)('z' - 'A')
 
 /*
 ** Size-modifiers state machine {{{
 */ 
 
 
-static const t_u8	g_states[STOP]['z' - 'A' + 1] = 
-{
+static const t_u8	g_states[STOP]['z' - 'C' + 1] = {
 	{
-		S('d') = INT, S('i') = INT, S('o') = UINT, S('u') = UINT, S('x') = UINT,
-		S('X') = UINT, S('c') = CHAR, S('C') = INT, S('s') = PTR, S('S') = PTR,
-		S('p') = UIPTR, S('l') = LPRE, S('h') = HPRE, S('z') = ZTPRE,
-		S('j') = JPRE, S('t') = ZTPRE
+		['b' - 'C'] = UINT, ['c' - 'A'] = CHAR, ['d' - 'A'] = INT,
+		['h' - 'A'] = HPRE, ['i' - 'A'] = INT, ['j' - 'A'] = JPRE,
+		['l' - 'A'] = LPRE, ['o' - 'A'] = UINT, ['s' - 'A'] = PTR,
+		['u' - 'A'] = UINT, ['x' - 'A'] = UINT, ['X' - 'A'] = UINT,
+		['C' - 'A'] = INT, ['S' - 'A'] = PTR, ['p' - 'A'] = UIPTR,
+		['z' - 'A'] = ZTPRE,
+		['t' - 'A'] = ZTPRE
 	},
 	{
-		S('d') = LONG, S('i') = LONG, S('o') = ULONG, S('u') = ULONG,
-		S('x') = ULONG, S('X') = ULONG, S('c') = INT, S('s') = PTR,
-		S('l') = LLPRE
+		['d' - 'A'] = LONG, ['i' - 'A'] = LONG, ['o' - 'A'] = ULONG, ['u' - 'A'] = ULONG,
+		['x' - 'A'] = ULONG, ['X' - 'A'] = ULONG, ['c' - 'A'] = INT, ['s' - 'A'] = PTR,
+		['l' - 'A'] = LLPRE
 	},
 	{
-		S('d') = LONG, S('i') = LONG, S('o') = ULONG, S('u') = ULONG,
-		S('x') = ULONG, S('X') = ULONG
+		['d' - 'A'] = LONG, ['i' - 'A'] = LONG, ['o' - 'A'] = ULONG, ['u' - 'A'] = ULONG,
+		['x' - 'A'] = ULONG, ['X' - 'A'] = ULONG
 	},
 	{
-		S('d') = SHORT, S('i') = SHORT, S('o') = USHORT, S('u') = USHORT,
-		S('x') = USHORT, S('X') = USHORT, S('h') = HHPRE
+		['d' - 'A'] = SHORT, ['i' - 'A'] = SHORT, ['o' - 'A'] = USHORT, ['u' - 'A'] = USHORT,
+		['x' - 'A'] = USHORT, ['X' - 'A'] = USHORT, ['h' - 'A'] = HHPRE
 	},
 	{
-		S('d') = CHAR, S('i') = CHAR, S('o') = UCHAR, S('u') = UCHAR,
-		S('x') = UCHAR, S('X') = UCHAR 
+		['d' - 'A'] = CHAR, ['i' - 'A'] = CHAR, ['o' - 'A'] = UCHAR, ['u' - 'A'] = UCHAR,
+		['x' - 'A'] = UCHAR, ['X' - 'A'] = UCHAR 
 	},
 	{
-		S('d') = PDIFF, S('i') = PDIFF, S('o') = SIZET, S('u') = SIZET,
-		S('x') = SIZET, S('X') = SIZET 
+		['d' - 'A'] = PDIFF, ['i' - 'A'] = PDIFF, ['o' - 'A'] = SIZET, ['u' - 'A'] = SIZET,
+		['x' - 'A'] = SIZET, ['X' - 'A'] = SIZET 
 	},
 	{
-		S('d') = IMAX, S('i') = IMAX, S('o') = UMAX, S('u') = UMAX,
-		S('x') = UMAX, S('X') = UMAX 
+		['d' - 'A'] = IMAX, ['i' - 'A'] = IMAX, ['o' - 'A'] = UMAX, ['u' - 'A'] = UMAX,
+		['x' - 'A'] = UMAX, ['X' - 'A'] = UMAX 
 	}
 };
 
@@ -126,16 +125,14 @@ void				parse_size_modifiers(t_ftpf *info, va_list ap)
 	t_u32 	prev_state;
 	char 	*s;
 
-	state = 0;
+	state = BARE;
 	s = info->dup_fmt;
 	while (state < STOP)
 	{
 		if (OUT_OF_RANGE(*s))
-# undef OUT_OF_RANGE
 			break ;
 		prev_state = state;
-		state = g_states[state]S(*s++);
-# undef S
+		state = g_states[state][*s++ - 'C'];
 	}
 	info->dup_fmt = s;
 	if (s[-1] == '%')

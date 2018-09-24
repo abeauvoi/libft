@@ -6,48 +6,55 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 19:34:45 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 05:54:25 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/20 18:35:22 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static inline size_t	ft_memcpy_fast(t_u8 **dst, const t_u8 **src,
-		size_t len)
+static inline void		ft_memcpy_fast(uint8_t **dst, const uint8_t **src,
+		size_t n)
 {
-	t_u64		*adst;
-	const t_u64	*asrc;
+	uint64_t		*adst;
+	const uint64_t	*asrc;
 
-	adst = (t_u64 *)*dst;
-	asrc = (const t_u64 *)*src;
-	while (len >= BIG_BLOCK_SIZE)
+	adst = (uint64_t *)*dst;
+	asrc = (const uint64_t *)*src;
+	while (n >= sizeof(uint64_t) * 4)
 	{
 		*adst++ = *asrc++;
 		*adst++ = *asrc++;
 		*adst++ = *asrc++;
 		*adst++ = *asrc++;
-		len -= BIG_BLOCK_SIZE;
+		n -= sizeof(uint64_t) * 4;
 	}
-	while (len >= LITTLE_BLOCK_SIZE)
+	while (n >= sizeof(uint64_t))
 	{
 		*adst++ = *asrc++;
-		len -= LITTLE_BLOCK_SIZE;
+		n -= sizeof(uint64_t);
 	}
-	*dst = (t_u8 *)adst;
-	*src = (const t_u8 *)asrc;
-	return (len);
+	*dst = (uint8_t *)adst;
+	*src = (const uint8_t *)asrc;
 }
 
-void					*ft_memcpy(void *dst0, const void *src0, size_t len)
+void					*ft_memcpy(void *dst0, const void *src0, size_t n)
 {
-	t_u8		*dst;
-	const t_u8	*src;
+	uint8_t			*dst;
+	const uint8_t	*src;
 
-	src = (const t_u8 *)src0;
-	dst = (t_u8 *)dst0;
-	if (!TOO_SMALL(len) && !UNALIGNED(src, dst))
-		len = ft_memcpy_fast(&dst, &src, len);
-	while (len-- > 0)
-		*dst++ = *src++;
-	return (dst);
+	if (n)
+	{
+		src = (const uint8_t *)src0;
+		dst = (uint8_t *)dst0;
+		if (n >= sizeof(uint64_t)
+				&& ft_isaligned(src, sizeof(uint64_t))
+				&& ft_isaligned(dst, sizeof(uint64_t)))
+		{
+			ft_memcpy_fast(&dst, &src, n);
+			n %= sizeof(uint64_t);
+		}
+		while (n-- > 0)
+			*dst++ = *src++;
+	}
+	return (dst0);
 }

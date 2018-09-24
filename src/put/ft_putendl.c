@@ -6,18 +6,15 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:01:30 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/29 17:45:28 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/18 14:04:54 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <unistd.h>
+#include "libft.h"
 
-void		ft_putendl(char const *s)
+inline void		ft_putendl(char const *s)
 {
-	if (s)
-	{
-		write(1, s, ft_strlen(s));
-		ft_putchar('\n');
-	}
+	write(1, s, ft_strlen(s));
+	ft_putchar('\n');
 }

@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:17:58 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/27 04:20:21 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/20 21:05:02 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-void	ft_strdel(char **as)
+inline void		ft_strdel(char **as)
 {
 	free(*as);
 	*as = NULL;

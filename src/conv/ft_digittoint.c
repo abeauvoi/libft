@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isupper.c                                       :+:      :+:    :+:   */
+/*   ft_digittoint.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 18:07:43 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/14 13:23:16 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/17 07:44:12 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 07:48:41 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isupper(int c)
+inline unsigned char	ft_digittoint(char c)
 {
-	return (65 <= (unsigned char)c && (unsigned char)c <= 90);
+	return ((unsigned char)c - '0');
 }

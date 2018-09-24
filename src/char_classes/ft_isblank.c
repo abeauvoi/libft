@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_isblank.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 18:03:29 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/29 17:29:39 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/11/27 04:31:39 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 06:10:22 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-inline bool		ft_isalpha(int c)
+inline int	ft_isblank(char c)
 {
-	return (ft_islower(c) || ft_isupper(c));
+	return (c == ' ' || c == '\t');
 }

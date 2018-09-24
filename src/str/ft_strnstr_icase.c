@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 19:37:57 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:45:31 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/24 16:11:05 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ char		*ft_strnstr_icase(const char *hs, const char *ndl, size_t len)
 		return ((char *)hs);
 	while (*hs && len)
 	{
-		if (TO_UPPER(*hs) == TO_UPPER(*n))
+		if (ft_to_upper(*hs) == ft_to_upper(*n))
 		{
 			h = hs;
 			i = len;
-			while (i-- && TO_UPPER(*(h++)) == TO_UPPER(*(n++)))
+			while (i-- && ft_to_upper(*(h++)) == ft_to_upper(*(n++)))
 				if (!*n)
 					return ((char *)hs);
 		}

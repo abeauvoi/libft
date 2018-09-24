@@ -6,46 +6,38 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/21 16:43:55 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/21 19:19:33 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:48:16 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void			skip_spaces_and_sign(const char **s, char *const sign)
-{
-	while (**s && ft_isspace(**s))
-		++*s;
-	if (**s == '-' || **s == '+')
-	{
-		if (**s == '-')
-			*sign = -1;
-		++*s;
-	}
-}
-
 int					ft_atoi_skip(const char **s)
 {
-	unsigned int	acc;
+	const char		*cp;
+	unsigned int	value;
 	char			sign;
-	unsigned int	digit;
+	unsigned char	digit;
 
-	sign = 1;
-	skip_spaces_and_sign(s, &sign);
-	acc = ft_digittoint(**s);
-	while (ft_isdigit(*(++(*s))))
+	cp = *s;
+	value = 0;
+	while (ft_isspace(*cp++))
+		continue ;
+	if (*cp == '-' || *cp == '+')
+		sign = *cp++;
+	while ((digit = ft_todigit(*cp++)) < 9)
 	{
-		if (acc > INT_MAX / 10)
-			return (-1 * sign);
+		if (value > INT_MAX / 10)
+			return (-1);
 		else
 		{
-			digit = ft_digittoint(**s);
-			acc *= 10;
-			if (INT_MAX - digit < acc)
-				return (-1 * sign);
+			value *= 10;
+			if (INT_MAX - digit < value)
+				return (-1);
 			else
-				acc += digit;
+				value += digit;
 		}
 	}
-	return ((int)(acc * sign));
+	*s = cp;
+	return (sign == '-' ? -(int)value : value);
 }

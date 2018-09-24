@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:05:07 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/01 13:41:15 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/17 07:39:30 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ void		*ft_memalloc(size_t size)
 {
 	void	*new;
 
-	if (!(new = malloc(size)))
+	if ((new = malloc(size)) == NULL)
 		return (NULL);
-	ft_bzero(new, size);
-	return (new);
+	return (ft_memset(new, '\0', size));
 }

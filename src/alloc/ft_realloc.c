@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchrnul.c                                     :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/17 17:51:49 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/17 17:58:53 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/08/01 13:41:28 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 09:14:56 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strchrnul(const char *s, int c)
+#include <stdlib.h>
+#include "libft.h"
+
+void 		*ft_realloc(void *ptr, size_t size)
 {
-	while (*s && *s != (char)c)
-		++s;
-	return ((char *)s);
+	void 	*realloc;
+
+	if (size == 0 && ptr != NULL)
+	{
+		if ((realloc = malloc(1)) == NULL)
+			return (NULL);
+		free(ptr);
+		return (realloc);
+	}
+	if ((realloc = malloc(size)) == NULL)
+		return (NULL);
+	ft_memcpy(realloc, ptr, size);
+	free(ptr);
+	return (realloc);
 }

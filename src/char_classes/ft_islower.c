@@ -1,27 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum_str.c                                   :+:      :+:    :+:   */
+/*   ft_islower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/15 05:01:40 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/01/15 06:02:46 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/15 18:06:35 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 06:19:22 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-
-inline bool		ft_isalnum_str(const char *s)
+inline int	ft_islower(int c)
 {
-	while (ft_isalnum(*s))
-		++s;
-	return (*s == '\0');
-}
-
-inline bool		ft_isalnum_nstr(const char *s, size_t n)
-{
-	while (n-- && ft_isalnum(*s))
-		++s;
-	return (n == 0);
+	return ((unsigned char)c - 'a' < 26);
 }

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/24 07:04:50 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/12 02:00:34 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 22:20:19 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ inline void			*call_va_arg(t_u32 state, va_list ap)
 {
 	if (state == MAXSTATE)
 		return ;
+	else if (state == PTR)
+		return ((void *)va_arg(ap, char *));
 	else if (state == INT)
 		return ((void *)va_arg(ap, int));
 	else if (state == UINT)

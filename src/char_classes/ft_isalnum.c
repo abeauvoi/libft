@@ -1,32 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_realloc.c                                       :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/01 13:41:28 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/01 14:08:36 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/15 18:09:14 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 06:03:26 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
 
-void 		*ft_realloc(void *ptr, size_t size)
+inline int		ft_isalnum(int c)
 {
-	void 	*realloc;
-
-	if (!size && ptr)
-	{
-		if (!(realloc = malloc(1)))
-			return (NULL);
-		free(ptr);
-		return (realloc);
-	}
-	if (!(realloc = malloc(size)))
-		return (NULL);
-	ft_memcpy(realloc, ptr, size);
-	free(ptr);
-	return (realloc);
+	return (ft_isdigit(c) || ft_isalpha(c));
 }

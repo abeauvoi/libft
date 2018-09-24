@@ -1,40 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strchr_callback.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 17:31:53 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 17:46:06 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/20 19:04:09 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/20 19:18:39 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			ft_atoi(const char *s)
+char	*ft_strchr_callback(const char *s, bool (*callback)(uint8_t))
 {
-	char		sign;
-	uint32_t	acc;
-	uint8_t		digit;
+	const uint8_t	*us;
 
-	while (ft_isspace(*s))
-		++s;
-	if (*s == '-' || *s == '+')
-		sign = *s++;
-	acc = 0;
-	while ((digit = ft_todigit(*s++)) <= 9)
+	us = (const uint8_t *)s;
+	while (1)
 	{
-		if (acc > INT_MAX / 10)
-			return (-1);
-		else
-		{
-			acc *= 10;
-			if (INT_MAX - digit < acc)
-				return (-1);
-			else
-				acc += digit;
-		}
+		if (callback(*us))
+			return ((char *)us);
+		else if (*us == '\0')
+			return ((char *)NULL);
+		++us;
 	}
-	return (sign == '-' ? -(int)acc : acc);
+	__builtin_unreachable();
 }

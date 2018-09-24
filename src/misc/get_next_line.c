@@ -6,14 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 17:39:12 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/08/20 10:42:46 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/20 18:41:08 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "libft.h"
-#include "get_next_line.h"
 
 static int			build_one_line(int fd, char *buf, t_file *file)
 {

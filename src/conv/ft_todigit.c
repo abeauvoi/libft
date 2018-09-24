@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isblank.c                                       :+:      :+:    :+:   */
+/*   ft_todigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/27 04:31:39 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/27 04:34:19 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/18 14:28:24 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/18 17:40:57 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_types.h"
+#include "libft.h"
 
-inline bool	ft_isblank(char c)
+inline uint8_t	ft_todigit(int c)
 {
-	return (c == ' ' || c == '\t');
+	return ((uint8_t)c + '0');
 }

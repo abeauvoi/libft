@@ -1,40 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strdup2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 17:31:53 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 17:46:06 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/20 21:06:09 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/20 21:07:04 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-int			ft_atoi(const char *s)
+char		*ft_strdup2(const char *s1, size_t len_s1)
 {
-	char		sign;
-	uint32_t	acc;
-	uint8_t		digit;
+	char	*s2;
 
-	while (ft_isspace(*s))
-		++s;
-	if (*s == '-' || *s == '+')
-		sign = *s++;
-	acc = 0;
-	while ((digit = ft_todigit(*s++)) <= 9)
-	{
-		if (acc > INT_MAX / 10)
-			return (-1);
-		else
-		{
-			acc *= 10;
-			if (INT_MAX - digit < acc)
-				return (-1);
-			else
-				acc += digit;
-		}
-	}
-	return (sign == '-' ? -(int)acc : acc);
+	if ((s2 = (char *)malloc(len_s1 + 1)) == NULL)
+		return (NULL);
+	return (ft_strcpy(s2, s1));
 }

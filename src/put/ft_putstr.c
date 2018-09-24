@@ -6,14 +6,14 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 21:30:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/21 00:21:23 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/18 14:06:20 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libft.h"
 
-void	ft_putstr(char const *str)
+inline void		ft_putstr(char const *str)
 {
 	write(1, str, ft_strlen(str));
 }

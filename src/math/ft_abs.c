@@ -6,13 +6,15 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/28 17:49:54 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/08/12 21:38:08 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/17 07:58:42 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-uintmax_t	ft_abs(intmax_t i)
+inline intmax_t		ft_abs(intmax_t value)
 {
-	return (i < 0 ? -i : i);
+	const intmax_t	mask = (value >> (sizeof(value) * 8 - 1));
+
+	return ((value ^ mask) - mask);
 }

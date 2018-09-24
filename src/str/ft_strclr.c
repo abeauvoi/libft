@@ -6,27 +6,26 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:23:13 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 07:31:02 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/20 20:52:50 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_macros.h"
-#include "libft_types.h"
+#include "libft.h"
 
 void	ft_strclr(char *s)
 {
-	t_u64	*lptr;
+	uint64_t	*wptr;
 
-	while (_UNALIGNED(s))
+	while (!ft_isaligned((const void *)s, sizeof(wptr)))
 	{
-		if (!*s)
+		if (*s == '\0')
 			return ;
 		*s++ = 0;
 	}
-	lptr = (t_u64*)s;
-	while (!DETECT_NULL(*lptr))
-		*lptr++ = 0;
-	s = (char *)lptr;
-	while ((*s++ = 0))
-		continue ;
+	wptr = (uint64_t *)s;
+	while (!ft_detect_null(*wptr))
+		*wptr++ = (uint64_t)0;
+	s = (char *)wptr;
+	while (*s != '\0')
+		*s++ = 0;
 }

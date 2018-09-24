@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_detect_char.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 17:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/14 13:23:41 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/17 08:19:24 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 08:32:40 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isdigit(int c)
+#include "libft.h"
+
+inline bool		ft_detect_char(uintmax_t word, uintmax_t mask)
 {
-	return (48 <= (unsigned char)c && (unsigned char)c <= 57);
+	return (ft_detect_null(word ^ mask));
 }

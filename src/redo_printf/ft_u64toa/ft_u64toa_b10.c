@@ -6,48 +6,17 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 05:45:52 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:31:40 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:34:54 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 /*
-** itoa implementation based on : https://bit.ly/1npWQAB
-*/
-
-static const t_u8	digits10(uint64_t val)
-{
-	if (val < P01)
-		return (1);
-	if (val < P02)
-		return (2);
-	if (val < P03)
-		return (3);
-	if (val < P12)
-	{
-		if (val < P08)
-		{
-			if (val < P06)
-			{
-				if (val < P04)
-					return (4);
-				return (5 + (val >= P05));
-			}
-			return (7 + (val >= P07));
-		}
-		if (val < P10)
-			return (9 + (val >= P09));
-		return (11 + (val >= P11));
-	}
-	return (12 + digits10(val / P12));
-}
-
-/*
 ** Little-endian binary lookup table of every possible value returned by mod 100
 */
 
-static const t_u16	g_digits100[100] =
+static const uint16_t	g_digits100[100] =
 {
 	0x3030, 0x3130, 0x3230, 0x3330, 0x3430, 0x3530, 0x3630, 0x3730, 0x3830,
 	0x3930, 0x3031, 0x3131, 0x3231, 0x3331, 0x3431, 0x3531, 0x3631, 0x3731,
@@ -63,21 +32,21 @@ static const t_u16	g_digits100[100] =
 	0x3939
 };
 
-t_u8				ft_u64toa_b10(uint64_t num, char *dst)
+uint8_t					ft_u64toa_b10(uint64_t num, char *dst)
 {
-	const t_u8	length = digits10(num);
-	t_u8		next;
+	const uint8_t	length = ft_nbrlen_b10(num);
+	uint8_t			next;
 
 	next = length - 1;
 	while (num >= 100)
 	{
-		*((int16_t *)(dst + next - 1)) = g_digits100[num % 100];
+		*((uint16_t *)(dst + next - 1)) = g_digits100[num % 100];
 		num /= 100;
 		next -= 2;
 	}
 	if (num < 10)
-		dst[next] = TO_CHAR(num);
+		dst[next] = ft_tochar(num);
 	else
-		*((int16_t *)(dst + next - 1)) = g_digits100[num];
+		*((uint16_t *)(dst + next - 1)) = g_digits100[num];
 	return (length);
 }

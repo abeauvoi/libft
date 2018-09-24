@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:42:25 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/18 19:15:17 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@
 */
 # define PREFIXES "-+   0X0x0b"
 # define SPECIFIERS "%bcCdDioprsSuUxX"
-# define FLAGMASK (ALT | ZERO_PAD | LEFT_ADJ | SPACE | PLUS_SIGN | THOUSEP)
 # define FT_PRINTF_BUFSZ 512
+
 /*
 ** Don't forget to change the content of the associated padding buffers :^)
 */
 # define PRINTF_PADSIZE 16
+
 /*
 ** ANSI color codes {{{2
 */
@@ -50,47 +51,52 @@
 # define CC "BLUE34PINK35CYAN36WHITE37BBLACK40BRED41BGREEN42"
 # define CD "BYELLOW43BBLUE44BPINK45BCYAN46BWHITE47"
 # define COLOR_TABLE CA CB CC CD
+
 /*
 ** 2}}}
 */
 /*
 ** Powers of 10 {{{2
 */
-# define	P01 10ull
-# define	P02 100ull
-# define	P03 1000ull
-# define	P04 10000ull
-# define	P05 100000ull
-# define	P06 1000000ull
-# define	P07 10000000ull
-# define	P08 100000000ull
-# define	P09 1000000000ull
-# define	P10 10000000000ull
-# define	P11 100000000000ull
-# define	P12 1000000000000ull
+# define P01 10ull
+# define P02 100ull
+# define P03 1000ull
+# define P04 10000ull
+# define P05 100000ull
+# define P06 1000000ull
+# define P07 10000000ull
+# define P08 100000000ull
+# define P09 1000000000ull
+# define P10 10000000000ull
+# define P11 100000000000ull
+# define P12 1000000000000ull
+
 /*
 ** 2}}}
 */
 /*
 ** Powers of 16 {{{2
 */
-# define	POW_16_X(pow10)	0x ## pow10
-# define	POW_16(pow10)	POW_16_X(pow10)
+# define POW_16_X(pow10) 0x ## pow10
+# define POW_16(pow10)	POW_16_X(pow10)
+
 /*
 ** 2}}}
 */
 /*
 ** Powers of 8 {{{2
 */
-# define	POW_8_X(pow10)	0 ## pow10
-# define	POW_8(pow10)	POW_8_X(pow10)
+# define POW_8_X(pow10)	0 ## pow10
+# define POW_8(pow10) POW_8_X(pow10)
+
 /*
 ** 2}}}
 */
 /*
 ** Powers of 2 {{{2
 */
-# define	POW_2(exp) (1U << exp)
+# define POW_2(exp) (1U << exp)
+
 /*
 ** 2}}}
 */
@@ -122,7 +128,7 @@ union 				u_redir
 
 struct				s_ftpf_pad
 {
-	t_u32		width;
+	uint32_t	width;
 	int			len;
 };
 
@@ -132,15 +138,14 @@ typedef struct 		s_ftpf
 	char 			*workptr;
 	char 			*dup_fmt;
 	const char 		*prefix;
-	t_u8 			prefix_len;
-	t_u16 			flags;
-	t_u32 			width;
+	uint8_t 		prefix_len;
+	uint16_t 		flags;
+	uint32_t 		width;
 	int 			prec;
 	int 			done;
 	char 			buf[FT_PRINTF_BUFSZ + 1];
-	t_u16 			bufpos;
-	char			convbuf[INT_BUFSIZE_BOUND(t_u64)];
-# undef MAX_PREFIX_LEN
+	uint16_t 		bufpos;
+	char			convbuf[sizeof(uint64_t) * CHAR_BIT + 1];
 	wchar_t 		wchar[2];
 	union u_redir 	redir;
 	size_t			max_length;
@@ -169,71 +174,64 @@ enum				e_ftpf_states
 ** Function declarations {{{1
 */
 
-PRINTF_FORMAT(1,2) int	ft_printf(const char *format, ...);
-PRINTF_FORMAT(2,3) int	ft_sprintf(char *str, const char *format, ...);
-PRINTF_FORMAT(3,4) int	ft_snprintf(char *str, size_t size, const char *fmt,
-		...);
-PRINTF_FORMAT(2,3) int	ft_asprintf(char **ret, const char *fmt, ...);
-PRINTF_FORMAT(2,3) int	ft_dprintf(int fd, const char *fmt, ...);
+int			ft_printf(const char *format, ...);
+int			ft_sprintf(char *str, const char *format, ...);
+int			ft_snprintf(char *str, size_t size, const char *fmt, ...);
+int			ft_asprintf(char **ret, const char *fmt, ...);
+int			ft_dprintf(int fd, const char *fmt, ...);
 
-PRINTF_FORMAT(1,0) int	ft_vprintf(const char *format, va_list ap);
-PRINTF_FORMAT(2,0) int	ft_vsprintf(char *str, const char *format, va_list ap);
-PRINTF_FORMAT(3,0) int	ft_vsnprintf(char *str, size_t size, const char *fmt,
-		va_list ap);
-PRINTF_FORMAT(2,0) int	ft_vasprintf(char **ret, const char *fmt, va_list ap);
-PRINTF_FORMAT(2,0) int	ft_vdprintf(int fd, const char *fmt, va_list ap);
+int			ft_vprintf(const char *format, va_list ap);
+int			ft_vsprintf(char *str, const char *format, va_list ap);
+int			ft_vsnprintf(char *str, size_t size, const char *fmt, va_list ap);
+int			ft_vasprintf(char **ret, const char *fmt, va_list ap);
+int			ft_vdprintf(int fd, const char *fmt, va_list ap);
 
 /*
 ** Internal functions {{{2
 */
 
-int						ft_printf_core(t_ftpf *info, va_list ap);
+int			ft_printf_core(t_ftpf *info, va_list ap);
 
-t_u32					parse_flags(t_ftpf *info);
-t_u32					parse_field_width(t_ftpf *info, va_list ap);
-int						parse_precision(t_ftpf *info, va_list ap);
-void					parse_size_modifiers(t_ftpf *info, va_list ap);
-t_u8					parse_color_tag(t_ftpf *info);
+uint32_t	parse_flags(t_ftpf *info);
+uint32_t	parse_field_width(t_ftpf *info, va_list ap);
+int			parse_precision(t_ftpf *info, va_list ap);
+void		parse_size_modifiers(t_ftpf *info, va_list ap);
+uint8_t		parse_color_tag(t_ftpf *info);
 
-void					access_branch_table(t_ftpf *info);
+void		access_branch_table(t_ftpf *info);
 
-int						handle_bin_int(t_ftpf *info);
-int						handle_dec_int(t_ftpf *info);
-int						handle_dec_uint(t_ftpf *info);
-int						handle_char(t_ftpf *info);
-int						handle_wchar(t_ftpf *info);
-int						handle_oct_int(t_ftpf *info);
-int						handle_hex_int(t_ftpf *info);
-int						handle_hex_str(t_ftpf *info);
-int						handle_str(t_ftpf *info);
-int						handle_wstr(t_ftpf *info);
-int						handle_padding(int len, t_ftpf *info);
+int			handle_bin_int(t_ftpf *info);
+int			handle_dec_int(t_ftpf *info);
+int			handle_dec_uint(t_ftpf *info);
+int			handle_char(t_ftpf *info);
+int			handle_wchar(t_ftpf *info);
+int			handle_oct_int(t_ftpf *info);
+int			handle_hex_int(t_ftpf *info);
+int			handle_hex_str(t_ftpf *info);
+int			handle_str(t_ftpf *info);
+int			handle_wstr(t_ftpf *info);
+int			handle_padding(int len, t_ftpf *info);
 
-int						char_to_internal_buf(char c, t_ftpf *info);
-int						str_to_internal_buf(const char *str, int len,
-		t_ftpf *info);
-int						pad_internal_buf(t_u32 flags, char pad_char,
-		t_ftpf *info, struct s_ftpf_pad pad_info);
+int			char_to_internal_buf(char c, t_ftpf *info);
+int			str_to_internal_buf(const char *str, int len, t_ftpf *info);
+int			pad_internal_buf(uint32_t flags, char pad_char, t_ftpf *info,
+		struct s_ftpf_pad pad_info);
 
-int						ft_atoi_skip(const char **str);
-INLINED int				is_utf8(wchar_t wc);
-int						ft_wchar_to_utf8(char *buf, wchar_t wchar);
+int			ft_atoi_skip(const char **str);
+int			is_utf8(wchar_t wc);
+int			ft_wchar_to_utf8(char *buf, wchar_t wchar);
 
-int						out_fd(union u_redir redir, const char *src,
-		size_t len);
-int						out_str(union u_redir redir, const char *src,
-		size_t len);
-int						out_null(union u_redir UNUSED(redir),
-		const char UNUSED(*src), size_t UNUSED(len));
-int						out_stream(union u_redir redir, const char *src,
-		size_t len);
+int			out_fd(union u_redir redir, const char *src, size_t len);
+int			out_str(union u_redir redir, const char *src, size_t len);
+int			out_null(union u_redir redir, const char *src, size_t len);
+int			out_stream(union u_redir redir, const char *src, size_t len);
 
-t_u8					ft_u64toa_b16(t_u64 num, char *dest, t_u16 locase);
-t_u8					ft_u64toa_b10(t_u64 num, char *dest);
-t_u8					ft_u64toa_b8(t_u64 num, char *dest);
-t_u8					ft_u64toa_b2(t_u64 num, char *dest);
+uint8_t		ft_u64toa_b16(uint64_t num, char *dest, uint16_t locase);
+uint8_t		ft_u64toa_b10(uint64_t num, char *dest);
+uint8_t		ft_u64toa_b8(uint64_t num, char *dest);
+uint8_t		ft_u64toa_b2(uint64_t num, char *dest);
 
-void					*call_va_arg(t_u32 state, va_list ap);
+void		*call_va_arg(uint32_t state, va_list ap);
 
 /*
 ** 2}}}
@@ -247,6 +245,7 @@ void					*call_va_arg(t_u32 state, va_list ap);
 */
 
 # if 0
+
 /*
 ** Reduced pointer names
 *

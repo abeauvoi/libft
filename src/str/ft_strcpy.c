@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 16:34:41 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 06:39:06 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/20 21:04:30 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 
 char		*ft_strcpy(char *dst0, const char *src0)
 {
-	const char	*src;
-	char		*dst;
-	const long	*aligned_src;
-	long		*aligned_dst;
+	const uint8_t	*src;
+	uint8_t			*dst;
+	const uint64_t	*ulong_src;
+	uint64_t		*ulong_dst;
 
 	src = src0;
 	dst = dst0;
-	if (!UNALIGNED(src, dst))
+	if (ft_isaligned((const void *)src, sizeof(ulong_src))
+			&& ft_isaligned((const void *)dst, sizeof(ulong_dst)))
 	{
-		aligned_src = (const long *)src;
-		aligned_dst = (long *)dst;
-		while (!DETECT_NULL(*aligned_src))
-			*aligned_dst++ = *aligned_src++;
-		src = (const char *)aligned_src;
-		dst = (char *)aligned_dst;
+		ulong_src = (const uint64_t *)src;
+		ulong_dst = (uint64_t *)dst;
+		while (!ft_detect_null(*ulong_src))
+			*ulong_dst++ = *ulong_src++;
+		src = (const uint8_t *)ulong_src;
+		dst = (uint8_t *)ulong_dst;
 	}
-	while ((*dst++ = *src++))
+	while ((*dst++ = *src++) != '\0')
 		continue ;
 	return (dst0);
 }

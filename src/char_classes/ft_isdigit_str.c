@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_isdigit_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 17:44:30 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/14 13:25:39 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/01/15 05:05:10 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 06:09:22 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int					ft_isspace(int c)
-{
-	unsigned char	ch;
+#include <libft.h>
 
-	ch = (unsigned char)c;
-	return (ch == 32 || ch == 12 || ch == 10 || ch == 13 || ch == 9
-			|| ch == 11);
+int		ft_isdigit_str(const char *s)
+{
+	while (ft_isdigit(*s))
+		++s;
+	return (*s == '\0');
+}
+
+int		ft_isdigit_nstr(const char *s, size_t n)
+{
+	while (n-- && ft_isdigit(*s))
+		++s;
+	return (n == 0);
 }

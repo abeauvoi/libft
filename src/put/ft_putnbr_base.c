@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/12 21:38:38 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/09/21 16:10:56 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/16 04:15:13 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,11 @@
 void					ft_putnbr_base(long int nb, unsigned char base)
 {
 	unsigned long int	tmp;
-	char				*digits;
 
-	digits = DIGITS;
 	tmp = (nb < 0 ? -nb : nb);
 	if (nb < 0)
 		ft_putchar('-');
 	if (tmp >= base)
 		ft_putnbr_base(tmp / base, base);
-	ft_putchar(digits[tmp % base]);
+	ft_putchar(XDIGITS_UPCASE[tmp % base]);
 }

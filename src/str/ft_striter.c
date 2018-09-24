@@ -6,12 +6,12 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:25:06 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 06:42:15 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/20 21:08:52 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_striter(char *s, void (*f)(char *))
+inline void	ft_striter(char *s, void (*f)(char *))
 {
-	while (*s)
+	while (*s != '\0')
 		(f)(s++);
 }

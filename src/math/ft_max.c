@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 14:54:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/01 14:54:58 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/17 08:00:53 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_types.h"
+#include "libft.h"
 
-intmax_t		ft_max(intmax_t a, intmax_t b)
+inline intmax_t		ft_max(intmax_t a, intmax_t b)
 {
-	return (a > b) ? a : b;
+	return (a > b ? a : b);
 }

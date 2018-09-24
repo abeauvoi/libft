@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchrset.c                                     :+:      :+:    :+:   */
+/*   ft_detect_null.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/23 19:29:22 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 07:35:38 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/17 08:12:06 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/20 18:39:47 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char			*ft_strchrset(const char *s, const char *charset)
-{
-	const char	*p;
+#define LOMAGIC 0x0101010101010101ull
+#define HIMAGIC 0x8080808080808080ull
 
-	while (*charset)
-	{
-		if ((p = ft_strchr(s, *charset)) != NULL)
-			return ((char *)p);
-		++charset;
-	}
-	return (NULL);
+inline bool		ft_detect_null(uint64_t word)
+{
+	return ((bool)((word - LOMAGIC) & ~word & HIMAGIC));
 }

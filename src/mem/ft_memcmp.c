@@ -6,36 +6,50 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 17:15:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 05:34:26 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/20 20:59:14 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_macros.h"
-#include "libft_types.h"
+#include "libft.h"
 
-int				ft_memcmp(const void *s1, const void *s2, size_t n)
+static void			ft_memcmp_fast(const uint8_t **us1, const uint8_t **us2,
+		size_t n)
 {
-	const t_u8	*us1;
-	const t_u8	*us2;
-	const t_u64	*as1;
-	const t_u64	*as2;
+	const uint64_t	*ws1;
+	const uint64_t	*ws2;
 
-	us1 = (const t_u8 *)s1;
-	us2 = (const t_u8 *)s2;
-	if (!UNALIGNED(us1, us2) && !TOO_SMALL(n))
+	ws1 = (const uint64_t *)*us1;
+	ws2 = (const uint64_t *)*us2;
+	while (n >= sizeof(uint64_t) && *ws1 == *ws2)
 	{
-		as1 = (const t_u64*)us1;
-		as2 = (const t_u64*)us2;
-		while (n >= LITTLE_BLOCK_SIZE && *as1 == *as2)
-		{
-			++as1;
-			++as2;
-			n -= LITTLE_BLOCK_SIZE;
-		}
-		us1 = (const t_u8*)as1;
-		us2 = (const t_u8*)as2;
+		++ws1;
+		++ws2;
+		n -= sizeof(uint64_t);
 	}
-	while (n-- > 0 && *us1++ == *us2++)
-		continue ;
-	return (n ? *us1 - *us2 : 0);
+	*us1 = ws1;
+	*us2 = ws2;
+}
+
+int					ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	const uint8_t	*us1;
+	const uint8_t	*us2;
+
+	us1 = (const uint8_t *)s1;
+	us2 = (const uint8_t *)s2;
+	if (n)
+	{
+		if (ft_isaligned(us1, sizeof(uint64_t))
+				&& ft_isaligned(us2, sizeof(uint64_t)))
+		{
+			ft_memcmp_fast(&us1, &us2, n);
+			n %= sizeof(uint64_t);
+		}
+		while (n-- > 0 && *us1 == *us2)
+		{
+			++us1;
+			++us2;
+		}
+	}
+	return (n ? (int)(*us1 - *us2) : 0);
 }

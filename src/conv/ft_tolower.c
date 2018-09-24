@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 18:13:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/15 18:15:03 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/17 06:38:41 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_tolower(int c)
+inline int		ft_tolower(int c)
 {
-	return (ft_isupper(c) ? c + 32 : c);
+	return (ft_isupper(c) ? c | 32 : c);
 }

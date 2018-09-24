@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_isalnum_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 17:06:02 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 14:06:07 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/01/15 05:01:40 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 06:08:27 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "libft.h"
+#include <libft.h>
 
-inline void		ft_putstr_fd(char const *s, int fd)
+int		ft_isalnum_str(const char *s)
 {
-	write(fd, s, ft_strlen(s));
+	while (ft_isalnum(*s))
+		++s;
+	return (*s == '\0');
+}
+
+int		ft_isalnum_nstr(const char *s, size_t n)
+{
+	while (n-- && ft_isalnum(*s))
+		++s;
+	return (n == 0);
 }

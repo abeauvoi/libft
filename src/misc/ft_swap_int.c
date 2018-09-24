@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   ft_swap_int.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 18:10:35 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/29 17:30:03 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/17 07:30:08 by abeauvoi          #+#    #+#             */
+/*   Updated: 2018/09/17 07:31:09 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_types.h"
-
-inline bool		ft_isascii(int c)
+inline void		ft_swap_int(int *a, int *b)
 {
-	return ((t_u8)c <= 127);
+	int		temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }

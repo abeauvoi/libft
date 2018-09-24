@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 19:36:38 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/10/25 19:43:55 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/17 08:05:27 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-long		ft_round(double db)
+inline long int	ft_round(double db)
 {
 	return (db >= 0) ? (long)(db + 0.5) : (long)(db - 0.5);
 }

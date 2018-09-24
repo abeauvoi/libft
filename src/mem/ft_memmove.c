@@ -6,54 +6,59 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:57:58 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 05:53:42 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/20 18:37:23 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static inline size_t	ft_memmove_fast(t_u8 **dst, const t_u8 **src, size_t n)
+static inline void		ft_memmove_fast(uint8_t **dst, const uint8_t **src,
+		size_t n)
 {
-	t_u64		*adst;
-	const t_u64	*asrc;
+	uint64_t		*wdst;
+	const uint64_t	*wsrc;
 	
-	adst = (t_u64*)*dst;
-	asrc = (t_u64*)*src;
-	while (n >= BIG_BLOCK_SIZE)
+	wdst = (uint64_t *)*dst;
+	wsrc = (uint64_t *)*src;
+	while (n >= sizeof(uint64_t) * 4)
 	{
-		*--adst = *--asrc;
-		*--adst = *--asrc;
-		*--adst = *--asrc;
-		*--adst = *--asrc;
-		n -= BIG_BLOCK_SIZE;
+		*--wdst = *--wsrc;
+		*--wdst = *--wsrc;
+		*--wdst = *--wsrc;
+		*--wdst = *--wsrc;
+		n -= sizeof(uint64_t) * 4;
 	}
-	while (n >= LITTLE_BLOCK_SIZE)
+	while (n >= sizeof(uint64_t))
 	{
-		*--adst = *--asrc;
-		n -= LITTLE_BLOCK_SIZE;
+		*--wdst = *--wsrc;
+		n -= sizeof(uint64_t);
 	}
-	*dst = (t_u8*)adst;
-	*src = (const t_u8*)asrc;
-	return (n);
+	*dst = (uint8_t*)wdst;
+	*src = (const uint8_t*)wsrc;
 }
 
-void					*ft_memmove(void *dst, const void *src, size_t len)
+void					*ft_memmove(void *dst, const void *src, size_t n)
 {
-	t_u8		*d;
-	const t_u8	*s;
+	uint8_t			*d;
+	const uint8_t	*s;
 
-	d = (t_u8 *)dst;
-	s = (const t_u8 *)src;
-	if (s < d && d < s + len)
+	d = (uint8_t *)dst;
+	s = (const uint8_t *)src;
+	if (s < d && d < s + n)
 	{
-		s += len;
-		d += len;
-		if (!TOO_SMALL(len) && !UNALIGNED(s, d))
-			len = ft_memmove_fast(&d, &s, len);
-		while (len-- > 0)
+		s += n;
+		d += n;
+		if (n > sizeof(uint64_t)
+				&& ft_isaligned(s, sizeof(uint64_t))
+				&& ft_isaligned(d, sizeof(uint64_t)))
+		{
+			ft_memmove_fast(&d, &s, n);
+			n %= sizeof(uint64_t);
+		}
+		while (n-- > 0)
 			*--d = *--s;
+		return (dst);
 	}
 	else
-		ft_memcpy(dst, src, len);
-	return (dst);
+		return (ft_memcpy(dst, src, n));
 }
