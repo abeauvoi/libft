@@ -6,59 +6,37 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:57:58 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/20 18:37:23 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/25 18:57:21 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static inline void		ft_memmove_fast(uint8_t **dst, const uint8_t **src,
-		size_t n)
-{
-	uint64_t		*wdst;
-	const uint64_t	*wsrc;
-	
-	wdst = (uint64_t *)*dst;
-	wsrc = (uint64_t *)*src;
-	while (n >= sizeof(uint64_t) * 4)
-	{
-		*--wdst = *--wsrc;
-		*--wdst = *--wsrc;
-		*--wdst = *--wsrc;
-		*--wdst = *--wsrc;
-		n -= sizeof(uint64_t) * 4;
-	}
-	while (n >= sizeof(uint64_t))
-	{
-		*--wdst = *--wsrc;
-		n -= sizeof(uint64_t);
-	}
-	*dst = (uint8_t*)wdst;
-	*src = (const uint8_t*)wsrc;
-}
-
 void					*ft_memmove(void *dst, const void *src, size_t n)
 {
-	uint8_t			*d;
-	const uint8_t	*s;
+	uint8_t			*out;
+	const uint8_t	*in;
+	int 			inc;
+	bool			cond;
 
-	d = (uint8_t *)dst;
-	s = (const uint8_t *)src;
-	if (s < d && d < s + n)
+	if (n == 0)
+		return (dst);
+	if ((const char *)src >= (char *)dst + n
+			|| (char *)dst >= (const char *)src + n)
+		return (ft_memcpy(dst, src, n));
+	else
 	{
-		s += n;
-		d += n;
-		if (n > sizeof(uint64_t)
-				&& ft_isaligned(s, sizeof(uint64_t))
-				&& ft_isaligned(d, sizeof(uint64_t)))
+		cond = (src < dst);
+		in = (cond ? (const uint8_t *)src + n - 1 : (const uint8_t *)src);
+		out = (cond ? (uint8_t *)dst + n - 1 : (uint8_t *)dst);
+		inc = (cond ? -1 : 1);
+		*out = *in;
+		while (--n > 0)
 		{
-			ft_memmove_fast(&d, &s, n);
-			n %= sizeof(uint64_t);
+			in += inc;
+			out += inc;
+			*out = *in;
 		}
-		while (n-- > 0)
-			*--d = *--s;
 		return (dst);
 	}
-	else
-		return (ft_memcpy(dst, src, n));
 }

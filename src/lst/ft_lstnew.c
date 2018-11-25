@@ -6,12 +6,12 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:23:49 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/06/26 18:24:18 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/18 18:37:11 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
+#include "libft.h"
 
 t_list		*ft_lstnew(void *content, size_t content_size)
 {
@@ -19,16 +19,8 @@ t_list		*ft_lstnew(void *content, size_t content_size)
 
 	if (!(new = (t_list *)malloc(sizeof(*new))))
 		return (NULL);
-	if (!content)
-	{
-		new->content = NULL;
-		new->content_size = 0;
-	}
-	else
-	{
-		new->content = content;
-		new->content_size = content_size;
-	}
+	new->content = content;
+	new->content_size = (content != NULL ? content_size : 0);
 	new->next = NULL;
 	return (new);
 }

@@ -6,60 +6,48 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:43:39 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 22:25:35 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/25 20:04:37 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static inline void		ft_memset_fast(uint8_t **dst, uint64_t word, size_t n)
+static void 	*ft_memset_fast(uint8_t *ucdst, uint64_t value, size_t n)
 {
-	uint64_t	*wptr;
+	uint64_t	*ulldst;
 
-	wptr = (uint64_t *)*dst;
-	while (n >= sizeof(word) * 4)
+	ulldst = (uint64_t *)ucdst;
+	n /= 8;
+	while (n >= 4)
 	{
-		wptr[0] = word;
-		wptr[1] = word;
-		wptr[2] = word;
-		wptr[3] = word;
-		wptr += 4;
-		n -= sizeof(word) * 4;
+		*ulldst++ = value;
+		*ulldst++ = value;
+		*ulldst++ = value;
+		*ulldst++ = value;
+		n -= 4;
 	}
-	while (n >= sizeof(word))
-	{
-		*wptr = word;
-		++wptr;
-		n -= sizeof(word);
-	}
-	*dst = (uint8_t *)wptr;
+	while (n-- > 0)
+		*ulldst++ = value;
+	return (ulldst);
 }
 
-void					*ft_memset(void *dst0, int c, size_t n)
+void			*ft_memset(void *dst0, int c, size_t n)
 {
-	uint8_t		*dst;
-	uint32_t	uc;
-	uint64_t	word;
+	uint8_t		*ucdst;
+	uint8_t		uc;
 
-	if (n)
+	if (n == 0)
+		return (0);
+	ucdst = (uint8_t *)dst0;
+	uc = (uint8_t)c;
+	while (n-- > 0 && ((uintptr_t)ucdst & 7) != 0)
+		*ucdst++ = uc;
+	if (n > 7)
 	{
-		dst = (uint8_t *)dst0;
-		uc = (uint16_t)c;
-		while (!ft_isaligned((const void *)dst, sizeof(word)))
-		{
-			*dst++ = uc;
-			if (--n == 0 || *dst == '\0')
-				return (dst0);
-		}
-		if (n >= sizeof(word) * 4)
-		{
-			word = (uc | (uc << 8) | (uc << 16) | (uc << 24));
-			word |= (word << 32);
-			ft_memset_fast(&dst, word, n);
-			n %= sizeof(word);
-		}
-		while (n-- > 0)
-			*dst++ = uc;
+		ucdst = ft_memset_fast(ucdst, 0x0101010101010101ULL * uc, n);
+		n &= 7;
 	}
+	while (n-- > 0)
+		*dst++ = uc;
 	return (dst0);
 }

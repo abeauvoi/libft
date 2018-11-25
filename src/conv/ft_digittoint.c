@@ -6,11 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 07:44:12 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 07:48:41 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/18 18:25:25 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-inline unsigned char	ft_digittoint(char c)
+#include "libft.h"
+
+inline uint8_t	ft_digittoint(char c)
 {
-	return ((unsigned char)c - '0');
+	return ((uint8_t)(c - '0'));
 }

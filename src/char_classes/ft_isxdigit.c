@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:37:00 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 17:41:39 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/18 18:05:14 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 inline int		ft_isxdigit(int c)
 {
-	return (ft_todigit(c) < '9' || ft_tolower(c) - 'a' < 6);
+	return (ft_todigit(c) < '9' || (ft_tolower(c) - 'a') < 6);
 }

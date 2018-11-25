@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/20 21:07:55 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/22 18:35:00 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void		ft_lstiter(t_list *list, void (*f)(t_list *elem));
 t_list		*ft_lstmap(t_list *list, t_list *(*f)(t_list *elem));
 void		ft_lstpush(t_list **alst, t_list *new);
 size_t		ft_lstsize(t_list *list);
-t_list		*ft_lststrsplit(const char *s, char c);
 void		ft_lstprint_base(t_list *list, uint8_t sz_elem, uint8_t radix);
 /*
 ** }}}
@@ -144,8 +143,8 @@ void		*ft_memset(void *dst, int c, size_t n);
 */
 void		ft_swap_int(int *a, int *b);
 void		ft_swap_any(void *a, void *b, size_t size_of);
-bool		ft_detect_null(uint64_t word);
-bool		ft_detect_char(uint64_t word, uint64_t mask);
+uint64_t 	ft_haszero(uint64_t word);
+uint64_t	ft_haschar(uint64_t word, uint64_t mask);
 bool		ft_isaligned(const void *ptr, uint8_t align_sz);
 /*
 ** }}}

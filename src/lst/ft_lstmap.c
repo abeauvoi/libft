@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 18:26:19 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/27 04:06:13 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/18 18:35:44 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 t_list		*ft_lstmap(t_list *list, t_list *(*f)(t_list *elem))
 {
-	t_list	*lstmap;
+	t_list	*newlst;
 
-	lstmap = NULL;
+	newlst = NULL;
 	while (list)
 	{
-		ft_lstpush(&lstmap, f(list));
+		ft_lstpush(&newlst, f(list));
 		list = list->next;
 	}
-	return (lstmap);
+	return (newlst);
 }
