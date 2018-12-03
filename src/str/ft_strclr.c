@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:23:13 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/20 20:52:50 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/12/02 02:27:14 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,14 @@
 
 void	ft_strclr(char *s)
 {
-	uint64_t	*wptr;
+	uint64_t		*p;
+	uint64_t		lword;
+	uint64_t		zero_match;
 
-	while (!ft_isaligned((const void *)s, sizeof(wptr)))
-	{
-		if (*s == '\0')
-			return ;
-		*s++ = 0;
-	}
-	wptr = (uint64_t *)s;
-	while (!ft_detect_null(*wptr))
-		*wptr++ = (uint64_t)0;
+	p = (uint64_t)s & -8;
+	lword = (*p | (1ULL << ((uint64_t)s << 3)) - 1);
+	while ((zero_match = ft_haszero(lword)) == 0)
+		*w++ = (uint64_t)0;
 	s = (char *)wptr;
 	while (*s != '\0')
 		*s++ = 0;

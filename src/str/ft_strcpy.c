@@ -6,32 +6,29 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 16:34:41 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/20 21:04:30 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/12/01 16:44:16 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_macros.h"
+#include "libft.h"
 
-char		*ft_strcpy(char *dst0, const char *src0)
+char		*ft_strcpy(char *dst, const char *src)
 {
-	const uint8_t	*src;
-	uint8_t			*dst;
-	const uint64_t	*ulong_src;
-	uint64_t		*ulong_dst;
+	char	 		*orig_dst;
+	const uint64_t	*ullsrc;
+	uint64_t		*ulldst;
 
-	src = src0;
-	dst = dst0;
-	if (ft_isaligned((const void *)src, sizeof(ulong_src))
-			&& ft_isaligned((const void *)dst, sizeof(ulong_dst)))
+	orig_dst = dst;
+	if (((uintptr_t)ucsrc & 7) == 0 && ((uintptr_t)ucdst & 7) == 0)
 	{
-		ulong_src = (const uint64_t *)src;
-		ulong_dst = (uint64_t *)dst;
-		while (!ft_detect_null(*ulong_src))
-			*ulong_dst++ = *ulong_src++;
-		src = (const uint8_t *)ulong_src;
-		dst = (uint8_t *)ulong_dst;
+		ullsrc = (const uint64_t *)src;
+		ulldst = (uint64_t *)dst;
+		while (ft_haszero(*ullsrc) == 0)
+			*ulldst++ = *ullsrc++;
+		src = (const uint8_t *)ullsrc;
+		dst = (uint8_t *)ulldst;
 	}
 	while ((*dst++ = *src++) != '\0')
 		continue ;
-	return (dst0);
+	return (orig_dst);
 }

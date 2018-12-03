@@ -6,37 +6,37 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 17:52:48 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 07:19:54 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/12/01 16:44:15 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_macros.h"
-#include "libft_types.h"
+#include "libft.h"
 
-char		*ft_strncpy(char *dst0, const char *src0, size_t len)
+char		*ft_strncpy(char *dst, const char *src, size_t len)
 {
-	char		*dst;
-	const long	*asrc;
-	long		*adst;
+	char 			*orig_dst;
+	const uint64_t	*ullsrc;
+	uint64_t 		*ulldst;
 
-	dst = dst0;
-	if (!TOO_SMALL(len) && !UNALIGNED(src0, dst))
+	orig_dst = dst;
+	if (len > 7 && ((uintptr_t)src & 7) == 0
+			&& ((uintptr_t)dst & 7) == 0)
 	{
-		asrc = (const long *)src0;
-		adst = (long *)dst0;
-		while (len >= LITTLE_BLOCK_SIZE && !DETECT_NULL(*asrc))
+		ullsrc = (const uint64_t *)src;
+		ulldst = (uint64_t *)src;
+		while (len > 7 && ft_haszero(*ullsrc) == 0)
 		{
-			len -= LITTLE_BLOCK_SIZE;
-			*adst++ = *asrc++;
+			len -= 8;
+			*ulldst++ = *ullsrc++;
 		}
-		src0 = (const char *)asrc;
-		dst = (char *)adst;
+		src = (const char *)ullsrc;
+		dst = (char *)ulldst;
 	}
 	while (len-- > 0)
 	{
-		*dst++ = *src0;
-		if (*src0)
-			++src0;
+		*dst++ = *src;
+		if (*src != '\0')
+			++src;
 	}
-	return (dst0);
+	return (orig_dst);
 }

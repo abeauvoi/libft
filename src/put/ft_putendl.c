@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 17:01:30 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 14:04:54 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/26 12:22:03 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 inline void		ft_putendl(char const *s)
 {
-	write(1, s, ft_strlen(s));
+	ft_putstr(s);
 	ft_putchar('\n');
 }

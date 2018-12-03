@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/11/22 18:35:00 by mac              ###   ########.fr       */
+/*   Updated: 2018/12/01 14:54:59 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void		*ft_memset(void *dst, int c, size_t n);
 */
 void		ft_swap_int(int *a, int *b);
 void		ft_swap_any(void *a, void *b, size_t size_of);
+uint64_t	ft_insn_shrui(uint8_t vec[8], uint8_t shift);
 uint64_t 	ft_haszero(uint64_t word);
 uint64_t	ft_haschar(uint64_t word, uint64_t mask);
 bool		ft_isaligned(const void *ptr, uint8_t align_sz);

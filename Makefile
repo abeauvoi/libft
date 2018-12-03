@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2018/11/22 18:35:49 by mac              ###   ########.fr        #
+#    Updated: 2018/12/01 14:54:12 by mac              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ MATH_SRCS = ft_abs.c ft_pow.c ft_round.c ft_min.c ft_max.c ft_ispow2.c \
 MEM_SRCS = ft_memalloc.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memdel.c \
 	   ft_memmove.c ft_memset.c
 
-MISC_SRCS = ft_haschar.c ft_haszero.c ft_isaligned.c \
+MISC_SRCS = ft_insn_shrui.c ft_haschar.c ft_haszero.c ft_isaligned.c \
 	    ft_swap_any.c ft_swap_int.c get_next_line.c
 
 PUT_SRCS = ft_putchar.c ft_putchar_fd.c ft_putendl.c ft_putendl_fd.c \
