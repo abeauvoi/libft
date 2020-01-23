@@ -6,37 +6,35 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 17:52:48 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 07:19:54 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/10/25 16:33:14 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_macros.h"
-#include "libft_types.h"
+#include "libft.h"
 
-char		*ft_strncpy(char *dst0, const char *src0, size_t len)
+char		*ft_strncpy(char *dst0, const char *src0, size_t n)
 {
-	char		*dst;
-	const long	*asrc;
-	long		*adst;
+	char			*dst;
+	const uint64_t	*asrc;
+	uint64_t		*adst;
+	size_t			n2;
 
 	dst = dst0;
-	if (!TOO_SMALL(len) && !UNALIGNED(src0, dst))
+	if (n >= sizeof(uint64_t)
+			&& ft_isaligned((const void *)src0, sizeof(void *))
+			&& ft_isaligned((const void *)dst0, sizeof(void *)))
 	{
-		asrc = (const long *)src0;
-		adst = (long *)dst0;
-		while (len >= LITTLE_BLOCK_SIZE && !DETECT_NULL(*asrc))
-		{
-			len -= LITTLE_BLOCK_SIZE;
+		n2 = (n >> 3);
+		asrc = (const uint64_t *)src0;
+		adst = (uint64_t *)dst0;
+		while (n2-- > 0 && !ft_detect_null(*asrc))
 			*adst++ = *asrc++;
-		}
 		src0 = (const char *)asrc;
 		dst = (char *)adst;
 	}
-	while (len-- > 0)
-	{
-		*dst++ = *src0;
-		if (*src0)
-			++src0;
-	}
+	while (n-- > 0 && *src0 != '\0')
+		*dst++ = *src0++;
+	while (n-- > 0)
+		*dst++ = '\0';
 	return (dst0);
 }

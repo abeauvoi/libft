@@ -6,51 +6,53 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 16:43:42 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 07:32:05 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/10/25 17:18:06 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_macros.h"
 #include "libft_types.h"
 
-static inline size_t	ft_strncmp_fast(const t_u8 **us1,
-		const t_u8 **us2, size_t n)
+static inline void		ft_strncmp_fast(const char **s1, const char **s2,
+		size_t n)
 {
-	const t_u64		*as1;
-	const t_u64		*as2;
+	const uint64_t		*lws1;
+	const uint64_t		*lws2;
 
-	as1 = (const t_u64 *)*us1;
-	as2 = (const t_u64 *)*us2;
-	while (n >= sizeof(long) && *as1 == *as2)
-	{
-		n -= sizeof(long);
-		if (!n || DETECT_NULL(*as1))
-			return (0);
-		++as1;
-		++as2;
-	}
-	*us1 = (const t_u8 *)as1;
-	*us2 = (const t_u8 *)as2;
-	return (n);
+	lws1 = (const uint64_t *)*s1;
+	lws2 = (const uint64_t *)*s2;
+	n >> 3;
+	while (n-- > 0
+			&& !ft_detect_null(*lws1)
+			&& *lws1++ == *lws2++)
+		continue ;
+	*s1 = (const char *)lws1;
+	*s2 = (const char *)lws2;
 }
 
 int						ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	const t_u8		*us1;
-	const t_u8		*us2;
+	uint8_t		c1;
+	uint8_t		c2;
 
-	if (!n)
+	if (n == 0)
 		return (0);
-	us1 = (const t_u8 *)s1;
-	us2 = (const t_u8 *)s2;
-	if (!UNALIGNED(s1, s2))
-		n = ft_strncmp_fast(&us1, &us2, n);
-	while (n-- > 0 && *us1 == *us2)
+	if (n > sizeof(uint64_t)
+			&& ft_isaligned((const void *)s1, sizeof(void *))
+			&& ft_isaligned((const void *)s2, sizeof(void *)))
 	{
-		if (!n || !*us1)
-			return (0);
-		++us1;
-		++us2;
+		ft_strncmp_fast(&s1, &s2, n);
+		n &= sizeof(uint64_t) - 1;	
 	}
-	return (*us1 - *us2);
+	while (n > 0)
+	{
+		c1 = *s1++;
+		c2 = *s2++;
+		if (c1 != c2)
+			return (c1 - c2);
+		if (c1 == 0)
+			break;
+		--n;
+	}
+	return (0);
 }

@@ -6,15 +6,15 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:28:24 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/05/23 06:42:42 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/10/01 21:17:44 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void				ft_striteri(char *s, void (*f)(unsigned int, char *))
+inline void		ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
 	unsigned int	i;
 
 	i = 0;
-	while (*s)
-		(f)(i++, s++);
+	while (s[i] != '\0')
+		(f)(i++, s);
 }

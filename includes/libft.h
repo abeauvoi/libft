@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/20 21:07:55 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/10/01 18:28:53 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,20 @@ void		*ft_realloc(void *ptr, size_t size);
 /*
 ** src/char_classes {{{
 */
-int			ft_isalnum(int c);
-int			ft_isalpha(int c);
-int			ft_isascii(int c);
-int			ft_isblank(char c);
-int			ft_isdigit(int c);
-int			ft_islower(int c);
-int			ft_isspace(int c);
-int			ft_isupper(int c);
-int			ft_isprint(int c);
-int			ft_isxdigit(int c);
-int			ft_isalnum_str(const char *s);
-int			ft_isalnum_nstr(const char *s, size_t n);
-int			ft_isdigit_str(const char *s);
-int			ft_isdigit_nstr(const char *s, size_t n);
+bool		ft_isalnum(int c);
+bool		ft_isalpha(int c);
+bool		ft_isascii(int c);
+bool		ft_isblank(char c);
+bool		ft_isdigit(int c);
+bool		ft_islower(int c);
+bool		ft_isspace(int c);
+bool		ft_isupper(int c);
+bool		ft_isprint(int c);
+bool		ft_isxdigit(int c);
+bool		ft_isalnum_str(const char *s);
+bool		ft_isalnum_nstr(const char *s, size_t n);
+bool		ft_isdigit_str(const char *s);
+bool		ft_isdigit_nstr(const char *s, size_t n);
 /*
 ** }}}
 */
@@ -147,6 +147,7 @@ void		ft_swap_any(void *a, void *b, size_t size_of);
 bool		ft_detect_null(uint64_t word);
 bool		ft_detect_char(uint64_t word, uint64_t mask);
 bool		ft_isaligned(const void *ptr, uint8_t align_sz);
+uint64_t	ft_ffszbyte_r(uint64_t lword);
 /*
 ** }}}
 */

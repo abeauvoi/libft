@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 19:17:52 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 07:35:12 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/10/25 16:07:56 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 inline void		ft_bzero(void *s, size_t n)
 {
-	ft_memset(s, '\0', n);
+	(void)ft_memset(s, '\0', n);
 }

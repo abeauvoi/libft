@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 18:03:29 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 06:08:41 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/09/30 22:45:00 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-inline int		ft_isalpha(int c)
+inline bool		ft_isalpha(int c)
 {
 	return (ft_islower(c) || ft_isupper(c));
 }
