@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:23:13 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/10/25 16:02:34 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/01/23 20:21:11 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-inline void	ft_strclr(char *s)
+void	ft_strclr(char *s)
 {
 	(void)ft_memset((void *)s, '\0', ft_strlen(s));
 }

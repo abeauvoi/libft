@@ -1,21 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_detect_null.c                                   :+:      :+:    :+:   */
+/*   ft_strchr_cb.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 08:12:06 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/26 15:58:25 by abeauvoi         ###   ########.fr       */
+/*   Created: 2018/09/20 19:04:09 by abeauvoi          #+#    #+#             */
+/*   Updated: 2020/01/23 20:22:11 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-#define LOMAGIC 0x0101010101010101ull
-#define HIMAGIC 0x8080808080808080ull
-
-inline bool		ft_detect_null(uint64_t longword)
+char	*ft_strchr_cb(const char *s, bool (*cb)(uint8_t))
 {
-	return ((bool)(((longword - LOMAGIC) & ~longword & HIMAGIC) != 0));
+	const uint8_t	*us;
+	uint8_t			uc;
+
+	us = (const uint8_t *)s;
+	while (1)
+	{
+		if (cb(*us))
+			return ((char *)us);
+		else if (uc == '\0')
+			return ((char *)NULL);
+		++us;
+	}
+	__builtin_unreachable();
 }

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 17:31:53 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 17:46:06 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/18 18:23:19 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int			ft_atoi(const char *s)
 	acc = 0;
 	while ((digit = ft_todigit(*s++)) <= 9)
 	{
-		if (acc > INT_MAX / 10)
+		if (acc > 214748364)
 			return (-1);
 		else
 		{

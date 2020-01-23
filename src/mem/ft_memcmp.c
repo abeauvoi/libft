@@ -6,50 +6,33 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 17:15:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/20 20:59:14 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/25 17:57:01 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void			ft_memcmp_fast(const uint8_t **us1, const uint8_t **us2,
-		size_t n)
+int					ft_memcmp(const void *p1, const void *p2, size_t n)
 {
-	const uint64_t	*ws1;
-	const uint64_t	*ws2;
+	const uint8_t	*ucp1;
+	const uint8_t	*ucp2;
+	const uint64_t	*ullp1;
+	const uint64_t	*ullp2;
 
-	ws1 = (const uint64_t *)*us1;
-	ws2 = (const uint64_t *)*us2;
-	while (n >= sizeof(uint64_t) && *ws1 == *ws2)
+	if (n == 0)
+		return (0);
+	ucp1 = (const uint8_t *)p1;
+	ucp2 = (const uint8_t *)p2;
+	if (n > 7 && ((uintptr_t)p1 & 7) == 0 && ((uintptr_t)p2 & 7) == 0)
 	{
-		++ws1;
-		++ws2;
-		n -= sizeof(uint64_t);
+		ullp1 = (const uint64_t *)*ucp1;
+		ullp2 = (const uint64_t *)*ucp2;
+		while (*ullp1++ == *ullp2++ && (n -= 8) > 7)
+			continue ;
+		ucp1 = (const uint8_t *)ullp1;
+		ucp2 = (const uint8_t *)ullp2;
 	}
-	*us1 = ws1;
-	*us2 = ws2;
-}
-
-int					ft_memcmp(const void *s1, const void *s2, size_t n)
-{
-	const uint8_t	*us1;
-	const uint8_t	*us2;
-
-	us1 = (const uint8_t *)s1;
-	us2 = (const uint8_t *)s2;
-	if (n)
-	{
-		if (ft_isaligned(us1, sizeof(uint64_t))
-				&& ft_isaligned(us2, sizeof(uint64_t)))
-		{
-			ft_memcmp_fast(&us1, &us2, n);
-			n %= sizeof(uint64_t);
-		}
-		while (n-- > 0 && *us1 == *us2)
-		{
-			++us1;
-			++us2;
-		}
-	}
-	return (n ? (int)(*us1 - *us2) : 0);
+	while (n-- > 0 && *ucp1++ == *ucp2++)
+		continue ;	
+	return (n != 0 ? (int)(*ucp1 - *ucp2) : 0);
 }

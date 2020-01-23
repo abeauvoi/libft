@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2018/09/20 21:10:10 by abeauvoi         ###   ########.fr        #
+#    Updated: 2018/12/01 14:54:12 by mac              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ OLD_PRINTF_SRCS = buffer.c char_spec.c colors.c cvt_number.c fd_spec.c \
 
 LST_SRCS = ft_delcontent.c  ft_lstadd.c ft_lstdel.c ft_lstdelone.c \
 	   ft_lstnew.c ft_lstiter.c ft_lstmap.c ft_lstsize.c \
-	   ft_lststrsplit.c ft_lstpush.c
+	   ft_lstpush.c
 
 MATH_SRCS = ft_abs.c ft_pow.c ft_round.c ft_min.c ft_max.c ft_ispow2.c \
 	    ft_nbrlen_b10.c ft_nbrlen_b16.c ft_nbrlen_b8.c 
@@ -56,7 +56,7 @@ MATH_SRCS = ft_abs.c ft_pow.c ft_round.c ft_min.c ft_max.c ft_ispow2.c \
 MEM_SRCS = ft_memalloc.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memdel.c \
 	   ft_memmove.c ft_memset.c
 
-MISC_SRCS = ft_detect_char.c ft_detect_null.c ft_isaligned.c \
+MISC_SRCS = ft_insn_shrui.c ft_haschar.c ft_haszero.c ft_isaligned.c \
 	    ft_swap_any.c ft_swap_int.c get_next_line.c
 
 PUT_SRCS = ft_putchar.c ft_putchar_fd.c ft_putendl.c ft_putendl_fd.c \

@@ -6,23 +6,24 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 19:10:08 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/11/01 15:24:38 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/12/05 22:05:23 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char					*ft_strrchr(const char *s, int c)
+char			*ft_strrchr(const char *str, int c)
 {
-	const unsigned char	*end;
+	const uint8_t 	*p;
+	uint8_t			uc;	
 
-	end = (const unsigned char *)s;
-	end += ft_strlen(s);
-	while (end != (const unsigned char *)s)
+	p = (const uint8_t *)(str + ft_strlen(str) - 1);
+	uc = (uint8_t)c;
+	while (p > str)
 	{
-		if (*end == (unsigned char)c)
-			return ((char *)end);
-		--end;
+		if (*p == uc)
+			return (p);
+		--p;
 	}
 	return (NULL);
 }

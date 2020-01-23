@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/26 16:23:38 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/05/29 17:37:37 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/18 18:39:21 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ size_t		ft_lstsize(t_list *list)
 	size_t	i;
 
 	i = 0;
-	while ((list = list->next))
+	while (list != NULL)
+	{
+		list = list->next;
 		++i;
+	}
 	return (i);
 }

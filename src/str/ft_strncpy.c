@@ -6,35 +6,36 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 17:52:48 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/10/25 16:33:14 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/01/23 20:12:11 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strncpy(char *dst0, const char *src0, size_t n)
+char		*ft_strncpy(char *dst, const char *src, size_t len)
 {
-	char			*dst;
-	const uint64_t	*asrc;
-	uint64_t		*adst;
-	size_t			n2;
+	char 			*orig_dst;
+	const uint64_t	*ullsrc;
+	uint64_t 		*ulldst;
 
-	dst = dst0;
-	if (n >= sizeof(uint64_t)
-			&& ft_isaligned((const void *)src0, sizeof(void *))
-			&& ft_isaligned((const void *)dst0, sizeof(void *)))
+	orig_dst = dst;
+	if (len > 7 && ((uintptr_t)src & 7) == 0 && ((uintptr_t)dst & 7) == 0)
 	{
-		n2 = (n >> 3);
-		asrc = (const uint64_t *)src0;
-		adst = (uint64_t *)dst0;
-		while (n2-- > 0 && !ft_detect_null(*asrc))
-			*adst++ = *asrc++;
-		src0 = (const char *)asrc;
-		dst = (char *)adst;
+		ullsrc = (const uint64_t *)src;
+		ulldst = (uint64_t *)src;
+		while (len > 7 && ft_haszero(*ullsrc) == 0)
+		{
+			len -= 8;
+			*ulldst++ = *ullsrc++;
+		}
+		src = (const char *)ullsrc;
+		dst = (char *)ulldst;
 	}
-	while (n-- > 0 && *src0 != '\0')
-		*dst++ = *src0++;
-	while (n-- > 0)
-		*dst++ = '\0';
-	return (dst0);
+	while (len-- > 0)
+	{
+		*dst++ = *src;
+		if (*src != '\0')
+			++src;
+	}
+	return (orig_dst);
 }

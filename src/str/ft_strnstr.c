@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 17:12:47 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:45:31 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/12/05 23:18:52 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_types.h"
+#include "libft.h"
 
 /*
 ** hs (HayStack, botte de foin) -> string to look into

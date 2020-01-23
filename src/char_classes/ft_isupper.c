@@ -6,11 +6,14 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 18:07:43 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 06:20:02 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/18 17:57:00 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define LOWER_BOUND ('A')
+#define UPPER_BOUND ('Z' - LOWER_BOUND)
+
 inline int	ft_isupper(int c)
 {
-	return ((unsigned char)c - 'A' < 26);
+	return ((unsigned char)(c - LOWER_BOUND) <= UPPER_BOUND);
 }

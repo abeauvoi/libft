@@ -6,12 +6,12 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 15:46:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/07/25 04:31:34 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/12/05 22:55:36 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
+#include "libft.h"
 
 static size_t	ft_word_len(const char *s, char c)
 {

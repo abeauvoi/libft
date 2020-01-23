@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/23 22:56:09 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 17:29:05 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2018/11/22 17:03:09 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static uint8_t			digits2(uint64_t val)
 
 uint8_t					ft_u64toa_b2(uint64_t num, char *dst)
 {
-	static const t_u16	bdigits100[4] = { 0x3030, 0x3130, 0x3031, 0x3131};
+	static const t_u16	bdigits100[4] = { 0x3030, 0x3130, 0x3031, 0x3131 };
 	const uint8_t		length = digits2(num);
 	uint8_t				next;
 

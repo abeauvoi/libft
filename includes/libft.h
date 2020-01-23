@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/10/01 18:28:53 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/01/23 20:35:18 by abeauvoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@
 
 typedef struct	s_list
 {
-	void			*content;
-	size_t			content_size;
+	void		*content;
+	size_t		content_size;
 	struct s_list	*next;
-}				t_list;
+}		t_list;
 
 typedef struct	s_str
 {
 	char	*s;
 	size_t	len;
-}				t_str;
+}		t_str;
 /*
 ** }}}
 */
@@ -80,13 +80,13 @@ bool		ft_isdigit_nstr(const char *s, size_t n);
 /*
 ** src/conv {{{
 */
-int			ft_atoi(const char *s);
-int			ft_atoi_skip(const char **s);
+int		ft_atoi(const char *s);
+int		ft_atoi_skip(const char **s);
 uint8_t		ft_digittoint(char c);
 uint8_t		ft_todigit(int c);
-int			ft_tolower(int c);
-int			ft_toupper(int c);
-int			ft_xdigittoint(char c);
+int		ft_tolower(int c);
+int		ft_toupper(int c);
+int		ft_xdigittoint(char c);
 /*
 ** }}}
 */
@@ -103,7 +103,6 @@ void		ft_lstiter(t_list *list, void (*f)(t_list *elem));
 t_list		*ft_lstmap(t_list *list, t_list *(*f)(t_list *elem));
 void		ft_lstpush(t_list **alst, t_list *new);
 size_t		ft_lstsize(t_list *list);
-t_list		*ft_lststrsplit(const char *s, char c);
 void		ft_lstprint_base(t_list *list, uint8_t sz_elem, uint8_t radix);
 /*
 ** }}}
@@ -130,7 +129,7 @@ uint8_t		ft_nbrlen_b8(uint64_t val);
 */
 void		*ft_memalloc(size_t size);
 void		*ft_memchr(const void *s, int c, size_t n);
-int			ft_memcmp(const void *s1, const void *s2, size_t n);
+int		ft_memcmp(const void *s1, const void *s2, size_t n);
 void		*ft_memcpy(void *dst, const void *src, size_t count);
 void		ft_memdel(void **ap);
 void		*ft_memmove(void *dst, const void *src, size_t count);
@@ -144,8 +143,9 @@ void		*ft_memset(void *dst, int c, size_t n);
 */
 void		ft_swap_int(int *a, int *b);
 void		ft_swap_any(void *a, void *b, size_t size_of);
-bool		ft_detect_null(uint64_t word);
-bool		ft_detect_char(uint64_t word, uint64_t mask);
+uint64_t	ft_insn_shrui(uint8_t vec[8], uint8_t shift);
+uint64_t 	ft_haszero(uint64_t word);
+uint64_t	ft_haschar(uint64_t word, uint64_t mask);
 bool		ft_isaligned(const void *ptr, uint8_t align_sz);
 uint64_t	ft_ffszbyte_r(uint64_t lword);
 /*
@@ -180,11 +180,11 @@ char		*ft_strchr(const char *s, int c);
 char		*ft_strchrnul(const char *s, int c);
 void		ft_strclr(char *s);
 char		*ft_strcpy(char *dst, const char *src);
-int			ft_strcmp(const char *s1, const char *s2);
+int		ft_strcmp(const char *s1, const char *s2);
 void		ft_strdel(char **as);
 char		*ft_strdup(const char *s1);
 char		*ft_strdup2(const char *s1, size_t len_s1);
-int			ft_strequ(char const *s1, char const *s2);
+int		ft_strequ(char const *s1, char const *s2);
 void		ft_striter(char *s, void (*f)(char *));
 void		ft_striteri(char *s, void (*f)(unsigned int, char *));
 char		*ft_strjoin(char const *s1, char const *s2);
@@ -195,10 +195,10 @@ char		*ft_strmap(char const *s, char (*f)(char));
 char		*ft_strmap2(char const *s, char (*f)(char), size_t n);
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char		*ft_strncat(char *dst, const char *src, size_t n);
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
-int			ft_strncmp_icase(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp_icase(const char *s1, const char *s2, size_t n);
 char		*ft_strncpy(char *dst, const char *src, size_t len);
-int			ft_strnequ(char const *s1, char const *s2, size_t n);
+int		ft_strnequ(char const *s1, char const *s2, size_t n);
 char		*ft_strnew(size_t size);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char		*ft_strrchr(const char *s, int c);
@@ -208,8 +208,8 @@ char		*ft_strstr(const char *haystack, const char *needle);
 char		*ft_strsub(char const *s, uint32_t start, size_t len);
 char		*ft_strtrim(char const *s);
 char		*ft_strchrset(const char *s, const char *charset);
-int			ft_strrchr2(const char *const str, char c, size_t lenstr);
-int			ft_strchr2(const char *const str, char c);
+int		ft_strrchr2(const char *const str, char c, size_t lenstr);
+int		ft_strchr2(const char *const str, char c);
 uint32_t	ft_strnoccur(const char *s, const char c);
 /*
 ** }}}
