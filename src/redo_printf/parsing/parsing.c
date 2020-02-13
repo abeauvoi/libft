@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 22:20:19 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:48:38 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,30 @@ static const t_u8	g_states[STOP]['z' - 'C' + 1] = {
 		['t' - 'A'] = ZTPRE
 	},
 	{
-		['d' - 'A'] = LONG, ['i' - 'A'] = LONG, ['o' - 'A'] = ULONG, ['u' - 'A'] = ULONG,
-		['x' - 'A'] = ULONG, ['X' - 'A'] = ULONG, ['c' - 'A'] = INT, ['s' - 'A'] = PTR,
-		['l' - 'A'] = LLPRE
+		['d' - 'A'] = LONG, ['i' - 'A'] = LONG, ['o' - 'A'] = ULONG,
+		['u' - 'A'] = ULONG, ['x' - 'A'] = ULONG, ['X' - 'A'] = ULONG,
+		['c' - 'A'] = INT, ['s' - 'A'] = PTR, ['l' - 'A'] = LLPRE
 	},
 	{
-		['d' - 'A'] = LONG, ['i' - 'A'] = LONG, ['o' - 'A'] = ULONG, ['u' - 'A'] = ULONG,
-		['x' - 'A'] = ULONG, ['X' - 'A'] = ULONG
+		['d' - 'A'] = LONG, ['i' - 'A'] = LONG, ['o' - 'A'] = ULONG,
+		['u' - 'A'] = ULONG, ['x' - 'A'] = ULONG, ['X' - 'A'] = ULONG
 	},
 	{
-		['d' - 'A'] = SHORT, ['i' - 'A'] = SHORT, ['o' - 'A'] = USHORT, ['u' - 'A'] = USHORT,
-		['x' - 'A'] = USHORT, ['X' - 'A'] = USHORT, ['h' - 'A'] = HHPRE
+		['d' - 'A'] = SHORT, ['i' - 'A'] = SHORT, ['o' - 'A'] = USHORT,
+		['u' - 'A'] = USHORT, ['x' - 'A'] = USHORT, ['X' - 'A'] = USHORT,
+		['h' - 'A'] = HHPRE
 	},
 	{
-		['d' - 'A'] = CHAR, ['i' - 'A'] = CHAR, ['o' - 'A'] = UCHAR, ['u' - 'A'] = UCHAR,
-		['x' - 'A'] = UCHAR, ['X' - 'A'] = UCHAR 
+		['d' - 'A'] = CHAR, ['i' - 'A'] = CHAR, ['o' - 'A'] = UCHAR,
+		['u' - 'A'] = UCHAR, ['x' - 'A'] = UCHAR, ['X' - 'A'] = UCHAR 
 	},
 	{
-		['d' - 'A'] = PDIFF, ['i' - 'A'] = PDIFF, ['o' - 'A'] = SIZET, ['u' - 'A'] = SIZET,
-		['x' - 'A'] = SIZET, ['X' - 'A'] = SIZET 
+		['d' - 'A'] = PDIFF, ['i' - 'A'] = PDIFF, ['o' - 'A'] = SIZET,
+		['u' - 'A'] = SIZET, ['x' - 'A'] = SIZET, ['X' - 'A'] = SIZET 
 	},
 	{
-		['d' - 'A'] = IMAX, ['i' - 'A'] = IMAX, ['o' - 'A'] = UMAX, ['u' - 'A'] = UMAX,
-		['x' - 'A'] = UMAX, ['X' - 'A'] = UMAX 
+		['d' - 'A'] = IMAX, ['i' - 'A'] = IMAX, ['o' - 'A'] = UMAX,
+		['u' - 'A'] = UMAX, ['x' - 'A'] = UMAX, ['X' - 'A'] = UMAX 
 	}
 };
 
@@ -58,17 +59,22 @@ static const t_u8	g_states[STOP]['z' - 'C' + 1] = {
 **}}}
 */
 
+/*
+** Verifies if the parsed character 'flag' falls into the range of recognized
+** printf flags. Flags are organized by ascii order.
+*/
+
 t_u32				parse_flags(t_ftpf *info)
 {
 	char 	*s;
 	t_u32	flags;
-	t_u32 	option;
+	t_u32 	flag;
 
 	flags = 0;
 	s = info->dup_fmt;
-	while (*s - ' ' < ' ' && (FLAGMASK & (option = (1U << (*s - ' ')))))
+	while (*s - ' ' < ' ' && (FLAGMASK & (flag = (1U << (*s - ' ')))) != 0)
 	{
-		flags |= option;
+		flags |= flag;
 		++s;
 	}
 	info->dup_fmt = s;
