@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 19:15:17 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:56:47 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ enum 				e_flags
 	LEFT_ADJ	= (1U << ('-' - ' ')),
 	SPACE		= (1U << (' ' - ' ')),
 	PLUS_SIGN	= (1U << ('+' - ' ')),
-	THOUSEP		= (1U << ('\'' - ' '))
+	THOUSEP		= (1U << ('\'' - ' ')),
+	FLAGMASK = ALT + ZERO_PAD + LEFT_ADJ + SPACE + PLUS_SIGN + THOUSEP
 };
 
 union 				u_redir
