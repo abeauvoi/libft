@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 03:19:58 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 01:08:56 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:35:53 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static t_u8		copy_value_to_buf(char *lookup, char esc_seq[12], t_u8 pos,
 /*
 ** First, this function locates a delimiter (';' or '}'),
 ** starting from info->dup_fmt[1] (info->dup_fmt[0] == '{' here).
-** The address of the delimiter is stored in ep. This mechanism allows us to
-** get the length of a sequence by subtracting ep by wp.
+** The address of the delimiter is stored in head_ptr. By substracting head_ptr
+** by tail_ptr, we get the length of a sequence.
 **
 ** Then, it stores the length of the sequence (a sequence being for ex. "RED")
 ** before saving the address of a potential match in lookup.
@@ -51,34 +51,36 @@ static t_u8		copy_value_to_buf(char *lookup, char esc_seq[12], t_u8 pos,
 ** lookup[len + 1] == '1' (3'1').
 ** The following value is then copied to &esc_seq[pos];
 **
-** Finally, the wp pointer is incremented to point past the previous delimiter.
-** We also check if ep points to a ';', because we need to copy that ';' into
-** esc_seq.
+** Finally, the tail_ptr pointer is incremented to point past the previous
+** delimiter.
+** We also check if head_ptr points to a ';', because we need to copy that ';'
+** into esc_seq.
 */
 
 static t_u8		loop(t_u8 pos, char esc_seq[12], char **dup_fmt)
 {
-	char		*wp;
-	char		*ep;
+	char		*tail_ptr;
+	char		*head_ptr;
 	char		*lookup;
 	t_u8		len;
 
-	wp = (*dup_fmt) + 1;
+	tail_ptr = (*dup_fmt) + 1;
 	lookup = NULL;
-	while ((ep = seek_delimiter(wp)) != NULL)
+	while ((head_ptr = seek_delimiter(tail_ptr)) != NULL)
 	{
-		len = ep - wp;
-		if (len > 7
-				|| (lookup = ft_strnstr_icase(COLOR_TABLE, wp, len)) == NULL)
+		len = head_ptr - tail_ptr;
+		if (len > 7)
+			break ;
+		if ((lookup = ft_strnstr_icase(COLOR_TABLE, tail_ptr, len)) == NULL)
 			break ;
 		pos = copy_value_to_buf(lookup, esc_seq, pos, len);
-		wp = ep + 1;
-		if (ep[0] == ';')
+		tail_ptr = head_ptr + 1;
+		if (head_ptr[0] == ';')
 			esc_seq[pos++] = ';';
 	}
 	if (lookup == NULL || len > 7)
 		return (2);
-	(*dup_fmt) = wp;
+	(*dup_fmt) = tail_ptr;
 	return (pos);
 }
 
