@@ -6,13 +6,13 @@
 /*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 05:56:50 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 08:08:20 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:47:48 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-inline bool		ft_ispow2(uintmax_t x)
+bool		ft_ispow2(uint64_t x)
 {
 	return ((x & (x - 1)) == 0);
 }

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:39:55 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:34:55 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:26:27 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int				handle_padding(int len, t_ftpf *info)
 {
-	t_u32				min_len;
+	uint32_t			min_len;
 	struct s_ftpf_pad	pad_info;
-	t_u32				f;
+	uint32_t			f;
 
 	if (info->prec < len)
 		info->prec = len;

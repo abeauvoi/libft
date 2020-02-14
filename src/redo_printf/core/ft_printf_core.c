@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 06:47:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:20:20 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:55:50 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int				ft_printf_core(t_ftpf *info, va_list ap)
 {
 	int		len;
 
+	len = 0;
 	while (1)
 	{
 		if (len == -1)

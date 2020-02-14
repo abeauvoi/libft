@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 19:03:26 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/12/05 23:54:17 by mac              ###   ########.fr       */
+/*   Updated: 2020/02/13 19:57:00 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char 				*ft_strchr(const char *str, int c)
 	v[BEFORE_MASK] = (1ULL << ((uintptr_t)str << 3)) - 1;
 	p = (const uint64_t *)((uintptr_t)str & -8);
 	longword = (*p | v[BEFORE_MASK])
-		^ (goal & ft_bytewise_shr((uint8_t *)&v[BEFORE_MASK], 1));
+		^ (goal & ft_insn_shrui((uint8_t *)&v[BEFORE_MASK], 1));
 	while (1)
 	{
 		v[ZERO_MAGNET] = ft_haszero(longword);

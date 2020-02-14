@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:57:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/01/23 20:17:17 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/14 15:28:36 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t					ft_strlen(const char *str0)
+size_t					ft_strlen(const char *str)
 {
 	const uint64_t	*longptr;
 	uint64_t 		longword;

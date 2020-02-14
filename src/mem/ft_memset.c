@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:43:39 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/01/23 20:26:21 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:51:16 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ void			*ft_memset(void *dst0, int c, size_t n)
 		n &= 7;
 	}
 	while (n-- > 0)
-		*dst++ = uc;
+		*u8dst++ = uc;
 	return (dst0);
 }

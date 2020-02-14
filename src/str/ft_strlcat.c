@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 18:20:58 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/01/23 20:17:58 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/14 15:06:06 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t		ft_strlcat(char *dst, const char *src, size_t n)
 	while (i < n && (dst[i] = src[i]) != '\0')
 	{
 		if (++i == n)
-			src[i] = '\0';
+			dst[i] = '\0';
 	}
 	return (dlen + ft_strlen(src));
 }

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 05:45:52 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 17:34:54 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:08:41 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ uint8_t					ft_u64toa_b10(uint64_t num, char *dst)
 		next -= 2;
 	}
 	if (num < 10)
-		dst[next] = ft_tochar(num);
+		dst[next] = num - '0';
 	else
 		*((uint16_t *)(dst + next - 1)) = g_digits100[num];
 	return (length);

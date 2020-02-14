@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 08:12:13 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 17:35:55 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:09:07 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ uint8_t					ft_u64toa_b16(uint64_t num, char *dst, uint16_t locase)
 	if (num < 16)
 		dst[next] = XDIGITS_UPCASE[num] | (uint8_t)locase;
 	else
-		*((uint16_t *)(dst + next - 1)) = g_digits100[num] | locase;
+		*((uint16_t *)(dst + next - 1)) = g_digits256[num] | locase;
 	return (length);
 }

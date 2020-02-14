@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 18:10:35 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/11/18 18:01:07 by mac              ###   ########.fr       */
+/*   Updated: 2020/02/13 18:37:11 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-inline int		ft_isascii(int c)
+int		ft_isascii(int c)
 {
 	return ((unsigned char)c <= '\x7f');
 }

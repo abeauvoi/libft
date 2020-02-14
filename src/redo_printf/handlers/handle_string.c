@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 08:16:28 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:39:26 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:32:07 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int				handle_str(t_ftpf *info)
 {
-	char	*ep;
 	int		len;
 
 	info->workptr = (info->arg != NULL ? (char *)info->arg : "(null)");
@@ -23,12 +22,12 @@ int				handle_str(t_ftpf *info)
 	return (handle_padding(len, info));
 }
 
-static int		ft_wstrcpy(char mbs[5], char mblen, wchar_t *ws, t_ftpf *info)
+static int		ft_wstrcpy(char mbs[5], int mblen, wchar_t *ws, t_ftpf *info)
 {
 	int		i;
 
 	i = 0;
-	while (i < 0U + info->prec
+	while (i < info->prec
 			&& *ws
 			&& i + (mblen = ft_wchar_to_utf8(mbs, *ws++)) <= info->prec)
 	{
@@ -44,16 +43,16 @@ int				handle_wstr(t_ftpf *info)
 {
 	char				mbs[5];
 	wchar_t				*ws;
-	char				mblen;
+	int 				mblen;
 	int					i;
 	struct s_ftpf_pad	pad_info;
 
 	ws = (wchar_t *)info->arg;
 	i = 0;
-	while (i < 0U + info->prec
+	while ((unsigned int)i < 0U + info->prec
 			&& *ws
 			&& (mblen = ft_wchar_to_utf8(mbs, *ws++)) != -1
-			&& mblen <= 0U + info->prec - i)
+			&& (unsigned int)mblen <= 0U + info->prec - i)
 		i += mblen;
 	if (mblen == -1)
 		return (-1);
@@ -64,5 +63,5 @@ int				handle_wstr(t_ftpf *info)
 			|| pad_internal_buf(info->flags ^ LEFT_ADJ, ' ', info, pad_info)
 			== -1)
 		return (-1);
-	return (MAX(info->width, info->prec));
+	return (ft_max(info->width, info->prec));
 }

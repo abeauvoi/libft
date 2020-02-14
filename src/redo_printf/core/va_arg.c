@@ -6,32 +6,32 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/24 07:04:50 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 22:20:19 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:07:33 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-inline void			*call_va_arg(t_u32 state, va_list ap)
+void			*call_va_arg(uint32_t state, va_list ap)
 {
-	if (state == MAXSTATE)
-		return ;
-	else if (state == PTR)
-		return ((void *)va_arg(ap, char *));
+	if (state == PTR)
+		return ((void *)(uintptr_t)va_arg(ap, char *));
 	else if (state == INT)
-		return ((void *)va_arg(ap, int));
+		return ((void *)(uintptr_t)va_arg(ap, int));
 	else if (state == UINT)
-		return ((void *)va_arg(ap, unsigned int));
+		return ((void *)(uintptr_t)va_arg(ap, unsigned int));
 	else if (state == LONG)
-		return ((void *)va_arg(ap, long int));
+		return ((void *)(uintptr_t)va_arg(ap, long int));
 	else if (state == ULONG)
-		return ((void *)va_arg(ap, unsigned long int));
+		return ((void *)(uintptr_t)va_arg(ap, unsigned long int));
 	else if (state == SHORT)
-		return ((void *)(t_s16)va_arg(ap, int));
+		return ((void *)(uintptr_t)(uint16_t)va_arg(ap, int));
 	else if (state == USHORT)
-		return ((void *)(t_u16)va_arg(ap, unsigned int));
+		return ((void *)(uintptr_t)(uint16_t)va_arg(ap, unsigned int));
 	else if (state == CHAR)
-		return ((void *)(char)va_arg(ap, int));
+		return ((void *)(uintptr_t)(char)va_arg(ap, int));
 	else if (state == UCHAR)
-		return ((void *)(t_u8)va_arg(ap, unsigned int));
+		return ((void *)(uintptr_t)(uint8_t)va_arg(ap, unsigned int));
+	else
+		return (NULL);
 }

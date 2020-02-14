@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 05:28:53 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 02:23:00 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:17:02 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int			handle_char(t_ftpf *info)
 	info->convbuf[1] = '\0';
 	info->workptr = info->convbuf;
 	info->flags &= ~ZERO_PAD;
-	return (handle_padding(info));
+	return (handle_padding(1, info));
 }
 
 int			handle_wchar(t_ftpf *info)
 {
-	info->wchar[0] = info->arg.i;
+	info->wchar[0] = (wchar_t)info->arg;
 	info->wchar[1] = 0;
 	info->arg = (void *)info->wchar;
 	info->prec = -1;

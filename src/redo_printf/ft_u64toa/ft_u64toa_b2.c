@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/23 22:56:09 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/11/22 17:03:09 by mac              ###   ########.fr       */
+/*   Updated: 2020/02/13 19:09:43 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static uint8_t			digits2(uint64_t val)
 
 uint8_t					ft_u64toa_b2(uint64_t num, char *dst)
 {
-	static const t_u16	bdigits100[4] = { 0x3030, 0x3130, 0x3031, 0x3131 };
-	const uint8_t		length = digits2(num);
-	uint8_t				next;
+	static const uint16_t	bdigits100[4] = { 0x3030, 0x3130, 0x3031, 0x3131 };
+	const uint8_t			length = digits2(num);
+	uint8_t					next;
 
 	next = length - 1;
 	while (num >= 4)
@@ -53,7 +53,7 @@ uint8_t					ft_u64toa_b2(uint64_t num, char *dst)
 		next -= 2;
 	}
 	if (num < 2)
-		dst[next] = ft_tochar(num);
+		dst[next] = num - '0';
 	else
 		*((uint16_t *)(dst + next - 1)) = bdigits100[num];
 	return (length);

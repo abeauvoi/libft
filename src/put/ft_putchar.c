@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 21:31:40 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 09:17:46 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/14 15:46:41 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-inline void		ft_putchar(char c)
+void		ft_putchar(char c)
 {
 	write(1, &c, 1);
 }

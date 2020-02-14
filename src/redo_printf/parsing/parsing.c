@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 07:37:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/02/13 16:48:38 by mac              ###   ########.fr       */
+/*   Updated: 2020/02/13 19:42:55 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,14 @@
 */ 
 
 
-static const t_u8	g_states[STOP]['z' - 'C' + 1] = {
+static const uint8_t	g_states[STOP]['z' - 'A' + 1] = {
 	{
 		['b' - 'C'] = UINT, ['c' - 'A'] = CHAR, ['d' - 'A'] = INT,
 		['h' - 'A'] = HPRE, ['i' - 'A'] = INT, ['j' - 'A'] = JPRE,
 		['l' - 'A'] = LPRE, ['o' - 'A'] = UINT, ['s' - 'A'] = PTR,
 		['u' - 'A'] = UINT, ['x' - 'A'] = UINT, ['X' - 'A'] = UINT,
 		['C' - 'A'] = INT, ['S' - 'A'] = PTR, ['p' - 'A'] = UIPTR,
-		['z' - 'A'] = ZTPRE,
-		['t' - 'A'] = ZTPRE
+		['z' - 'A'] = ZTPRE, ['t' - 'A'] = ZTPRE
 	},
 	{
 		['d' - 'A'] = LONG, ['i' - 'A'] = LONG, ['o' - 'A'] = ULONG,
@@ -64,11 +63,11 @@ static const t_u8	g_states[STOP]['z' - 'C' + 1] = {
 ** printf flags. Flags are organized by ascii order.
 */
 
-t_u32				parse_flags(t_ftpf *info)
+uint32_t				parse_flags(t_ftpf *info)
 {
-	char 	*s;
-	t_u32	flags;
-	t_u32 	flag;
+	char 		*s;
+	uint32_t	flags;
+	uint32_t 	flag;
 
 	flags = 0;
 	s = info->dup_fmt;
@@ -81,13 +80,14 @@ t_u32				parse_flags(t_ftpf *info)
 	return (flags);
 }
 
-t_u32				parse_field_width(t_ftpf *info, va_list ap)
+uint32_t				parse_field_width(t_ftpf *info, va_list ap)
 {
 	int			width;
 	const char 	*s;
 
+	width = 0;
 	s = info->dup_fmt;
-	if (IS_DIGIT(*s))
+	if (ft_isdigit(*s))
 		width = ft_atoi_skip(&s);
 	else if (*s == '*')
 	{
@@ -103,7 +103,7 @@ t_u32				parse_field_width(t_ftpf *info, va_list ap)
 	return (width);
 }
 
-int					parse_precision(t_ftpf *info, va_list ap)
+int						parse_precision(t_ftpf *info, va_list ap)
 {
 	int			precision;
 	const char 	*s;
@@ -125,20 +125,20 @@ int					parse_precision(t_ftpf *info, va_list ap)
 	return (precision);
 }	
 
-void				parse_size_modifiers(t_ftpf *info, va_list ap)
+void					parse_size_modifiers(t_ftpf *info, va_list ap)
 {
-	t_u32	state;
-	t_u32 	prev_state;
-	char 	*s;
+	uint32_t	state;
+	uint32_t 	prev_state;
+	char 		*s;
 
 	state = BARE;
 	s = info->dup_fmt;
 	while (state < STOP)
 	{
-		if (OUT_OF_RANGE(*s))
+		if (*s - 'A' > 'z' - 'A')
 			break ;
 		prev_state = state;
-		state = g_states[state][*s++ - 'C'];
+		state = g_states[state][*s++ - 'A'];
 	}
 	info->dup_fmt = s;
 	if (s[-1] == '%')

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 01:28:21 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:53:13 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:51:31 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ inline int		out_str(union u_redir redir, const char *str, size_t len)
 	return (1);
 }
 
-inline int		out_null(union u_redir UNUSED(redir), const char UNUSED(*str),
-		size_t UNUSED(len))
+inline int		out_null(union u_redir redir, const char *str, size_t len)
 {
+	(void)redir;
+	(void)str;
+	(void)len;
 	return (1);
 }
 /*

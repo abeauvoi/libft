@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 05:03:07 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 02:21:50 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:23:41 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		handle_oct_int(t_ftpf *info)
 {
-	t_u64	nb;
+	uint64_t	nb;
 
-	nb = (t_u64)info->arg;
+	nb = (uint64_t)info->arg;
 	if (nb != 0 && (info->flags & ALT) != 0)
 	{
 		info->prefix_len = 1;

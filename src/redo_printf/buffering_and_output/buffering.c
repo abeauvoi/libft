@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 03:34:15 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 03:36:46 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:48:20 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			flush_internal_buf(t_ftpf *info)
 {
 	int		flushed_len;
 
-	flushed_len = (int)MIN(info->bufpos, info->max_length - info->done);
+	flushed_len = (int)ft_min(info->bufpos, info->max_length - info->done);
 	if (flushed_len < 0)
 		flushed_len = 0;
 	if (info->outf(info->redir, info->buf, flushed_len) == -1)
@@ -56,10 +56,10 @@ int			str_to_internal_buf(const char *str, int len, t_ftpf *info)
 	return (1);
 }
 
-int			pad_internal_buf(t_u32 flags, char c, t_ftpf *info,
+int			pad_internal_buf(uint32_t flags, char c, t_ftpf *info,
 		struct s_ftpf_pad pad_info)
 {
-	char				*p;
+	const char			*p;
 	int					len;
 	static const char	blanks[PRINTF_PADSIZE] =
 	{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',

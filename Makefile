@@ -6,7 +6,7 @@
 #    By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 18:23:33 by abeauvoi          #+#    #+#              #
-#    Updated: 2018/12/01 14:54:12 by mac              ###   ########.fr        #
+#    Updated: 2020/02/14 15:43:41 by mac              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ STR_SRCS = ft_bzero.c ft_revstr.c ft_strcat.c ft_strchr.c \
 	   ft_strncmp_icase.c ft_strncpy.c ft_strnequ.c ft_strnew.c \
 	   ft_strnoccur.c ft_strnstr.c ft_strnstr_icase.c ft_strrchr.c \
 	   ft_strrchr2.c ft_strsplit.c ft_strsplitset.c ft_strstr.c \
-	   ft_strsub.c ft_strtrim.c ft_strchr_callback.c
+	   ft_strsub.c ft_strtrim.c
 
 SRCS = $(CHAR_SRCS) $(CONV_SRCS) $(REDO_PRINTF_SRCS) $(LST_SRCS) $(MATH_SRCS) \
 		  $(MEM_SRCS) $(MISC_SRCS) $(PUT_SRCS) $(STR_SRCS)
@@ -90,7 +90,7 @@ SRCS = $(CHAR_SRCS) $(CONV_SRCS) $(REDO_PRINTF_SRCS) $(LST_SRCS) $(MATH_SRCS) \
 CC = gcc
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 COMP = $(CC) $(CFLAGS) -o $@ -c $<
-CFLAGS = -Wall -Werror -Wextra -finline-functions -I$(INC_DIR)
+CFLAGS = -Wall -Werror -Wextra -I$(INC_DIR)
 BUILD_LIB = ar -rcs $@ $^
 
 #

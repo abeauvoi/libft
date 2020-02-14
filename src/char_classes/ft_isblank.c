@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 04:31:39 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 06:10:22 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:37:27 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-inline int	ft_isblank(char c)
+int	ft_isblank(char c)
 {
 	return (c == ' ' || c == '\t');
 }

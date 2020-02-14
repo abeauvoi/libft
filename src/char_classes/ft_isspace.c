@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 17:44:30 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 06:30:32 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:38:29 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-inline int			ft_isspace(int c)
+int			ft_isspace(int c)
 {
 	unsigned char	uc;
 

@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:16:14 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/02/13 16:56:47 by mac              ###   ########.fr       */
+/*   Updated: 2020/02/13 18:54:01 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ union 				u_redir
 
 struct				s_ftpf_pad
 {
-	uint32_t	width;
-	int			len;
+	int	width;
+	int	len;
 };
 
 typedef struct 		s_ftpf
@@ -150,7 +150,7 @@ typedef struct 		s_ftpf
 	wchar_t 		wchar[2];
 	union u_redir 	redir;
 	size_t			max_length;
-	int 			(*outf)(union u_redir, const char *, struct s_ftpf *);
+	int 			(*outf)(union u_redir, const char *, size_t);
 } 					t_ftpf;
 
 typedef int			(*t_ftpf_handler)(t_ftpf *);
@@ -199,7 +199,7 @@ int			parse_precision(t_ftpf *info, va_list ap);
 void		parse_size_modifiers(t_ftpf *info, va_list ap);
 uint8_t		parse_color_tag(t_ftpf *info);
 
-void		access_branch_table(t_ftpf *info);
+int			access_branch_table(t_ftpf *info);
 
 int			handle_bin_int(t_ftpf *info);
 int			handle_dec_int(t_ftpf *info);
@@ -212,6 +212,7 @@ int			handle_hex_str(t_ftpf *info);
 int			handle_str(t_ftpf *info);
 int			handle_wstr(t_ftpf *info);
 int			handle_padding(int len, t_ftpf *info);
+int			handle_percent(t_ftpf *info);
 
 int			char_to_internal_buf(char c, t_ftpf *info);
 int			str_to_internal_buf(const char *str, int len, t_ftpf *info);
@@ -225,7 +226,6 @@ int			ft_wchar_to_utf8(char *buf, wchar_t wchar);
 int			out_fd(union u_redir redir, const char *src, size_t len);
 int			out_str(union u_redir redir, const char *src, size_t len);
 int			out_null(union u_redir redir, const char *src, size_t len);
-int			out_stream(union u_redir redir, const char *src, size_t len);
 
 uint8_t		ft_u64toa_b16(uint64_t num, char *dest, uint16_t locase);
 uint8_t		ft_u64toa_b10(uint64_t num, char *dest);

@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 17:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/18 17:39:30 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:37:40 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-inline int		ft_isdigit(int c)
+int		ft_isdigit(int c)
 {
 	return (ft_todigit(c) < 10);
 }

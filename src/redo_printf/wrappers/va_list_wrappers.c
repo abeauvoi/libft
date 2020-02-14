@@ -6,10 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 09:14:50 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 01:24:16 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:43:47 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "ft_printf.h"
 
 int			ft_vdprintf(int fd, const char *fmt, va_list ap)

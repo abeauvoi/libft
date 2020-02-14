@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 05:11:05 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/15 19:56:41 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:00:39 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int				ft_atoi_skip(const char **str)
 	int		digit;
 
 	acc = 0;
-	while ((digit = TO_DIGIT(*((*str)++))) < 10)
+	while ((digit = (int)ft_todigit(*((*str)++))) < 10)
 		acc = acc * 10 + digit;
 	return (acc);
 }
@@ -48,9 +48,9 @@ static int		four_byte_seq(char *s, wchar_t wchar)
 
 int				ft_wchar_to_utf8(char *s, wchar_t wchar)
 {
-	t_u32	val;
+	uint32_t 	val;
 
-	val = (t_u32)wchar;
+	val = (uint32_t)wchar;
 	if (val < 0x80 || MB_CUR_MAX == 1)
 	{
 		*s = (char)val;

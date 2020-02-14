@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:28:24 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/10/01 21:17:44 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/14 15:47:39 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-inline void		ft_striteri(char *s, void (*f)(unsigned int, char *))
+void		ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
 	unsigned int	i;
 

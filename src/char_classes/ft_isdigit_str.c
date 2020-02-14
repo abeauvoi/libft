@@ -6,11 +6,11 @@
 /*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 05:05:10 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/11/18 17:48:10 by mac              ###   ########.fr       */
+/*   Updated: 2020/02/13 18:37:55 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "libft.h"
 
 int		ft_isdigit_str(const char *s)
 {

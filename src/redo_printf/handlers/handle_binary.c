@@ -6,18 +6,18 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 04:53:24 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 02:31:05 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:12:33 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		handle_bin_int(t_ftpf_info *info)
+int		handle_bin_int(t_ftpf *info)
 {
-	int		len;
-	t_u64	nb;
+	int			len;
+	uint64_t	nb;
 
-	nb = (t_u64)info->arg;
+	nb = (uint64_t)info->arg;
 	if (nb != 0)
 	{
 		info->prefix += 9;

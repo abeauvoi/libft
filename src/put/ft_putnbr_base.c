@@ -6,15 +6,15 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/12 21:38:38 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/16 04:15:13 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:52:16 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void					ft_putnbr_base(long int nb, unsigned char base)
+void					ft_putnbr_base(int64_t nb, uint8_t base)
 {
-	unsigned long int	tmp;
+	uint64_t	tmp;
 
 	tmp = (nb < 0 ? -nb : nb);
 	if (nb < 0)

@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 07:30:08 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 07:31:09 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/14 15:46:28 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-inline void		ft_swap_int(int *a, int *b)
+void		ft_swap_int(int *a, int *b)
 {
 	int		temp;
 

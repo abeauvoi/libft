@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 22:49:16 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 04:28:24 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:23:16 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 int								handle_hex_int(t_ftpf *info)
 {
-	unsigned long int	nb;
-	int					len;
-	unsigned short int	to_lower;	
+	uint64_t	nb;
+	int			len;
+	uint16_t	to_lower;	
 
 	to_lower = (info->dup_fmt[-1] & 0x20);
 	to_lower |= (to_lower << 8);
-	nb = (unsigned long int)info->arg;
+	nb = (uint64_t)info->arg;
 	if (info->dup_fmt[-1] == 'p')
 	{
-		info->prec = MAX(info->prec, 2 * sizeof(void *));
+		info->prec = ft_max(info->prec, 2 * sizeof(void *));
 		info->flags |= ALT;
 	}
 	len = ft_u64toa_b16(nb, info->convbuf, to_lower);
 	if (nb != 0 && (info->flags & ALT) != 0)
 	{
 		info->prefix_len = 2;
-		info->prefix += ((unsigned char)info->dup_fmt[-1] / 16);
+		info->prefix += ((uint8_t)info->dup_fmt[-1] / 16);
 	}
 	if (info->prec != -1)
 		info->flags &= ~ZERO_PAD;
@@ -38,21 +38,6 @@ int								handle_hex_int(t_ftpf *info)
 		len = 0;
 	info->workptr = info->convbuf;
 	return (handle_padding(len, info));
-}
-
-static int						ft_hexstrlen(const char *s, int prec)
-{
-	int		len;
-	char	*t;	
-
-	len = 0;
-	t = s;
-	while (*s)
-	{
-		if (ft_isprint(*s))
-			++len;
-	}
-	return (len);
 }
 
 /*
@@ -63,7 +48,7 @@ static int						ft_hexstrlen(const char *s, int prec)
 ** value of the control character at once in the esc_seq buffer.
 */
 
-static const unsigned short int	g_digits31[31] = {
+static const uint16_t	g_digits31[32] = {
 	0x3030, 0x3130, 0x3230, 0x3330, 0x3430, 0x3530, 0x3630, 0x3730, 0x3830,
 	0x3930, 0x4130, 0x4230, 0x4330, 0x4430, 0x4530, 0x4630, 0x3031, 0x3131,
 	0x3231, 0x3331, 0x3431, 0x3531, 0x3631, 0x3731, 0x3831, 0x3931, 0x4131,
@@ -74,7 +59,7 @@ static const unsigned short int	g_digits31[31] = {
 */
 
 static int						ft_hexstrcpy(char *wp, char *ep,
-		unsigned short int to_lower, t_ftpf *info)
+		uint16_t to_lower, t_ftpf *info)
 {
 	static char		esc_seq[5] = {'\\', 'X', '\0', '\0', '\0'};
 
@@ -83,7 +68,7 @@ static int						ft_hexstrcpy(char *wp, char *ep,
 	{
 		if (!ft_isprint(*wp))
 		{
-			*((short int *)(esc_seq + 2)) = g_digits31[*wp] | to_lower;
+			*((short int *)(esc_seq + 2)) = g_digits31[(int)*wp] | to_lower;
 			if (str_to_internal_buf(esc_seq, 4, info) == -1)
 				return (-1);
 		}
@@ -98,7 +83,7 @@ int								handle_hex_str(t_ftpf *info)
 {
 	char				*wp;
 	char				*ep;
-	unsigned short int	to_lower;
+	uint16_t			to_lower;
 	struct s_ftpf_pad	pad_info;
 	unsigned int		f;
 

@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 14:51:52 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 08:01:17 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:46:20 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-inline intmax_t		ft_min(intmax_t a, intmax_t b)
+int64_t		ft_min(int64_t a, int64_t b)
 {
 	return (a < b ? a : b);
 }

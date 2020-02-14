@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 22:07:43 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/17 08:47:51 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/14 15:46:06 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-inline void		ft_memdel(void **ap)
+void		ft_memdel(void **ap)
 {
 	free(*ap);
 	*ap = NULL;

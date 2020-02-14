@@ -6,11 +6,11 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 19:37:57 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/09/24 16:11:05 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/02/14 15:32:00 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_types.h"
+#include "libft.h"
 
 /*
 ** hs (HayStack, botte de foin) -> string to look into
@@ -28,11 +28,11 @@ char		*ft_strnstr_icase(const char *hs, const char *ndl, size_t len)
 		return ((char *)hs);
 	while (*hs && len)
 	{
-		if (ft_to_upper(*hs) == ft_to_upper(*n))
+		if (ft_toupper(*hs) == ft_toupper(*n))
 		{
 			h = hs;
 			i = len;
-			while (i-- && ft_to_upper(*(h++)) == ft_to_upper(*(n++)))
+			while (i-- && ft_toupper(*(h++)) == ft_toupper(*(n++)))
 				if (!*n)
 					return ((char *)hs);
 		}

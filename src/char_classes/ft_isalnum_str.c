@@ -6,11 +6,11 @@
 /*   By: abeauvoi <abeauvoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 05:01:40 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/11/18 17:58:03 by mac              ###   ########.fr       */
+/*   Updated: 2020/02/13 18:36:53 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "libft.h"
 
 int		ft_isalnum_str(const char *s)
 {

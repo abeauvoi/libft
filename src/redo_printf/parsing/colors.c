@@ -6,13 +6,13 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 03:19:58 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/02/13 16:35:53 by mac              ###   ########.fr       */
+/*   Updated: 2020/02/14 15:32:41 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static char		*seek_delimiter(char *ptr)
+static char			*seek_delimiter(char *ptr)
 {
 	if (ptr[0] == '\0' || ptr[0] == '}')
 		return (NULL);
@@ -21,12 +21,12 @@ static char		*seek_delimiter(char *ptr)
 	return (ptr);
 }
 
-static t_u8		copy_value_to_buf(char *lookup, char esc_seq[12], t_u8 pos,
-		t_u8 len)
+static uint8_t		copy_value_to_buf(char *lookup, char esc_seq[12],
+		uint8_t pos, uint8_t len)
 {
-	if (IS_DIGIT(lookup[len + 1]))
+	if (ft_isdigit(lookup[len + 1]))
 	{
-		*((t_s16 *)(esc_seq + pos)) = *((t_s16 *)(lookup + len));
+		*((uint16_t *)(esc_seq + pos)) = *((uint16_t *)(lookup + len));
 		pos += 2;
 	}
 	else
@@ -57,12 +57,12 @@ static t_u8		copy_value_to_buf(char *lookup, char esc_seq[12], t_u8 pos,
 ** into esc_seq.
 */
 
-static t_u8		loop(t_u8 pos, char esc_seq[12], char **dup_fmt)
+static uint8_t		loop(uint8_t pos, char esc_seq[12], char **dup_fmt)
 {
 	char		*tail_ptr;
 	char		*head_ptr;
 	char		*lookup;
-	t_u8		len;
+	uint8_t		len;
 
 	tail_ptr = (*dup_fmt) + 1;
 	lookup = NULL;
@@ -94,18 +94,17 @@ static t_u8		loop(t_u8 pos, char esc_seq[12], char **dup_fmt)
 ** infinite loop.
 */
 
-t_u8			parse_color_tag(t_ftpf *info)
+uint8_t				parse_color_tag(t_ftpf *info)
 {
-	t_u8	pos;
+	uint8_t	pos;
 	char	esc_seq[12];
-	char	*dup_fmt;
 
 	esc_seq[0] = '\e';
 	esc_seq[1] = '[';
 	pos = loop(2, esc_seq, &(info->dup_fmt));
 	if (pos == 2)
 	{
-		char_to_internal_buf(info->dup_fmt, info);
+		char_to_internal_buf(*info->dup_fmt, info);
 		++info->dup_fmt;
 		return (1);
 	}
