@@ -6,19 +6,19 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/21 16:43:55 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/02/13 18:41:25 by mac              ###   ########.fr       */
+/*   Updated: 2020/11/27 17:26:57 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static uint32_t inner_loop(const char *cp)
+static uint32_t inner_loop(const char *ptr)
 {
 	uint32_t	acc;
 	uint8_t		digit;
 
 	acc = 0;
-	while ((digit = ft_todigit(*cp++)) < 9)
+	while ((digit = ft_todigit(*ptr++)) < 9)
 	{
 		if (acc > 214748364)
 			return (-1U);
@@ -36,17 +36,17 @@ static uint32_t inner_loop(const char *cp)
 
 int					ft_atoi_skip(const char **s)
 {
-	const char	*cp;
+	const char	*ptr;
 	uint8_t		sign;
 	uint32_t 	acc;
 
-	cp = *s;
-	while (ft_isspace(*cp++))
+	ptr = *s;
+	while (ft_isspace(*ptr++))
 		continue ;
 	sign = '+';
-	if (*cp == '-')
-		sign = *cp++;
-	acc = inner_loop(cp); 
-	*s = cp;
+	if (*ptr == '-')
+		sign = *ptr++;
+	acc = inner_loop(ptr); 
+	*s = ptr;
 	return (sign == '-' ? -(int)acc : acc);
 }

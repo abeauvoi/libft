@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 15:46:59 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/12/05 22:55:36 by mac              ###   ########.fr       */
+/*   Updated: 2020/12/01 21:44:24 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static size_t	ft_word_len(const char *s, char c)
 	size_t		i;
 
 	i = 0;
-	while (s[i] && s[i] != c)
+	while (s[i] != '\0' && s[i] != c)
 		++i;
 	return (i);
 }
@@ -28,9 +28,9 @@ static	size_t	ft_word_count(const char *s, char c)
 	size_t		words;
 
 	words = 0;
-	while (*s)
+	while (*s != '\0')
 	{
-		if (*s != c && (s[1] == c || s[1] == 0))
+		if (*s != c && (s[1] == c || s[1] == '\0'))
 			++words;
 		++s;
 	}
@@ -44,6 +44,18 @@ static void		free_split(char **tab, int last)
 	free(tab);
 }
 
+static void		*init_variables(size_t *i, size_t *j, char ***split,
+		size_t words)
+{
+	*i = 0;
+	*j = 0;
+	*split = (char **)malloc(sizeof(**split) * (words + 1));
+	if (*split == NULL)
+		return (NULL);
+	(*split)[words] = NULL;
+	return ((void *)1);
+}
+
 char			**ft_strsplit(char const *s, char c)
 {
 	char		**split;
@@ -51,22 +63,20 @@ char			**ft_strsplit(char const *s, char c)
 	size_t		j;
 	size_t		words;
 
-	if (!s || !(split = (char **)malloc(sizeof(*split)
-					* ((words = ft_word_count(s, c)) + 1))))
+	words = ft_word_count(s, c);
+	if (init_variables(&i, &j, &split, words) == NULL)
 		return (NULL);
-	split[words] = NULL;
-	i = 0;
-	j = 0;
 	while (j < words)
 	{
-		while (s[i] && s[i] == c)
+		while (s[i] != '\0' && s[i] == c)
 			++i;
-		if (!(split[j++] = ft_strsub(s, i, ft_word_len(s + i, c))))
+		split[j++] = ft_substr(s, i, ft_word_len(s + i, c));
+		if (split == NULL)
 		{
 			free_split(split, j);
 			return (NULL);
 		}
-		while (s[i] && s[i] != c)
+		while (s[i] != '\0' && s[i] != c)
 			++i;
 	}
 	return (split);

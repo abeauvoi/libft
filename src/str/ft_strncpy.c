@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 17:52:48 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/01/23 20:12:11 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/11/30 13:04:53 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,15 @@
 
 char		*ft_strncpy(char *dst, const char *src, size_t len)
 {
-	char 			*orig_dst;
-	const uint64_t	*ullsrc;
-	uint64_t 		*ulldst;
+	char	*dst0;
 
-	orig_dst = dst;
-	if (len > 7 && ((uintptr_t)src & 7) == 0 && ((uintptr_t)dst & 7) == 0)
-	{
-		ullsrc = (const uint64_t *)src;
-		ulldst = (uint64_t *)src;
-		while (len > 7 && ft_haszero(*ullsrc) == 0)
-		{
-			len -= 8;
-			*ulldst++ = *ullsrc++;
-		}
-		src = (const char *)ullsrc;
-		dst = (char *)ulldst;
-	}
+	dst0 = dst;
 	while (len-- > 0)
 	{
-		*dst++ = *src;
+		*dst = *src;
+		++dst;
 		if (*src != '\0')
 			++src;
 	}
-	return (orig_dst);
+	return (dst0);
 }

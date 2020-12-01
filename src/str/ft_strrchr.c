@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 19:10:08 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/02/14 15:42:51 by mac              ###   ########.fr       */
+/*   Updated: 2020/11/29 01:53:55 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 char			*ft_strrchr(const char *str0, int c)
 {
-	char  *str;
+	const char  *str;
+	char		b;
 
-	str = (char *)str0;
-	str += ft_strlen(str0) - 1;
-	while (str != str0)
+	str = (const char *)str0;
+	str += ft_strlen(str0);
+	b = (char)c;
+	while (str >= str0)
 	{
-		if (*str == c)
-			return (str);
+		if (*str == b)
+			return ((char *)str);
 		--str;
 	}
 	return (NULL);

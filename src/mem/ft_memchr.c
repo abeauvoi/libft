@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 16:45:44 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/01/23 20:31:27 by abeauvoi         ###   ########.fr       */
+/*   Updated: 2020/11/27 17:14:54 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void					*ft_memchr(const void *s, int c, size_t n)
 	tab[WORD] = (*p | tab[MASK]) ^ (tab[GOAL] & tab[MASK]);
 	last_byte = (const char *)s + n - 1;
 	last_word = (const uint64_t *)((uintptr_t)last_byte & -8);
-	while ((tab[CHAR_POS] = ft_haschar(tab[WORD], tab[GOAL])) == 0)
+	while ((tab[CHAR_POS] = ft_detect_char(tab[WORD], tab[GOAL])) == 0)
 	{
 		if (p == last_word)
 			return (NULL);

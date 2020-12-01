@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_detect_char.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 17:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/11/29 01:06:14 by mac              ###   ########.fr       */
+/*   Created: 2018/09/17 08:19:24 by abeauvoi          #+#    #+#             */
+/*   Updated: 2020/11/27 17:13:29 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isdigit(int c)
+#include "libft.h"
+
+uint64_t	 	ft_detect_char(uint64_t word, uint64_t mask)
 {
-	return (c >= '0' && c <= '9');
+	return (ft_detect_null(word ^ mask));
 }

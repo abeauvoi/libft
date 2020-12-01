@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 16:34:41 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/02/13 19:59:36 by mac              ###   ########.fr       */
+/*   Updated: 2020/11/27 17:19:33 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char		*ft_strcpy(char *dst, const char *src)
 	{
 		u64src = (const uint64_t *)src;
 		u64dst = (uint64_t *)dst;
-		while (ft_haszero(*u64src) == 0)
+		while (ft_detect_null(*u64src) == 0)
 			*u64dst++ = *u64src++;
 		src = (const char *)u64src;
 		dst = (char *)u64dst;

@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_haszero.c                                       :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 08:12:06 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/01/23 20:23:15 by abeauvoi         ###   ########.fr       */
+/*   Created: 2017/04/21 19:40:08 by abeauvoi          #+#    #+#             */
+/*   Updated: 2020/12/01 22:31:54 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-#define LOMAGIC 0x0101010101010101ull
-#define HIMAGIC 0x8080808080808080ull
-
-bool		ft_detect_null(uint64_t longword)
+void		ft_lstadd_back(t_list **lst, t_list *new)
 {
-	return ((bool)(((longword - LOMAGIC) & ~longword & HIMAGIC) != 0));
+	t_list	*tmp;
+
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		tmp = *lst;
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
 }

@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mac <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/15 16:43:42 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/11/29 02:00:08 by mac              ###   ########.fr       */
+/*   Created: 2020/11/29 02:20:51 by mac               #+#    #+#             */
+/*   Updated: 2020/11/29 02:23:33 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int				ft_strncmp(const char *s1, const char *s2, size_t n)
+size_t 	ft_strlcpy(char *dst, const char *src, size_t maxlen)
 {
-	while (n-- > 0)
+	const size_t	srclen = ft_strlen(src);
+
+	if (srclen + 1 < maxlen)
+		ft_memcpy(dst, src, srclen + 1);
+	else if (maxlen != 0)
 	{
-		if (*s1 == '\0' || *s1 != *s2)
-			break ;
-		if (n > 0)
-		{
-			++s1;
-			++s2;
-		}
+		memcpy(dst, src, maxlen - 1);
+		dst[maxlen - 1] = '\0';
 	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	return srclen;
+
 }

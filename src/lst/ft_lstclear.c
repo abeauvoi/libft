@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mac <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/17 15:06:00 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/10/25 16:35:21 by abeauvoi         ###   ########.fr       */
+/*   Created: 2020/12/01 22:16:50 by mac               #+#    #+#             */
+/*   Updated: 2020/12/01 22:34:12 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-char		*ft_strsub(const char *s, unsigned int start, size_t n)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	char	*sub;
+	t_list	*ptr;
+	t_list	*prev;
 
-	if ((sub = (char *)malloc(n + 1)) == NULL)
-		return (NULL);
-	ft_strncpy(sub, s + start, n);
-	sub[n] = 0;
-	return (sub);
+	ptr = *lst;
+	while (ptr != NULL)
+	{
+		del(ptr->content);
+		prev = ptr;
+		ptr = ptr->next;
+		free(prev);
+	}
+	*lst = NULL;
 }

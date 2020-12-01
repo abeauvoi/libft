@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstpush.c                                       :+:      :+:    :+:   */
+/*   ft_strnlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mac <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/21 19:40:08 by abeauvoi          #+#    #+#             */
-/*   Updated: 2017/04/21 19:48:29 by abeauvoi         ###   ########.fr       */
+/*   Created: 2020/11/29 02:26:49 by mac               #+#    #+#             */
+/*   Updated: 2020/11/29 02:28:27 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		ft_lstpush(t_list **alst, t_list *new)
+size_t	ft_strnlen(const char *s, size_t maxlen)
 {
-	t_list	*tmp;
+	size_t	len;
 
-	if (!*alst)
-		*alst = new;
-	else
+	len = 0;
+	while (len < maxlen)
 	{
-		tmp = *alst;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
+		++len;
+		if (s[0] == '\0')
+			break ;
 	}
+	return (len);
 }

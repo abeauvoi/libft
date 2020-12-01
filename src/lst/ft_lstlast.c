@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_detect_char.c                                   :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mac <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 08:19:24 by abeauvoi          #+#    #+#             */
-/*   Updated: 2018/11/22 18:32:51 by mac              ###   ########.fr       */
+/*   Created: 2020/12/01 20:29:33 by mac               #+#    #+#             */
+/*   Updated: 2020/12/01 23:40:58 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-inline uint64_t	 	ft_haschar(uint64_t word, uint64_t mask)
+t_list	*ft_lstlast(t_list *lst)
 {
-	return (ft_haszero(word ^ mask));
+	if (lst != NULL)
+		while (lst->next != NULL)
+			lst = lst->next;
+	return (lst);
 }

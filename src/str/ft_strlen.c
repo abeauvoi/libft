@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:57:23 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/02/14 15:28:36 by mac              ###   ########.fr       */
+/*   Updated: 2020/11/27 18:00:40 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t					ft_strlen(const char *str)
 		return (0);
 	longptr = (const uint64_t *)((uint64_t)str & -8);
 	longword = *longptr | ((1ULL << ((uint64_t)str << 3)) - 1);
-	while ((zero_magnet = ft_haszero(longword)) == 0)
+	while ((zero_magnet = ft_detect_null(longword)) == 0)
 	{
 		++longptr;
 		longword = *longptr;
