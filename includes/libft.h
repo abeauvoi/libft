@@ -6,7 +6,7 @@
 /*   By: abeauvoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 18:54:46 by abeauvoi          #+#    #+#             */
-/*   Updated: 2020/02/14 15:36:20 by mac              ###   ########.fr       */
+/*   Updated: 2020/12/01 22:33:17 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,15 @@
 
 typedef struct	s_list
 {
-	void		*content;
-	size_t		content_size;
+	void			*content;
 	struct s_list	*next;
-}			t_list;
+}				t_list;
 
 typedef struct	s_str
 {
 	char	*s;
 	size_t	len;
-}			t_str;
+}				t_str;
 /*
 ** }}}
 */
@@ -52,6 +51,7 @@ typedef struct	s_str
 ** src/alloc {{{
 */
 void		*ft_realloc(void *ptr, size_t size);
+void		*ft_calloc(size_t nmemb, size_t size);
 /*
 ** }}}
 */
@@ -62,7 +62,7 @@ void		*ft_realloc(void *ptr, size_t size);
 int			ft_isalnum(int c);
 int			ft_isalpha(int c);
 int			ft_isascii(int c);
-int			ft_isblank(char c);
+int			ft_isblank(int c);
 int			ft_isdigit(int c);
 int			ft_islower(int c);
 int			ft_isspace(int c);
@@ -80,13 +80,14 @@ int			ft_isdigit_nstr(const char *s, size_t n);
 /*
 ** src/conv {{{
 */
-int			ft_atoi(const char *s);
+int64_t		ft_atoi(const char *s);
 int			ft_atoi_skip(const char **s);
 uint8_t		ft_digittoint(char c);
 uint8_t		ft_todigit(int c);
 int			ft_tolower(int c);
 int			ft_toupper(int c);
 int			ft_xdigittoint(char c);
+char		*ft_itoa(int n);
 /*
 ** }}}
 */
@@ -95,15 +96,16 @@ int			ft_xdigittoint(char c);
 ** src/lst {{{
 */
 void		ft_delcontent(void *content, size_t __attribute__((unused)) size);
-void		ft_lstadd(t_list **alst, t_list *new);
-void		ft_lstdel(t_list **alst, void (*del)(void *, size_t));
-void		ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
-t_list		*ft_lstnew(void *content, size_t content_size);
-void		ft_lstiter(t_list *list, void (*f)(t_list *elem));
-t_list		*ft_lstmap(t_list *list, t_list *(*f)(t_list *elem));
-void		ft_lstpush(t_list **alst, t_list *new);
-size_t		ft_lstsize(t_list *list);
+void		ft_lstadd_front(t_list **alst, t_list *new);
+void		ft_lstdel(t_list **alst, void (*del)(void *));
+void		ft_lstdelone(t_list *lst, void (*del)(void *));
+t_list		*ft_lstnew(void *content);
+void		ft_lstiter(t_list *lst, void (*f)(void *));
+t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+void		ft_lstadd_back(t_list **alst, t_list *new);
+int			ft_lstsize(t_list *list);
 void		ft_lstprint_base(t_list *list, uint8_t sz_elem, uint8_t radix);
+void		ft_lstclear(t_list **lst, void (*del)(void *));
 /*
 ** }}}
 */
@@ -134,6 +136,7 @@ void		*ft_memcpy(void *dst, const void *src, size_t count);
 void		ft_memdel(void **ap);
 void		*ft_memmove(void *dst, const void *src, size_t count);
 void		*ft_memset(void *dst, int c, size_t n);
+void 		*ft_memccpy(void *dst, const void *src, int c, size_t n);
 /*
 ** }}}
 */
@@ -144,8 +147,8 @@ void		*ft_memset(void *dst, int c, size_t n);
 void		ft_swap_int(int *a, int *b);
 void		ft_swap_any(void *a, void *b, size_t size_of);
 uint64_t	ft_insn_shrui(uint8_t vec[8], uint8_t shift);
-uint64_t 	ft_haszero(uint64_t word);
-uint64_t	ft_haschar(uint64_t word, uint64_t mask);
+uint64_t 	ft_detect_null(uint64_t word);
+uint64_t	ft_detect_char(uint64_t word, uint64_t mask);
 bool		ft_isaligned(const void *ptr, uint8_t align_sz);
 uint64_t	ft_ffszbyte_r(uint64_t lword);
 /*
@@ -190,7 +193,9 @@ void		ft_striteri(char *s, void (*f)(unsigned int, char *));
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strjoin2(char const *s1, char const *s2, size_t l1, size_t l2);
 size_t		ft_strlcat(char *dst, const char *src, size_t dstsz);
+size_t		ft_strlcpy(char *dst, const char *src, size_t maxlen);
 size_t		ft_strlen(const char *str);
+size_t		ft_strnlen(const char *s, size_t maxlen);
 char		*ft_strmap(char const *s, char (*f)(char));
 char		*ft_strmap2(char const *s, char (*f)(char), size_t n);
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
@@ -206,8 +211,8 @@ char		*ft_strrchr(const char *s, int c);
 char		**ft_strsplit(char const *s, char c);
 char		**ft_strsplitset(char const *s, char const *delims);
 char		*ft_strstr(const char *haystack, const char *needle);
-char		*ft_strsub(char const *s, uint32_t start, size_t len);
-char		*ft_strtrim(char const *s);
+char		*ft_substr(char const *s, uint32_t start, size_t len);
+char		*ft_strtrim(char const *s, const char *set);
 char		*ft_strchrset(const char *s, const char *charset);
 int			ft_strrchr2(const char *const str, char c, size_t lenstr);
 int			ft_strchr2(const char *const str, char c);
